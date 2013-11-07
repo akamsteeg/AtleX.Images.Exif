@@ -65,13 +65,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
              */
             while (reader.BaseStream.Position != reader.BaseStream.Length && headerEnd == false)
             {
-                this.AdvanceReaderToNextSegment(reader);
-
-                byte[] markerBytes = reader.ReadBytes(2);
-
-                JpegSegmentType segmentType = this.GetTypeFromSegmentCode(markerBytes);
-
-                // TODO: Read the segment
+                JpegSegmentType segmentType = this.AdvanceReaderToNextSegment(reader);
 
                 // App1 and App2 are the ones we are interested in
                 if (segmentType == JpegSegmentType.App1
@@ -94,7 +88,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     JpegSegment segment = new JpegSegment()
                     {
                         Data = reader.ReadBytes((int)segmentLength),
-                        Type = this.GetTypeFromSegmentCode(markerBytes)
+                        Type = segmentType,
                     };
                     segments.Add(segment);
                 }
@@ -112,16 +106,18 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             return segments;
         }
 
-        protected void AdvanceReaderToNextSegment(BinaryReader reader)
+        protected JpegSegmentType AdvanceReaderToNextSegment(BinaryReader reader)
         {
             bool segmentFound = false;
+            JpegSegmentType type = JpegSegmentType.Unknown;
             while (reader.BaseStream.Position != reader.BaseStream.Length && !segmentFound)
             {
                 Byte[] markerBytes = reader.ReadBytes(2);
 
                 if (markerBytes[0] == 255) // We propably arrived at a header
                 {
-                    if (this.GetTypeFromSegmentCode(markerBytes) != JpegSegmentType.Unknown)
+                    type = this.GetTypeFromSegmentCode(markerBytes);
+                    if (type != JpegSegmentType.Unknown)
                     {
                         // Reset the reader to the beginning of the marker
                         reader.BaseStream.Seek(-2, SeekOrigin.Current);
@@ -129,6 +125,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     }
                 }
             }
+
+            return type;
         }
 
         protected JpegSegmentType GetTypeFromSegmentCode(byte[] segmentCode)
