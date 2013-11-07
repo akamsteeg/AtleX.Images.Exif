@@ -1,5 +1,6 @@
 ﻿using AtleX.Images.Exif;
 using AtleX.Images.Exif.Readers;
+using AtleX.Images.Exif.Readers.Jpeg;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
