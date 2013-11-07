@@ -65,35 +65,47 @@ namespace AtleX.Images.Exif.Readers.Jpeg
              */
             while (reader.BaseStream.Position != reader.BaseStream.Length && headerEnd == false)
             {
-
                 this.AdvanceReaderToNextSegment(reader);
 
                 byte[] markerBytes = reader.ReadBytes(2);
 
+                JpegSegmentType segmentType = this.GetTypeFromSegmentCode(markerBytes);
+
                 // TODO: Read the segment
 
-                if (markerBytes[0] == 255) // We propably arrived at a header
-                {
-                    // App1 and App2 are the ones we are interested in
-                    if (markerBytes[1] == JpegSegmentMarkers.App1[1]
-                        || markerBytes[1] == JpegSegmentMarkers.App2[1]
-                        )
-                    {
-                        /*
-                         * The first two bytes after a segment header are
-                         * indicating the length of the segment
-                         */
-                        byte[] segmentLengthDefinition = reader.ReadBytes(2);
-                    }
-                    // DHT, DQT, DRI & SOF mark the end of the header
-                    else if (markerBytes[1] == JpegSegmentMarkers.Dht[1]
-                        || markerBytes[1] == JpegSegmentMarkers.Dqt[1]
-                        || markerBytes[1] == JpegSegmentMarkers.Dri[1]
-                        || markerBytes[1] == JpegSegmentMarkers.Sof[1]
+                // App1 and App2 are the ones we are interested in
+                if (segmentType == JpegSegmentType.App1
+                    || segmentType == JpegSegmentType.App2
                     )
+                {
+                    long segmentStartPos = reader.BaseStream.Position;
+                    /*
+                     * Ignore the length in the header of the segment 
+                     * and just advance to the start of the next segment
+                     */
+                    reader.ReadBytes(2);
+                    this.AdvanceReaderToNextSegment(reader);
+
+                    long segmentLength = reader.BaseStream.Position - segmentStartPos;
+
+                    // Reset the reader to the start of the segment and read the data
+                    reader.BaseStream.Seek(-segmentLength, SeekOrigin.Current);
+
+                    JpegSegment segment = new JpegSegment()
                     {
-                        headerEnd = true;
-                    }
+                        Data = reader.ReadBytes((int)segmentLength),
+                        Type = this.GetTypeFromSegmentCode(markerBytes)
+                    };
+                    segments.Add(segment);
+                }
+                // DHT, DQT, DRI & SOF mark the end of the header
+                else if (segmentType == JpegSegmentType.Dht
+                    || segmentType == JpegSegmentType.Dqt
+                    || segmentType == JpegSegmentType.Dri
+                    || segmentType == JpegSegmentType.Sos
+                )
+                {
+                    headerEnd = true;
                 }
             }
 
@@ -102,23 +114,63 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
         protected void AdvanceReaderToNextSegment(BinaryReader reader)
         {
-            Byte[] markerBytes = reader.ReadBytes(2);
-
-            if (markerBytes[0] == 255) // We propably arrived at a header
+            bool segmentFound = false;
+            while (reader.BaseStream.Position != reader.BaseStream.Length && !segmentFound)
             {
-                // App1 and App2 are the ones we are interested in
-                if (markerBytes[1] == JpegSegmentMarkers.App1[1]
-                    || markerBytes[1] == JpegSegmentMarkers.App2[1]
-                    || markerBytes[1] == JpegSegmentMarkers.Dht[1]
-                    || markerBytes[1] == JpegSegmentMarkers.Dqt[1]
-                    || markerBytes[1] == JpegSegmentMarkers.Dri[1]
-                    || markerBytes[1] == JpegSegmentMarkers.Sof[1]
-                )
+                Byte[] markerBytes = reader.ReadBytes(2);
+
+                if (markerBytes[0] == 255) // We propably arrived at a header
                 {
-                    // Reset the reader to the beginning of the marker
-                    reader.BaseStream.Seek(-2, SeekOrigin.Current);
+                    if (this.GetTypeFromSegmentCode(markerBytes) != JpegSegmentType.Unknown)
+                    {
+                        // Reset the reader to the beginning of the marker
+                        reader.BaseStream.Seek(-2, SeekOrigin.Current);
+                        segmentFound = true;
+                    }
                 }
             }
+        }
+
+        protected JpegSegmentType GetTypeFromSegmentCode(byte[] segmentCode)
+        {
+            if (segmentCode.Length != 2)
+                throw new ArgumentException("A segment code is two bytes", "segmentCode");
+            if (segmentCode[0] != 255)
+                throw new ArgumentException("The first byte of a segment code should be 0xFF");
+
+            JpegSegmentType result = JpegSegmentType.Unknown;
+            switch (segmentCode[1])
+            {
+                case 216:
+                    result = JpegSegmentType.Soi;
+                    break;
+                case 225:
+                    result = JpegSegmentType.App1;
+                    break;
+                case 226:
+                    result = JpegSegmentType.App2;
+                    break;
+                case 219:
+                    result = JpegSegmentType.Dqt;
+                    break;
+                case 196:
+                    result = JpegSegmentType.Dht;
+                    break;
+                case 221:
+                    result = JpegSegmentType.Dri;
+                    break;
+                case 192:
+                    result = JpegSegmentType.Sof;
+                    break;
+                case 218:
+                    result = JpegSegmentType.Sos;
+                    break;
+                case 217:
+                    result = JpegSegmentType.Eoi;
+                    break;
+            }
+
+            return result;
         }
 
         protected bool HasApp1(BinaryReader reader)

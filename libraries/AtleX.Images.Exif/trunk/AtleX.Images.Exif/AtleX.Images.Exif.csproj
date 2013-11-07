@@ -48,7 +48,6 @@
     <Compile Include="ImageExifReader.cs" />
     <Compile Include="Readers\ExifReader.cs" />
     <Compile Include="Readers\Jpeg\JpegSegment.cs" />
-    <Compile Include="Readers\Jpeg\JpegSegmentMarkers.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
