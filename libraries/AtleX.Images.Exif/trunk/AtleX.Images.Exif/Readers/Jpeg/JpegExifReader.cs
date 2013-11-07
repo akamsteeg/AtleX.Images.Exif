@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AtleX.Images.Exif.Readers
+namespace AtleX.Images.Exif.Readers.Jpeg
 {
     public class JpegExifReader : ExifDataReader
     {
@@ -36,13 +36,89 @@ namespace AtleX.Images.Exif.Readers
         protected override ExifData ReadExifFromBinaryReader(BinaryReader reader)
         {
             ExifData ed = new ExifData();
-            if (this.HasApp1(reader))
-            {
-                Byte[] app1Data = this.ReadApp1Block(reader);
-            }
-            //if (this.HasApp2
+
+            IEnumerable<JpegSegment> segments = this.ParseHeader(reader);
+
 
             return ed;
+        }
+
+        protected IEnumerable<JpegSegment> ParseHeader(BinaryReader reader)
+        {
+            // Read file for App blocks
+
+            /*
+             * Reset the stream because we want the full header to extract the App segments from
+             */
+            reader.BaseStream.Seek(0, SeekOrigin.Begin);
+
+            List<JpegSegment> segments = new List<JpegSegment>();
+
+            bool headerEnd = false;
+            /*
+             * The header with App segments ends when the DHT,
+             * DQT, DRI or SOF starts. To quote from the Exif specs:
+             * 
+             * "DQT, DHT, DRI and SOF may line up in any order, but 
+             * shall be recorded after APP1 (or APP2 if any) and 
+             * before SOS"
+             */
+            while (reader.BaseStream.Position != reader.BaseStream.Length && headerEnd == false)
+            {
+
+                this.AdvanceReaderToNextSegment(reader);
+
+                byte[] markerBytes = reader.ReadBytes(2);
+
+                // TODO: Read the segment
+
+                if (markerBytes[0] == 255) // We propably arrived at a header
+                {
+                    // App1 and App2 are the ones we are interested in
+                    if (markerBytes[1] == JpegSegmentMarkers.App1[1]
+                        || markerBytes[1] == JpegSegmentMarkers.App2[1]
+                        )
+                    {
+                        /*
+                         * The first two bytes after a segment header are
+                         * indicating the length of the segment
+                         */
+                        byte[] segmentLengthDefinition = reader.ReadBytes(2);
+                    }
+                    // DHT, DQT, DRI & SOF mark the end of the header
+                    else if (markerBytes[1] == JpegSegmentMarkers.Dht[1]
+                        || markerBytes[1] == JpegSegmentMarkers.Dqt[1]
+                        || markerBytes[1] == JpegSegmentMarkers.Dri[1]
+                        || markerBytes[1] == JpegSegmentMarkers.Sof[1]
+                    )
+                    {
+                        headerEnd = true;
+                    }
+                }
+            }
+
+            return segments;
+        }
+
+        protected void AdvanceReaderToNextSegment(BinaryReader reader)
+        {
+            Byte[] markerBytes = reader.ReadBytes(2);
+
+            if (markerBytes[0] == 255) // We propably arrived at a header
+            {
+                // App1 and App2 are the ones we are interested in
+                if (markerBytes[1] == JpegSegmentMarkers.App1[1]
+                    || markerBytes[1] == JpegSegmentMarkers.App2[1]
+                    || markerBytes[1] == JpegSegmentMarkers.Dht[1]
+                    || markerBytes[1] == JpegSegmentMarkers.Dqt[1]
+                    || markerBytes[1] == JpegSegmentMarkers.Dri[1]
+                    || markerBytes[1] == JpegSegmentMarkers.Sof[1]
+                )
+                {
+                    // Reset the reader to the beginning of the marker
+                    reader.BaseStream.Seek(-2, SeekOrigin.Current);
+                }
+            }
         }
 
         protected bool HasApp1(BinaryReader reader)
@@ -54,41 +130,16 @@ namespace AtleX.Images.Exif.Readers
              */
             reader.BaseStream.Seek(2, SeekOrigin.Begin);
 
-            byte[] exifMarker = reader.ReadBytes(8);
+            byte[] exifMarker = reader.ReadBytes(10);
 
-            // An APP1 segment is indicated by FF E1 (255 225)
-            if (exifMarker[0] == 255 && exifMarker[1] == 225) // We have a JFIF/EXIF segment
+            // An APP1 segment is indicated by "FF E1 Exif null null" (255 225 69 120 105 102 0 0)
+            if (exifMarker == new byte[] {255, 225, 69, 120, 105, 102, 0, 0}) // We have a JFIF/EXIF segment
             {
-                // And EXIF APP1 segment starts with "Exif" in ASCII
-                if (exifMarker[4] == 69 // E
-                    && exifMarker[5] == 120 // x
-                    && exifMarker[6] == 105 // i
-                    && exifMarker[7] == 102 // f
-                    )
-                { 
-                    // Ladies & gentlemen, we have found EXIF info!
-                    result = true;
-                }
+                // Ladies & gentlemen, we have found EXIF info!
+                result = true;
             }
 
             return result;
-        }
-
-        protected Byte[] ReadApp1Block(BinaryReader reader)
-        {
-            /*
-             * Reset the stream to just after the beginning of the block after
-             * the "FF E1" block marker
-             */
-            reader.BaseStream.Seek(12, SeekOrigin.Begin);
-
-            throw new NotImplementedException();
-        }
-
-        protected class AppBlock
-        {
-            public int Length { get; set; }
-            public byte[] Data { get; set; }
         }
     }
 }
