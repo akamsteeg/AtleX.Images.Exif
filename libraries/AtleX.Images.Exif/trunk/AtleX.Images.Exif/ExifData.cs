@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif
 {
-    public abstract class ExifData
+    public class ExifData
     {
+        public int ImageWidth { get; set; }
+
+        public int ImageHeight { get; set; }
     }
 }
