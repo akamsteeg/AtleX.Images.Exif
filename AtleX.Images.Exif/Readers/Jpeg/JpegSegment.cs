@@ -17,12 +17,12 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         Sof, // Start of Frame (FF C0 / 255 192)
         Sos, // Start of Scan (FF C0 / 255 218)
         Eoi, // End of Image (FF D9 / 255 217)
+        Unknown,
     }
 
     public class JpegSegment
     {
         public JpegSegmentType Type { get; set; }
-        public int Length { get; set; }
         public byte[] Data { get; set; }
     }
 }
