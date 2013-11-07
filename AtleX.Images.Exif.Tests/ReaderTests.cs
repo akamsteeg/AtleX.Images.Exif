@@ -1,4 +1,5 @@
-﻿using AtleX.Images.Exif.Readers;
+﻿using AtleX.Images.Exif;
+using AtleX.Images.Exif.Readers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,30 @@ namespace AtleX.Images.Exif.Tests
             }
         }
 
-        [Test]
-        public void CreateJpegReader()
+        public static IExifReader CreateReader<T>(string imageFileName) where T: new()
         {
-            IExifReader r = Reader.OpenReader(this.JpegImageFileName);
+            IExifReader reader = new T() as IExifReader;
+            reader.Open(imageFileName);
+
+            return reader;
+        }
+
+        [Test]
+        public void CreateJpegReaderViaFactoryReader()
+        {
+            IExifReader r = CreateReader<ImageExifReader>(this.JpegImageFileName);
 
             Assert.That(r is JpegExifReader);
+        }
+
+        [Test]
+        public void ReadExifFromJpeg()
+        {
+            IExifReader r = CreateReader<ImageExifReader>(this.JpegImageFileName);
+
+            ExifData ed = r.ReadExif();
+
+            Assert.IsNotNull(ed);
         }
     }
 }
