@@ -15,14 +15,21 @@ namespace AtleX.Images.Exif.Readers
         /// <returns></returns>
         public override ExifData ReadExif()
         {
-            ExifData ed = null;
-            using (FileStream stream = new FileStream(this._imageFileName, FileMode.Open, FileAccess.Read))
-            using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
+            if (this._canRead)
             {
-                ed = this.ReadExifFromBinaryReader(bReader);
-            }
+                ExifData ed = null;
+                using (FileStream stream = new FileStream(this._imageFileName, FileMode.Open, FileAccess.Read))
+                using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
+                {
+                    ed = this.ReadExifFromBinaryReader(bReader);
+                }
 
-            return ed;
+                return ed;
+            }
+            else
+            {
+                throw new InvalidOperationException("Can't read EXIF because the reader isn't ready (have you called Open()?)");
+            }
         }
 
         /// <summary>
