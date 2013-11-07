@@ -10,8 +10,8 @@ namespace AtleX.Images.Exif
 {
     /// <summary>
     /// Reads EXIF from a supported file
-    /// <remarks>This reader acts as a factory for file-specific readers</remarks>
     /// </summary>
+    /// <remarks>This reader acts as a factory for file-specific readers</remarks>
     public class ImageExifReader : ExifReader
     {
         /// <summary>

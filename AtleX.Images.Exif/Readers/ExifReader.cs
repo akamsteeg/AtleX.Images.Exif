@@ -10,6 +10,7 @@ namespace AtleX.Images.Exif.Readers
     public abstract class ExifReader : IExifReader
     {
         protected string _imageFileName;
+        protected bool _canRead;
 
         /// <summary>
         /// Open the image
@@ -23,6 +24,7 @@ namespace AtleX.Images.Exif.Readers
                 throw new FileNotFoundException(string.Format("Can't find file '{0}'", imageFileName));
 
             this._imageFileName = imageFileName;
+            this._canRead = true;
         }
 
         /// <summary>

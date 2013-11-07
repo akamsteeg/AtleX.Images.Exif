@@ -39,7 +39,7 @@ namespace AtleX.Images.Exif.Tests
         [Test]
         public void ReadExifFromJpeg()
         {
-            IExifReader r = CreateReader<ImageExifReader>(this.JpegImageFileName);
+            IExifReader r = CreateReader<JpegExifReader>(this.JpegImageFileName);
 
             ExifData ed = r.ReadExif();
 

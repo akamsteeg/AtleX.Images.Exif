@@ -18,15 +18,21 @@ namespace AtleX.Images.Exif.Readers
             base.Open(imageFileName);
 
             // Lazy extension check first, before doing the expensive Magic Numbers check
-            if (!imageFileName.EndsWith("jpeg") 
-                && !imageFileName.EndsWith("jpg")
+            if (!imageFileName.ToLower().EndsWith("jpeg") 
+                && !imageFileName.ToLower().EndsWith("jpg")
                 && FileTypeHelper.DetermineFileType(imageFileName) != FileType.Jpeg
                 )
             {
+                this._canRead = false;
                 throw new FileLoadException(string.Format("File '{0}' is not a JPEG file", this._imageFileName));
             }
         }
 
+        /// <summary>
+        /// Read the data from the file
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         protected override ExifData ReadExifFromBinaryReader(BinaryReader reader)
         {
             ExifData ed = new ExifData();
