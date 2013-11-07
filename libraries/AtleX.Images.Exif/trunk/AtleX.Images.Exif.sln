@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtleX.Images.Exif", "AtleX.Images.Exif\AtleX.Images.Exif.csproj", "{36D46B15-A586-46A4-BF32-6A8B1378FBE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtleX.Images.Exif.Tests", "AtleX.Images.Exif.Tests\AtleX.Images.Exif.Tests.csproj", "{2D92D566-DC6C-4E69-B167-9AF9DFED04E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36D46B15-A586-46A4-BF32-6A8B1378FBE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36D46B15-A586-46A4-BF32-6A8B1378FBE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36D46B15-A586-46A4-BF32-6A8B1378FBE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36D46B15-A586-46A4-BF32-6A8B1378FBE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D92D566-DC6C-4E69-B167-9AF9DFED04E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D92D566-DC6C-4E69-B167-9AF9DFED04E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D92D566-DC6C-4E69-B167-9AF9DFED04E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D92D566-DC6C-4E69-B167-9AF9DFED04E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
