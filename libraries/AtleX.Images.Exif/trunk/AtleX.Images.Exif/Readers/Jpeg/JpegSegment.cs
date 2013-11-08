@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         Unknown,
     }
 
+    [DebuggerDisplay("{Type} segment ({Data.Length} bytes)")]
     public class JpegSegment
     {
         public JpegSegmentType Type { get; set; }

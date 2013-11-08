@@ -78,6 +78,11 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <summary>
         /// Advance the reader to the start of the next segment
         /// </summary>
+        /// <remarks>
+        /// While this might seem a very inefficient method (no buffering, reading 
+        /// 2 bytes at a time), it's actually very fast when the reader reads from a FileStream
+        /// because a FileStream is buffered by default (http://blogs.msdn.com/b/brada/archive/2004/04/15/114329.aspx)
+        /// </remarks>
         /// <param name="reader"></param>
         /// <returns></returns>
         protected JpegSegmentType AdvanceReaderToNextSegment(BinaryReader reader)
