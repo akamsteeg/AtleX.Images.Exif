@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,23 +10,14 @@ namespace AtleX.Images.Exif.Readers
 {
     public abstract class ExifReader : IExifReader
     {
-        protected string _imageFileName;
-        protected bool _canRead;
+        protected string ImageFileName;
+        protected bool CanRead;
 
         /// <summary>
         /// Open the image
         /// </summary>
         /// <param name="imageFileName"></param>
-        public virtual void Open(string imageFileName)
-        {
-            if (string.IsNullOrEmpty(imageFileName))
-                throw new ArgumentNullException(imageFileName);
-            if (!File.Exists(imageFileName))
-                throw new FileNotFoundException(string.Format("Can't find file '{0}'", imageFileName));
-
-            this._imageFileName = imageFileName;
-            this._canRead = true;
-        }
+        public abstract void Open(string imageFileName);
 
         /// <summary>
         /// Read the EXIF info (if any) from the image

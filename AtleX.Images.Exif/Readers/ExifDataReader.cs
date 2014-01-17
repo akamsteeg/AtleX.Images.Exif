@@ -15,10 +15,10 @@ namespace AtleX.Images.Exif.Readers
         /// <returns></returns>
         public override ExifData ReadExif()
         {
-            if (this._canRead)
+            if (this.CanRead)
             {
                 ExifData ed = null;
-                using (FileStream stream = new FileStream(this._imageFileName, FileMode.Open, FileAccess.Read))
+                using (FileStream stream = new FileStream(this.ImageFileName, FileMode.Open, FileAccess.Read))
                 using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
                 {
                     ed = this.ReadExifFromBinaryReader(bReader);

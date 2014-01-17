@@ -1,0 +1,751 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- saved from url=(0052)http://gvsoft.homedns.org/exif/exif-explanation.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<meta name="content-language" content="en, nl">
+<meta name="description" content="GVsoft Exif makernotes Canon">
+<meta name="keywords" content="gvsoft, dcf, digitalfilm, digital, film, editor, exif, gps, iptc, photo, photography, software">
+<meta name="keywords" content="gvsoft, makernote, canon, fuji, kodak">
+<meta name="Author" content="GVsoft">
+<title>Exif explanation</title>
+<link rel="stylesheet" href="./Exif explanation_files/default.css" type="text/css">
+<style>
+.bodys {
+  margin-left:0px;
+  margin-right:1px}
+-->
+</style>
+</head>
+
+<body background="./Exif explanation_files/rice.jpg" class="bodys">
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">Description of Exif file format</td>
+  <td width="90" nowrap="" class="ch_text" align="right">2005-05-18</td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+    <td>
+    Most of the digital camera's use Exif file format to store images. This specification was made by
+    <a href="http://www.jeida.or.jp/">JEIDA</a>. Some information can be found on the internet. I could
+    not find any upto date document. So I started collecting and published my findings on the web.
+    Here is a tiny description about Exif.<br>
+    <br>
+    Sometimes DCF is mentioned (Design rule for Camera File system). DCF defines whole file-system
+    of digital camera: directory structure, file naming method, character set and file format etc. The file
+    format of DCF is based on Exif2.1 specification and can be found on <a href="http://www.exif.org/">
+    EXIF.org</a>.
+    This document is more or less based on Exif2.1/DCF specification<br>
+    <br>
+    This is a FREE / OPEN document, you may use this document for any purpose
+    (commercial / non-commercial) of 'all' / 'part of' this document.<br>
+    <br>
+    If you have information about<br>
+    - 'unknown' items<br>
+    - fautly data<br>
+    - missing items<br>
+    Please e-mail me, Ger Vermeulen <b>g e v e 0 0 1@ c a s e m a . n l</b>
+    <p align="right">
+    <a href="http://www.gvsoft.homedns.org/exif/">http://www.gvsoft.homedns.org/exif/</a>
+    </p>
+
+    <p align="right">
+    <a href="http://www.gvsoft.homedns.org/exif/">
+    rev. 1.1 2005-06-03</a><br>
+    rev. 1.0 2005-04-01</p>
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">Reference materials</td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    <a href="http://www.exif.org/">DCF</a><br>
+    <a href="http://www.exif.org/">Exif2.1 Specification</a><br>
+    <a href="http://www.jeida.or.jp/">JEIDA</a><br>
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">Contents</td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    <ul>
+      <li>1. <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#AboutExif">What is Exif?</a></li>
+      <li>2. <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#JpegMarker">JPEG format and Marker</a></li>
+      <li>3. <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#ExifMarker">EXIF marker</a></li>
+      <li>4. <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#ExifData">Exif data structure</a>
+        <ul>
+          <li>4.1 <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#TiffHeader">TIFF Header</a></li>
+          <li>4.2 <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#IFD">IFD : Image File Directory</a></li>
+          <li>4.3 <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#IFDRead">IFD data structure example</a></li>
+          <li>4.4 <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#ExifThumbs">Thumbnail image</a>
+            <ul>
+              <li>4.4.1 <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#JPEGThumbs">JPEG format thumbnail</a></li>
+              <li>4.4.2 <a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#TIFFThumbs">TIFF format thumbnail</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#ExifTags">Tag number used by Exif / TIFF</a>
+        <ul>
+          <li><a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#IFD0Tags">IFD0 (IFD of main image) section</a></li>
+          <li><a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#ExifIFDTags">Exif SubIFD section</a></li>
+          <li><a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#IFD1Tags">IFD1 (IFD of thumbnail image) section</a></li>
+          <li><a href="http://www.gvsoft.homedns.org/exif/Exif-explanation.html#MiscTags">Misc Tags</a></li>
+        </ul>
+      </li>
+    </ul>
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">1 <a name="AboutExif">What is Exif file format?</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    The Exif file format is based on the JPEG file format. Exif inserts some of
+    image / digital camera information and thumbnail image to JPEG in conformity to JPEG specification. Therefore you can view Exif formatted image
+    files by JPEG compliant Internet browser / Picture viewer / Photo retouch software etc. as
+    normal JPEG image
+    files.
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">2. <a name="JpegMarker">JPEG format and Marker</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    Every JPEG file starts from binary value '0xFFD8', ends with binary value '0xFFD9'. There are
+    several binary 0xFFXX data in JPEG data, they are known as <b>'Marker'</b>, and it
+    starts a new part of JPEG information. 0xFFD8 means <b>SOI </b>(Start of image), 0xFFD9 means <b>EOI
+    </b>(End of image). These two special
+    Markers have no data following, the other markers have data with it.
+    <p>Basic format of Marker is below.
+    <br>
+    <b>0xFF+Marker Number (1 byte) + Data [ Size (2 bytes) + Info (n bytes)
+    ]</b></p>
+    <p>The '<b>Data</b>'
+    contains Data Size descriptor and Information,&nbsp;<b>Size </b>(2 Bytes) has 'Motorola' byte align. The data
+    size is the size of the total Data: Size + <b> Info</b> ( value = 2 + n).</p>
+    <p>Example:
+    <b>FF xx - 00 0C - 01 02 03 04 05 06 07 08 09 0A</b><br>
+    <br>
+    It means this Marker (0xFFxx) has 0x000C (12) bytes of data. The data
+    '12 bytes' starts with 'Data size' 2 bytes, followed by 10 bytes: '01 02 03 04 05 06 07 08 09 0A'.</p>
+    <p>
+    In JPEG format, some of Markers describe data, then <b>SOS </b>(Start
+    Of Stream) marker placed. After the SOS
+    marker, JPEG image stream starts and terminated by <b> EOI</b>&nbsp;
+    (End Of Image) marker.&nbsp;</p>
+    <table border="1">
+      <tbody><tr>
+        <td>marker 'D8'<br>SOI</td>
+        <td colspan="3">marker xx<br>size=ssss</td>
+        <td colspan="3">marker yy<br>size=tttt</td>
+        <td colspan="3">marker 'DA' = SOS<br>size=uuuu</td>
+        <td>Image<br> stream</td>
+        <td>marker 'D9'<br>EOI</td>
+      </tr>
+      <tr>
+        <td>FFD8</td>
+        <td>FFxx</td><td>ssss</td><td>DDDD...</td>
+        <td>FFyy</td><td>tttt</td><td>DDDD...</td>
+        <td>FFDA</td><td>uuuu</td><td>DDDD....</td>
+        <td>iiiiiiiiiiii....</td>
+        <td>FFD9</td>
+      </tr>
+    </tbody></table>
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">3. <a name="ExifMarker">EXIF marker</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    The marker 0xFFE0~0xFFEF is named <b>'Application Marker'</b>, not necessary for decoding JPEG image. They are
+    used by user application. For example, older olympus / canon / casio /
+    agfa digital camera use JFIF (JPEG File Interchange
+    Format) for storing images. JFIF uses APP0 (0xFFE0) marker for inserting digital camera configuration data and
+    thumbnail image.
+    <p>For inserting data Exif uses the Application Marker <b>APP1
+    (0xFFE1)</b>  marker to avoid a
+    conflict with the JFIF format. Every Exif file format starts from this
+    marker.&nbsp;</p>
+    <table border="1">
+      <tbody><tr>
+        <td>SOI marker</td>
+        <td>APP1 marker</td>
+        <td>APP1 Data</td>
+        <td>Other marker</td>
+      </tr>
+      <tr>
+        <td>FFD8</td>
+        <td>FFE1</td>
+        <td>ssss 457869660000 TTTT......</td>
+        <td>FFXX SSSS DDDD......</td>
+      </tr>
+    </tbody></table>
+    <br>
+    It starts with SOI (0xFFD8) marker, so it's a JPEG file. Then an APP1
+    marker follows immediately. All the data of
+    Exif is stored in the APP1 data area. The APP1 Data part starts with
+    size 'ssss' (Exif data area). The size 'ssss' includes the size
+    field also.
+    <p>
+    After the 'SSSS', APP1 data starts. This part is explained
+    in the next section.</p>
+    <p>
+    After the APP1 marker area other JPEG markers follow.&nbsp;</p>
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">4. <a name="ExifData">Exif data structure</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    The structure of Exif data (APP1) is shown below. This is a case of 'Intel' byte aligns and it contains
+    JPEG format thumbnail. The Exif data starts from ASCII character 'Exif' and 2bytes of 0x00,
+    and then Exif data follows. Exif uses TIFF format to store data. For more details of TIFF format, please refer
+    to <a href="http://partners.adobe.com/asn/developer/PDFS/TN/TIFF6.pdf">'TIFF6.0 specification'</a>.<br>
+    &nbsp;
+    <table border="1">
+      <tbody><tr>
+        <td>APP1 Marker</td>
+        <td>&nbsp;</td>
+        <td>FFE1</td>
+        <td colspan="2">Application marker E1</td>
+      </tr>
+      <tr>
+        <td rowspan="52" height="606">APP1 Data</td>
+        <td>APP1 Data Size</td>
+        <td>ssss</td>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Exif Header</td>
+        <td>45786966 0000</td>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td height="57">TIFF Header</td>
+        <td height="57">4949<br>
+          2A00<br>
+          08000000</td>
+        <td colspan="2" height="57">&nbsp;</td>
+      </tr>
+      <tr>
+        <td rowspan="7" height="168">IFD0 (main image) </td>
+        <td>xxxx</td>
+        <td colspan="2">Number of fields in directory&nbsp;</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td rowspan="4" height="94">Directory</td>
+        <td>Image width</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>. . . .</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>Exif offset</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>GPS offset</td>
+      </tr>
+      <tr>
+        <td>xxxxxxxx</td>
+        <td colspan="2">Next IFD offset (IFD1)</td>
+      </tr>
+      <tr>
+        <td height="18">xxxx. . . . </td>
+        <td colspan="2">Data area of IFD0</td>
+      </tr>
+      <tr>
+        <td rowspan="7">&nbsp;EXIF IFD </td>
+        <td>xxxx</td>
+        <td colspan="2">Number of fields in directory&nbsp;</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td rowspan="4" height="94">Directory</td>
+        <td>EXIF version</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>Date digitised</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>Makernote Offset</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>. . . .</td>
+      </tr>
+      <tr>
+        <td>00000000</td>
+        <td colspan="2">No next IFD</td>
+      </tr>
+      <tr>
+        <td height="18">xxxx. . . . </td>
+        <td colspan="2">Data area of Exif IFD</td>
+      </tr>
+      <tr>
+        <td rowspan="6">&nbsp;GPS IFD </td>
+        <td>xxxx</td>
+        <td colspan="2">Number of fields in directory&nbsp;</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td rowspan="3" height="94">Directory</td>
+        <td>GPS version</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>. . . .</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>. . . .</td>
+      </tr>
+      <tr>
+        <td>00000000</td>
+        <td colspan="2">No next IFD</td>
+      </tr>
+      <tr>
+        <td height="18">xxxx. . . . </td>
+        <td colspan="2">Data area of Gps IFD</td>
+      </tr>
+      <tr>
+        <td rowspan="7">&nbsp;Makernote IFD </td>
+        <td>FUJIFILM</td>
+        <td colspan="2">Optional recognise string</td>
+      </tr>
+      <tr>
+        <td>xxxx</td>
+        <td colspan="2">Number of fields in directory</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td rowspan="3" height="94">Directory</td>
+        <td>Familie ID</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>ISO speed</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>. . . .</td>
+      </tr>
+      <tr>
+        <td>00000000</td>
+        <td colspan="2">No next IFD</td>
+      </tr>
+      <tr>
+        <td height="18">xxxx. . . . </td>
+        <td colspan="2">Data area of makernote IFD</td>
+      </tr>
+      <tr>
+        <td rowspan="7">Interoperability IFD </td>
+      </tr>
+      <tr>
+        <td>xxxx</td>
+        <td colspan="2">Number of fields in directory</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td rowspan="3" height="94">Directory</td>
+        <td>Index</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>Version</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>. . . .</td>
+      </tr>
+      <tr>
+        <td>00000000</td>
+        <td colspan="2">No next IFD</td>
+      </tr>
+      <tr>
+        <td height="18">xxxx. . . . </td>
+        <td colspan="2">Data area of Interoperability IFD</td>
+      </tr>
+      <tr>
+        <td rowspan="7">IFD1 (thumbnail image) </td>
+      </tr>
+      <tr>
+        <td>xxxx</td>
+        <td colspan="2">Number of fields in directory</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td rowspan="3" height="94">Directory</td>
+        <td>Compression</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>XResolution</td>
+      </tr>
+      <tr>
+        <td>aaaabbbbccccccccdddddddd </td>
+        <td>. . . .</td>
+      </tr>
+      <tr>
+        <td>00000000</td>
+        <td colspan="2">No next IFD</td>
+      </tr>
+      <tr>
+        <td height="18">xxxx. . . . </td>
+        <td colspan="2">Data area of Interoperability IFD</td>
+      </tr>
+      <tr>
+        <td colspan="4">Sometimes some unknown stuff </td>
+      </tr>
+      <tr>
+        <td rowspan="7">&nbsp;Thumbnail image</td>
+        <td>FFD8</td>
+        <td colspan="2">SOI - Start of Image</td>
+      </tr>
+      <tr>
+        <td>FFDB ssss dddd. . . .&nbsp;</td>
+        <td colspan="2">DQT - Define quantization table</td>
+      </tr>
+      <tr>
+        <td>FFC0 ssss dddd. . . .&nbsp;</td>
+        <td colspan="2">SOF0 - Baseline</td>
+      </tr>
+      <tr>
+        <td>FFC4 ssss dddd. . . .&nbsp;</td>
+        <td colspan="2">DHT - Define Huffman table</td>
+      </tr>
+      <tr>
+        <td>FFDA ssss dddd. . . .&nbsp;</td>
+        <td colspan="2">SOS - Start of Scan</td>
+      </tr>
+      <tr>
+        <td>xxxxxxxx . . . .</td>
+        <td colspan="2">image</td>
+      </tr>
+      <tr>
+        <td>FFD9</td>
+        <td colspan="2">EOI - End of Image</td>
+      </tr>
+    </tbody></table>
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">4.1 <a name="TiffHeader">TIFF header structure</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    <table border="1">
+      <tbody><tr><td>Byte align    </td><td>TAG mark</td><td>Offset to first IFD</td></tr>
+      <tr><td>0x4D4D = 'MM' </td><td>0x002a  </td><td>0x00000008         </td></tr>
+      <tr><td colspan="3" align="center">or</td></tr>
+      <tr><td>0x4949 = 'I I'</td><td>0x2a00  </td><td>0x08000000         </td></tr>
+    </tbody></table>
+    <br>
+    First 8 bytes of TIFF format is the TIFF header.
+    <p>First 2 bytes defines byte align of TIFF data. 0x4949='I I' is 'Intel' type byte
+    align,  0x4d4d='MM' is 'Motorola' type byte align. For example, decimal value
+    '305.419.896' is noted as hexadecimal 0x12345678. If Motorola aligned, it
+    is noted as 0x12345678, if it's Intel aligned it is noted as 0x78563412. A lot
+    of digital camera uses Intel align, but not all. Therefore when we need the
+    value of Exif data, we MUST check byte align field every time. Though JPEG data uses
+    Motorola align only, Exif allows both alignments. I can't understand why Exif didn't
+    fix a byte align to Motorola.</p>
+    <p>
+    Next 2 bytes always have the value of 0x002A.</p>
+    <p>The last 4 bytes of TIFF header is the offset to the first IFD (Image File
+    Directory, described in next chapter). Includes this offset, all the offset value
+    used in TIFF format counts offset bytes from the first byte of the TIFF header
+    ('I I' or 'MM'). Usually the first IFD starts immediately next to TIFF header, so
+    this offset has often the value '0x00000008'.&nbsp;</p>
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">4.2 <a name="IFD">IFD : Image File Directory</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    <p>Next to TIFF header, there is the first IFD : Image File Directory -
+    IFD-0. It contains image information data.</p>
+    <table border="1">
+      <tbody><tr><td>eeee</td>                             <td>Number of directory entries</td></tr>
+      <tr><td>tttt - ffff - nnnnnnnn - dddddddd</td><td>Entry 0           </td></tr>
+      <tr><td>tttt - ffff - nnnnnnnn - dddddddd</td><td>Entry 1           </td></tr>
+      <tr><td>. . . . . . . . .                </td><td>. . . . . .       </td></tr>
+      <tr><td>tttt - ffff - nnnnnnnn - dddddddd</td><td>Entry eeee-1      </td></tr>
+      <tr><td>oooooooo                         </td><td>Offset to next IFD</td></tr>
+    </tbody></table>
+    <p>The first 2 bytes ('eeee') contains the number of directory
+    entries in this IFD.</p>
+
+    <p>Then directory entries (12 bytes per entry) follows.
+    <table border="0">
+      <tbody><tr><td>'tttt'    </td><td>2 bytes</td><td>is the Tag number, this shows a kind of data.</td></tr>
+      <tr><td>'ffff'    </td><td>2 bytes</td><td> is data format.                             </td></tr>
+      <tr><td>'nnnnnnnn'</td><td>4 bytes</td><td> is number of components.                    </td></tr>
+      <tr><td>'dddddddd'</td><td>4 bytes</td><td> contains a data value or offset to data value.</td></tr>
+    </tbody></table>
+
+    </p><p>After last directory entry, there is a 4bytes of data ('oooooooo'), it
+    has the offset to next IFD. If its value is '0x00000000', it means this is the last IFD and there
+    is no linked IFD.</p>
+    <p>
+    Data format ('ffff') is defined as see table.<br>
+    <table border="1">
+        <tbody><tr><td>Value</td> <td>Format</td>               <td>Bytes/component</td></tr>
+        <tr><td>1</td>     <td>unsigned byte</td>        <td>1</td>              </tr>
+        <tr><td>2</td>     <td>ascii strings</td>        <td>1</td>              </tr>
+        <tr><td>3</td>     <td>unsigned short</td>       <td>2</td>              </tr>
+        <tr><td>4</td>     <td>unsigned long</td>        <td>4</td>              </tr>
+        <tr><td>5</td>     <td>unsigned rational</td>    <td>8</td>              </tr>
+        <tr><td>6</td>     <td>signed byte</td>          <td>1</td>              </tr>
+        <tr><td>7</td>     <td>undefined</td>            <td>1</td>              </tr>
+        <tr><td>8</td>     <td>signed short</td>         <td>2</td>              </tr>
+        <tr><td>9</td>     <td>signed long</td>          <td>4</td>              </tr>
+        <tr><td>10</td>    <td>signed rational</td>      <td>8</td>              </tr>
+        <tr><td>11</td>    <td>single float</td>         <td>4</td>              </tr>
+        <tr><td>12</td>    <td>double float</td>         <td>8</td>              </tr>
+    </tbody></table>
+    </p><p>
+    'rational' means a fractional value, it contains
+    2-signed/unsigned long integer values, and the first represents the numerator, and the second, the
+    denominator.</p>
+    You can get the total data byte length by multiplies a 'bytes/components' value
+    by number of
+    components stored 'nnnnnnnnn' area. If total data length is less or
+    equal than 4bytes, 'dddddddd' contains the value of
+    that Tag. If its size is over 4bytes, 'dddddddd' contains the offset to data stored address.<br>
+</td></tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">4.3 <a name="IFDRead">IFD data structure example</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    At Exif format, the first IFD is IFD0 (IFD of main image), then it links to
+    IFD1 (IFD of thumbnail image) and
+    IFD link is terminated. But IFD0/IFD1 doesn't contain any digital
+    camera's information such as shutter speed, focal
+    length etc. IFD0 always contains special Tag <b>Exif Offset (0x8769)</b>, it shows an offset to <b>Exif SubIFD</b>.
+    Exif SubIFD is IFD formatted data also, it contains digital camera's information.
+    <p>
+    In case of Extended Exif format (Exif2.1/DCF), Exif SubIFD contains special Tag <b>Exif Interoperability
+    Offset (0xa005)</b>. It also points to the Interoperability IFD. By the DCF specification, this tag is
+    mandatory and both SubIFD (main image IFD) and IFD1 (thumbnail image IFD) may have Interoperability IFD. In
+    usual, only main image have this tag.</p>
+    <p>
+    And some of digital camera uses IFD data format for Makernote; Maker-specific magic
+    data area. It's very hard to decide whether makernote is IFD format or not, be careful to coding program. See Appendix for information of
+    Makernote.</p><pre>0000: <span style="background-color: #FFFF00">49 49</span> <span style="background-color: #FFFF00">2A 00</span> <span style="background-color: #FFFF00">08 00 00 00</span>-<span style="background-color: #FFFF00">02 00</span> <span style="background-color: #00CCFF">1A 01</span> <span style="background-color: #00CCFF">05 00</span> <span style="background-color: #00CCFF">01 00</span>
+0010: <span style="background-color: #00CCFF">00 00</span> <span style="background-color: #00CCFF">26 00 00 00</span> <span style="background-color: #77FF99">69 87</span>-<span style="background-color: #77FF99">04 00</span> <span style="background-color: #77FF99">01 00 00 00</span> <span style="background-color: #77FF99">11 02</span>
+0020: <span style="background-color: #77FF99">00 00</span> <span style="background-color: #FFFF00">40 00 00 00</span> <span style="background-color: #00CCFF">48 00-00 00</span> <span style="background-color: #00CCFF">01 00 00 00</span>
+</pre>
+    If the first part of TIFF data is above, it can read as:<br>
+    <table border="1" style="border-collapse: collapse">
+      <tbody><tr><td>Address      </td><td>Hex data  </td><td>Explanation               </td></tr>
+      <tr><td>0x0000~0x0001</td><td>0x4949    </td><td>the first 2bytes are 'I I', byte align is 'Intel'</td></tr>
+      <tr><td>0x0002~0x0003</td><td>0x2A00    </td><td></td></tr>
+      <tr><td>0x0004~0x0007</td><td>0x08000000</td><td>IFD0 starts from address '0x00000008'</td></tr>
+      <tr><td>0x0008~0x0009</td><td>0x0200    </td><td>number of directory entry of IFD0 is '2'</td></tr>
+      <tr><td>0x000a~0x000b</td><td>0x1A01    </td><td>number for Tag: X-Resolution (0x011A), it<br>
+                                                       contains a horizontal resolution of image</td></tr>
+      <tr><td>0x000c~0x000d</td><td>0x0500    </td><td>format is 0x0005, unsigned rational</td></tr>
+      <tr><td>0x000e~0x0011</td><td>0x01000000</td><td>number of components is '1'</td></tr>
+      <tr><td>.            </td><td>.         </td><td>Unsigned rational data size is 8 bytes/components, so<br>
+                                                       total data length is 1 x 8 = 8 bytes<br>
+                                                       Total data length is larger than 4 bytes, so next<br>
+                                                       4 bytes contains an offset to the data</td></tr>
+      <tr><td>0x0012~0x0015</td><td>0x26000000</td><td>X-Resolution data is stored to address 0x00000026</td></tr>
+      <tr><td>0x0016~0x0017</td><td>0x6987    </td><td>next Tag is ExifOffset (0x8769), its value is an<br>
+                                                       offset to <b>Exif SubIFD</b></td></tr>
+      <tr><td>0x0018~0x0019</td><td>0x0400    </td><td>format is 0x0004, unsigned long integer.</td></tr>
+      <tr><td>0x001a~0x001d</td><td>0x01000000</td><td>one component. Unsigned long integer's data size is<br>
+                                                       4 bytes/components, so total data size is 4 bytes</td></tr>
+      <tr><td>.            </td><td>.         </td><td>Total data size is equal to 4 bytes, so next 4 bytes<br>
+                                                       contains the value for Exif SubIFD offset</td></tr>
+      <tr><td>0x001e~0x0021</td><td>0x11020000</td><td>Exif SubIFD starts from address '0x00000211'</td></tr>
+      <tr><td>.            </td><td>.         </td><td>This was the last directory entry, next 4 bytes is an<br>
+                                                       offset to next IFD</td></tr>
+      <tr><td>0x0022~0x0025</td><td>0x40000000</td><td>next IFD starts from address '0x00000040'</td></tr>
+      <tr><td>0x0026~0x0029</td><td>0x48000000</td><td>numerator is 72</td></tr>
+      <tr><td>0x002a~0x002d</td><td>0x01000000</td><td>denominator is '1'</td></tr>
+      <tr><td>.            </td><td>.         </td><td>So the value of X-Resoultion is 72/1</td></tr>
+    </tbody></table>
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">4.4 <a name="ExifThumbs">Thumbnail image</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    Exif format contains a thumbnail of the image (except Ricoh RDC-300Z). Usually it is located next to the IFD1. There
+    are 3 formats for thumbnails; JPEG format (JPEG uses YCbCr), RGB TIFF format, YCbCr TIFF format. It seems that
+    JPEG format and 160x120 pixels of size are recommended thumbnail format for Exif2.1 or later. By the DCF
+    specification, thumbnail image <b>MUST</b> use JPEG format and image size is fixed to 160x120 pixels.
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">4.4.1 <a name="JPEGThumbs">JPEG format thumbnail</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    If the value of <b>Compression (0x0103)</b> Tag in IFD1 is '6', thumbnail image format is JPEG. Most of Exif
+    image uses JPEG format for thumbnail. In that case, you can get offset of thumbnail from <b>
+    JpegIFOffset (0x0201)</b> Tag in IFD1, size of thumbnail from <b>JpegIFByteCount
+    (0x0202)</b> Tag. Data format
+    is ordinary JPEG format, starts from 0xFFD8 and ends by 0xFFD9.
+  </td>
+</tr>
+</tbody></table>
+
+
+<table class="content_header" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+  <td width="5">&nbsp;</td>
+  <td width="100%" class="ch_text">4.4.2 <a name="TIFFThumbs">TIFF format thumbnail</a></td>
+  <td width="5">&nbsp;</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="10" width="100%">
+<tbody><tr>
+  <td>
+    If the value of <b>Compression (0x0103)</b> Tag in IFD1 is '1', thumbnail image format is no
+    compression (called
+    TIFF image). Start point of thumbnail data is <b>StripOffset (0x0111)</b> Tag, size of thumbnail is the sum of
+    <b>StripByteCounts (0x0117)</b> Tag.
+    <p>
+    If thumbnail uses no compression and <b>PhotometricInterpretation
+    (0x0106) </b>Tag in IFD1 has a value '2',
+    thumbnail uses RGB format. In that case, you can see thumbnail image by simply copy data to computer's RGB
+    format (such as BMP format, or copy to VRAM directory). Kodak DC-210/220/260 uses this format. Be mention that
+    at TIFF stores pixel data as 'RGB' order, but BMP stores 'BGR' order.<br>
+    If that tag has a value '6', thumbnail uses YCbCr format. If you want to see thumbnail, you must convert it to
+    RGB. Ricoh RDC4200/4300, Fuji DS-7/300 and DX-5/7/9 use this format
+    (newer RDC5000/MX-X00 series use JPEG).
+    Next section is brief description to conversion of Fuji DS's thumbnail. For more details, refer to
+    <a href="http://partners.adobe.com/asn/developer/PDFS/TN/TIFF6.pdf">TIFF6.0 specification</a>.</p>
+    <p>
+    At DX-5/7/9, YCbCrSubsampling(0x0212) has values of '2,1', PlanarConfiguration(0x011c) has a value '1'. So the
+    data align of this image is below.</p>
+    <p>
+    Y(0,0),Y(1,0),Cb(0,0),Cr(0,0), Y(2,0),Y(3,0),Cb(2,0),Cr(3.0), Y(4,0),Y(5,0),Cb(4,0),Cr(4,0). . . .</p>
+    <p>
+    The numeric in parenthesis is pixel coordinates. DX series' YCbCrCoefficients(0x0211) has values
+    '0.299/0.587/0.114', ReferenceBlackWhite(0x0214) has values '0,255,128,255,128,255'. Therefore to convert from
+    Y/Cb/Cr to RGB is;</p>
+    <p>
+    B(0,0)=(Cb-128)*(2-0.114*2)+Y(0,0)<br>
+    R(0,0)=(Cr-128)*(2-0.299*2)+Y(0,0)<br>
+    G(0,0)=(Y(0,0)-0.114*B(0,0)-0.299*R(0,0))/0.587</p>
+    <p>
+    Horizontal subsampling is a value '2', so you can calculate B(1,0)/R(1,0)/G(1,0) by using the Y(1,0) and
+    Cr(0,0)/Cb(0,0). Repeat this conversion by value of ImageWidth(0x0100) and ImageLength(0x0101).</p>
+  </td>
+</tr>
+</tbody></table>
+
+
+
+</body></html>
