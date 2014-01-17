@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,16 +16,20 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <param name="imageFileName"></param>
         public override void Open(string imageFileName)
         {
-            base.Open(imageFileName);
+            if (string.IsNullOrEmpty(imageFileName))
+                throw new ArgumentNullException(imageFileName);
+            if (!File.Exists(imageFileName))
+                throw new FileNotFoundException(string.Format("Can't find file '{0}'", imageFileName));
 
-            // Lazy extension check first, before doing the expensive Magic Numbers check
-            if (!imageFileName.ToLower().EndsWith("jpeg") 
-                && !imageFileName.ToLower().EndsWith("jpg")
-                && FileTypeHelper.DetermineFileType(imageFileName) != FileType.Jpeg
-                )
+            if (FileTypeHelper.DetermineFileType(imageFileName) == FileType.Jpeg)
             {
-                this._canRead = false;
-                throw new FileLoadException(string.Format("File '{0}' is not a JPEG file", this._imageFileName));
+                this.ImageFileName = imageFileName;
+                this.CanRead = true;
+            }
+            else
+            {
+                this.CanRead = false;
+                throw new FileLoadException(string.Format("File '{0}' is not a JPEG file", this.ImageFileName));
             }
         }
 
@@ -40,6 +45,15 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             JpegFileParser jfp = new JpegFileParser();
 
             IEnumerable<JpegSegment> segments = jfp.ParseHeaderIntoSegments(reader);
+
+            foreach (JpegSegment currentSegment in segments)
+            {
+                switch (currentSegment.Type)
+                {
+                    case JpegSegmentType.App1:
+                        break;
+                }
+            }
 
 
             return ed;

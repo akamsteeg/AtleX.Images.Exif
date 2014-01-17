@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif
 {
-    public enum FileType
+    internal enum FileType
     {
         Unknown,
         Jpeg
     }
 
-    public abstract class FileTypeHelper
+    internal abstract class FileTypeHelper
     {
         /// <summary>
         /// Determines and returns the file type of the specified file
@@ -25,18 +25,27 @@ namespace AtleX.Images.Exif
         {
             FileType result = FileType.Unknown;
 
-            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-            using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
+            /* 
+             * Do a lazy extension check first to avoid the expensive binary 
+             * reading of the magic numbers if the extension already indicates
+             * an unsupported file type
+             */
+            if (fileName.EndsWith(".jpg") ||
+                fileName.EndsWith("jpeg"))
             {
-                byte[] buffer = new byte[10];
-                buffer = bReader.ReadBytes(10);
-
-                // Check for JPEG header (FF D8)
-                if (buffer[0] == 255 // FF
-                    && buffer[1] == 216  // D8
-                    )
+                using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
                 {
-                    result = FileType.Jpeg;
+                    byte[] buffer = new byte[10];
+                    buffer = bReader.ReadBytes(10);
+
+                    // Check for JPEG header (FF D8)
+                    if (buffer[0] == 255 // FF
+                        && buffer[1] == 216  // D8
+                        )
+                    {
+                        result = FileType.Jpeg;
+                    }
                 }
             }
 

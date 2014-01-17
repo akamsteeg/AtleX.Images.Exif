@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif.Readers.Jpeg
 {
-    public enum JpegSegmentType
+    internal enum JpegSegmentType
     {
         Soi, // Start of Image  (FF D8 / 255 216)
         App1, // Application Segment 1 (FF E1 / 255 225)
@@ -22,7 +22,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     }
 
     [DebuggerDisplay("{Type} segment ({Data.Length} bytes)")]
-    public class JpegSegment
+    internal class JpegSegment
     {
         public JpegSegmentType Type { get; set; }
         public byte[] Data { get; set; }

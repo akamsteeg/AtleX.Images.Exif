@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif.Readers.Jpeg
 {
-    public class JpegFileParser
+    internal class JpegFileParser
     {
         internal JpegFileParser()
         {
