@@ -8,8 +8,7 @@ namespace AtleX.Images.Exif
 {
     public class ExifData
     {
-        public int ImageWidth { get; set; }
-
-        public int ImageHeight { get; set; }
+        public string ImageDescription { get; set; }
+        public string CameraMaker { get; set; }
     }
 }

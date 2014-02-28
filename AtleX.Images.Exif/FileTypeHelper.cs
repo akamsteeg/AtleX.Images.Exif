@@ -25,27 +25,18 @@ namespace AtleX.Images.Exif
         {
             FileType result = FileType.Unknown;
 
-            /* 
-             * Do a lazy extension check first to avoid the expensive binary 
-             * reading of the magic numbers if the extension already indicates
-             * an unsupported file type
-             */
-            if (fileName.EndsWith(".jpg") ||
-                fileName.EndsWith("jpeg"))
+            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
             {
-                using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
-                {
-                    byte[] buffer = new byte[10];
-                    buffer = bReader.ReadBytes(10);
+                byte[] buffer = new byte[10];
+                buffer = bReader.ReadBytes(10);
 
-                    // Check for JPEG header (FF D8)
-                    if (buffer[0] == 255 // FF
-                        && buffer[1] == 216  // D8
-                        )
-                    {
-                        result = FileType.Jpeg;
-                    }
+                // Check for JPEG header (FF D8)
+                if (buffer[0] == 255 // FF
+                    && buffer[1] == 216  // D8
+                    )
+                {
+                    result = FileType.Jpeg;
                 }
             }
 

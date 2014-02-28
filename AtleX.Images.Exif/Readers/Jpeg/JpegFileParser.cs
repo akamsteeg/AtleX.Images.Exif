@@ -18,14 +18,14 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public IEnumerable<JpegSegment> ParseHeaderIntoSegments(BinaryReader reader)
+        public IEnumerable<RawJpegSegment> ParseHeaderIntoSegments(BinaryReader reader)
         {
             /*
              * Reset the stream because we want the full header to extract the App segments from
              */
             reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
-            List<JpegSegment> segments = new List<JpegSegment>();
+            List<RawJpegSegment> segments = new List<RawJpegSegment>();
 
             bool headerEnd = false;
             /*
@@ -54,7 +54,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     // Read the data
                     byte[] segmentData = reader.ReadBytes(segmentLength);
 
-                    JpegSegment segment = new JpegSegment()
+                    RawJpegSegment segment = new RawJpegSegment()
                     {
                         Data = segmentData,
                         Type = segmentType,
