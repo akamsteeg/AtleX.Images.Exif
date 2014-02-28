@@ -31,46 +31,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     internal abstract class JpegSegmentParser
     {
         protected bool _isLittleEndian;
-        protected readonly byte[] _data;
-
-        public JpegSegmentParser(byte[] data)
-        {
-            this._data = data;
-        }
 
         public abstract Dictionary<string, string> Parse(RawJpegSegment segment);
-
-        public long GetByte(int startPos)
-        {
-            if (!this._data.Length <= startPos)
-                throw new ArgumentOutOfRangeException("Cannot read past the end of the array");
-
-            return this._data[startPos];
-        }
-
-        public string GetAscii(int startPos, bool isLittleEndian)
-        {
-            if (!this._data.Length+8 <= startPos)
-                throw new ArgumentOutOfRangeException("Cannot read past the end of the array");
-
-            byte[] data = new byte[8] 
-            { 
-                this._data[startPos],
-                this._data[startPos+1],
-                this._data[startPos+2],
-                this._data[startPos+3],
-                this._data[startPos+4],
-                this._data[startPos+5],
-                this._data[startPos+6],
-                this._data[startPos+8],
-            };
-
-            if (!isLittleEndian)
-                Array.Reverse(data);
-
-
-            return
-        }
     }
 
     internal class JpegSegmentParserApp1 : JpegSegmentParser
@@ -107,20 +69,65 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
             if (this._hasTiff)
             {
-                // Get start offset of the TIFF header
+                
+               byte[] tiffData = this.ReadBytes(segment.Data, 14, segment.Data.Length -14);
 
-                this.ReadTiff();
+               this.ReadTiff(tiffData);
             }
 
             return values;
         }
 
-        private void ReadTiff()
+        private void ReadTiff(byte[] tiffData)
         {
+            int numberOfEntries = this.ConvertBytesToInt(new byte[] {tiffData[0], tiffData[1]});
 
-            byte[] header = this.ReadBytes(segment.Data, 14, 2);
+            for (int i = 0; i < numberOfEntries; i++)
+            {
+                // Segments are 12 bytes long
+                byte[] tag = this.ReadBytes(tiffData, 2+ (i * 12) , 12);
 
-            if (
+                int tagType = this.ConvertBytesToInt(this.ReadBytes(tag, 0, 2));
+                int contentType = this.ConvertBytesToInt(this.ReadBytes(tag, 2, 2));
+                int dataLength = this.ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
+                int dataOffset = this.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
+
+                switch (contentType)
+                {
+                    case 1: // Byte
+                    case 2: // ASCII
+                        {
+                            byte[] data = this.ReadBytes(tiffData, dataOffset-2, dataLength-1);
+                            if (this._isLittleEndian)
+                                data.Reverse();
+
+                            string value = Encoding.ASCII.GetString(data);
+                        }
+                        break;
+                    case 3: // Short (2 bytes, uint16)
+                    case 4: // Long (4 bytes, uint32)
+                    case 5: // Rational (two Longs, first one is the nominator, second is the denominator)
+                    case 7: // Undefined (1 byte)
+                    case 9: // Slong (4 bytes, int32)
+                    case 10: // Srational (two slongs, first one is the nominator, second is the denominator)
+                        break;
+                }
+            }
+        }
+
+        private int ConvertBytesToInt(byte[] bytes)
+        {
+            if (this._isLittleEndian)
+                bytes.Reverse();
+
+            int value = 0;
+
+            if (bytes.Length == 2)
+                value = BitConverter.ToInt16(bytes, 0);
+            else
+                value = BitConverter.ToInt32(bytes, 0);
+
+            return value;
         }
 
         private byte[] ReadBytes(byte[] source, int start, int length)
@@ -138,7 +145,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 return readBytes;
             }
             else
-                throw new IndexOutOfRangeException("Not enough bytes to read");
+                throw new IndexOutOfRangeException("Not enough bytes in source to read");
         }
     }
 
