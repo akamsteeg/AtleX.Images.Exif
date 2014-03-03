@@ -98,10 +98,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     case 2: // ASCII
                         {
                             byte[] data = this.ReadBytes(tiffData, dataOffset-2, dataLength-1);
-                            if (this._isLittleEndian)
-                                data.Reverse();
 
-                            string value = Encoding.ASCII.GetString(data);
+                            string value = this.ConvertBytesToString(data);
                         }
                         break;
                     case 3: // Short (2 bytes, uint16)
@@ -117,9 +115,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
         private int ConvertBytesToInt(byte[] bytes)
         {
-            if (this._isLittleEndian)
-                bytes.Reverse();
-
             int value = 0;
 
             if (bytes.Length == 2)
@@ -127,6 +122,26 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             else
                 value = BitConverter.ToInt32(bytes, 0);
 
+            return value;
+        }
+
+        private string ConvertBytesToString(byte[] bytes)
+        {
+            string value = "";
+
+            // Find 0-terminator
+            int nullTerminatorPosition = 0;
+            for (nullTerminatorPosition = bytes.Length - 1; nullTerminatorPosition > 0; nullTerminatorPosition--)
+            {
+                if (bytes[nullTerminatorPosition] == 0x0)
+                    break;
+            }
+
+            byte[] realData = new byte[bytes.Length - (bytes.Length - nullTerminatorPosition)];
+            for (int i = 0; i < realData.Length; i++)
+                realData[i] = bytes[i];
+
+            value = Encoding.ASCII.GetString(realData);
             return value;
         }
 
@@ -141,6 +156,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     readBytes[j] = source[i];
                     j++;
                 }
+
+                if (this._isLittleEndian)
+                    readBytes.Reverse();
 
                 return readBytes;
             }
