@@ -24,12 +24,22 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void CreateJpegReaderInvalidFile()
+        public void CreateJpegReaderNonExistantFile()
         {
             TestImageExifReader r = new TestImageExifReader();
 
             Assert.Throws<FileNotFoundException>(
-                delegate { r.Open(this.UnknownImageFileName); } 
+                () => { r.Open(this.NonExistantFile); } 
+                );
+        }
+
+        [Test]
+        public void CreateJpegReaderInvalidFile()
+        {
+            TestImageExifReader r = new TestImageExifReader();
+
+            Assert.Throws<FileLoadException>(
+                () => { r.Open(this.InvalidFilePng); }
                 );
         }
 
@@ -41,10 +51,18 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void CreateJpegReaderViaStaticCreateInvalidFile()
+        public void CreateJpegReaderViaStaticCreateNonExistantFile()
         {
             Assert.Throws<FileNotFoundException>(
-                delegate { TestImageExifReader.Create(this.UnknownImageFileName); }
+                () => { TestImageExifReader.Create(this.NonExistantFile); }
+                );
+        }
+
+        [Test]
+        public void CreateJpegReaderViaStaticCreateInvalidFile()
+        {
+            Assert.Throws<FileLoadException>(
+                () => { TestImageExifReader.Create(this.InvalidFilePng); }
                 );
         }
     }

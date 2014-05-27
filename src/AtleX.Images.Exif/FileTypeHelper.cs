@@ -28,8 +28,15 @@ namespace AtleX.Images.Exif
             using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
             {
-                byte[] buffer = new byte[10];
-                buffer = bReader.ReadBytes(10);
+                /*
+                 * According to Wikipedia (http://en.wikipedia.org/wiki/List_of_file_signatures)
+                 * the longest magic number is 30 bytes and is used by the
+                 * Flexible Image Transport System (FITS)
+                 */
+                const int magicNumberLength = 30;
+
+                byte[] buffer = new byte[magicNumberLength];
+                buffer = bReader.ReadBytes(magicNumberLength);
 
                 // Check for JPEG header (FF D8)
                 if (buffer[0] == 255 // FF

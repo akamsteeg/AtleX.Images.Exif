@@ -18,7 +18,23 @@ namespace AtleX.Images.Exif.Tests
             }
         }
 
-        public string UnknownImageFileName
+        public string JpegWithWrongExtension
+        {
+            get
+            {
+                return @"..\..\..\Testfiles\Jpeg\Canon_7D\jpegwithwrongextension.gif";
+            }
+        }
+
+        public string InvalidFilePng
+        {
+            get
+            {
+                return @"..\..\..\Testfiles\Invalid\invalid.png";
+            }
+        }
+
+        public string NonExistantFile
         {
             get
             {

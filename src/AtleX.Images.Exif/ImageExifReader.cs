@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace AtleX.Images.Exif
 {
@@ -17,7 +18,12 @@ namespace AtleX.Images.Exif
     /// <remarks>This reader acts as a factory for file-specific readers</remarks>
     public class ImageExifReader : ExifReader
     {
-        protected IExifReader Reader;
+           
+        protected IExifReader Reader
+        {
+            get;
+            set;
+        }
 
         public static IExifReader Create(string imageFileName)
         {
@@ -35,21 +41,32 @@ namespace AtleX.Images.Exif
                 throw new FileNotFoundException(string.Format("Can't find file '{0}'", imageFileName));
 
             this.ImageFileName = imageFileName;
-            /*
-             * Lazy determination based on file extension, let the expensive 
-             * magic number check happen in the Reader itself
-             */
-            if (imageFileName.ToLower().EndsWith(".jpeg") ||
-                imageFileName.ToLower().EndsWith(".jpg"))
+            this.CanRead = true; // Positive scenario, we'll set this to False if we try to load an unknown file.
+
+            IExifReader newReader;
+
+            FileType fileType = FileTypeHelper.DetermineFileType(imageFileName);
+            switch (fileType)
             {
-                this.CanRead = true;
-                this.Reader = new JpegExifReader();
-                this.Reader.Open(imageFileName);
+                case FileType.Jpeg:
+                    {
+                        newReader = new JpegExifReader();
+                        break;
+                    }
+                case FileType.Unknown:
+                default:
+                    this.CanRead = false;
+                    throw new FileLoadException(string.Format("File '{0}' is not a supported file", this.ImageFileName));
             }
-            else
+
+            try
+            {
+                newReader.Open(imageFileName);
+                this.Reader = newReader;
+            }
+            finally
             {
                 this.CanRead = false;
-                throw new FileLoadException(string.Format("File '{0}' is not a supported file", this.ImageFileName));
             }
         }
 

@@ -10,8 +10,17 @@ namespace AtleX.Images.Exif.Readers
 {
     public abstract class ExifReader : IExifReader
     {
-        protected string ImageFileName;
-        protected bool CanRead;
+        protected string ImageFileName
+        {
+            get;
+            set;
+        }
+
+        protected bool CanRead
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Open the image
