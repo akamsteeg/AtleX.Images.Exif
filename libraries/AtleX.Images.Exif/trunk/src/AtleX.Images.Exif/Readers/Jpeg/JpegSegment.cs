@@ -116,7 +116,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         private byte[] ReadBytes(byte[] source, int start, int length)
         {
             if (source.Length < start + length)
-                throw new ArgumentOutOfRangeException("Can't read past the end of the stream");
+                throw new ArgumentOutOfRangeException("length", "Can't read past the end of the stream");
             
             byte[] readBytes = new byte[length];
             int j = 0;
