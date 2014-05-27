@@ -21,14 +21,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             if (!File.Exists(imageFileName))
                 throw new FileNotFoundException(string.Format("Can't find file '{0}'", imageFileName));
 
-            /* 
-             * Do a lazy extension check first to avoid the expensive binary 
-             * reading of the magic numbers if the extension already indicates
-             * an unsupported file type
-             */
-            if ((imageFileName.EndsWith(".jpg") ||
-                imageFileName.EndsWith("jpeg")) &&
-                FileTypeHelper.DetermineFileType(imageFileName) == FileType.Jpeg)
+            if (FileTypeHelper.DetermineFileType(imageFileName) == FileType.Jpeg)
             {
                 this.ImageFileName = imageFileName;
                 this.CanRead = true;
