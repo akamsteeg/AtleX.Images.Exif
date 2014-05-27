@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>AtleX.Images.Exif.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,6 +55,9 @@
     <Compile Include="Readers\ExifReader.cs" />
     <Compile Include="Readers\Jpeg\JpegFileParser.cs" />
     <Compile Include="Readers\Jpeg\JpegSegment.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AtleX.Images.Exif.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
