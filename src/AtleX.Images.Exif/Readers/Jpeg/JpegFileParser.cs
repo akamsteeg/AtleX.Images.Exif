@@ -38,7 +38,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
              */
             while (reader.BaseStream.Position != reader.BaseStream.Length && headerEnd == false)
             {
-                JpegSegmentType segmentType = this.AdvanceReaderToNextSegment(reader);
+                JpegSegmentType segmentType = AdvanceReaderToNextSegment(reader);
 
                 // App1 and App2 are the ones we are interested in
                 if (segmentType == JpegSegmentType.App1
@@ -85,7 +85,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// </remarks>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected JpegSegmentType AdvanceReaderToNextSegment(BinaryReader reader)
+        protected static JpegSegmentType AdvanceReaderToNextSegment(BinaryReader reader)
         {
             bool segmentFound = false;
             JpegSegmentType type = JpegSegmentType.Unknown;
@@ -95,7 +95,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                 if (markerBytes[0] == 255) // We propably arrived at a header
                 {
-                    type = this.GetTypeFromSegmentCode(markerBytes);
+                    type = GetTypeFromSegmentCode(markerBytes);
                     if (type != JpegSegmentType.Unknown)
                     {
                         // Reset the reader to the beginning of the marker
@@ -108,7 +108,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             return type;
         }
 
-        protected bool HasApp1(BinaryReader reader)
+        protected static bool HasApp1(BinaryReader reader)
         {
             bool result = false;
             /*
@@ -134,7 +134,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// </summary>
         /// <param name="segmentCode">The two bytes of the segment marker</param>
         /// <returns></returns>
-        protected JpegSegmentType GetTypeFromSegmentCode(byte[] segmentCode)
+        protected static JpegSegmentType GetTypeFromSegmentCode(byte[] segmentCode)
         {
             if (segmentCode.Length != 2)
                 throw new ArgumentException("A segment code is two bytes", "segmentCode");

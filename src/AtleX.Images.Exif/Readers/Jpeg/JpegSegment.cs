@@ -80,17 +80,17 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
         private void ReadTiff(byte[] tiffData)
         {
-            int numberOfEntries = this.ConvertBytesToInt(new byte[] {tiffData[0], tiffData[1]});
+            int numberOfEntries = ConvertBytesToInt(new byte[] {tiffData[0], tiffData[1]});
 
             for (int i = 0; i < numberOfEntries; i++)
             {
                 // Segments are 12 bytes long
                 byte[] tag = this.ReadBytes(tiffData, 2+ (i * 12) , 12);
 
-                int tagType = this.ConvertBytesToInt(this.ReadBytes(tag, 0, 2));
-                int contentType = this.ConvertBytesToInt(this.ReadBytes(tag, 2, 2));
-                int dataLength = this.ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
-                int dataOffset = this.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
+                int tagType = ConvertBytesToInt(this.ReadBytes(tag, 0, 2));
+                int contentType = ConvertBytesToInt(this.ReadBytes(tag, 2, 2));
+                int dataLength = ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
+                int dataOffset = ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
 
                 switch (contentType)
                 {
@@ -99,7 +99,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         {
                             byte[] data = this.ReadBytes(tiffData, dataOffset-2, dataLength-1);
 
-                            string value = this.ConvertBytesToString(data);
+                            string value = ConvertBytesToString(data);
                         }
                         break;
                     case 3: // Short (2 bytes, uint16)
@@ -113,7 +113,27 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             }
         }
 
-        private int ConvertBytesToInt(byte[] bytes)
+        private byte[] ReadBytes(byte[] source, int start, int length)
+        {
+            if (source.Length < start + length)
+                throw new ArgumentOutOfRangeException("Can't read past the end of the stream");
+            
+            byte[] readBytes = new byte[length];
+            int j = 0;
+            for (int i = start; i < start + length; i++)
+            {
+                readBytes[j] = source[i];
+                j++;
+            }
+
+            if (this._isLittleEndian)
+                readBytes.Reverse();
+
+            return readBytes;
+                
+        }
+
+        private static int ConvertBytesToInt(byte[] bytes)
         {
             int value = 0;
 
@@ -125,7 +145,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             return value;
         }
 
-        private string ConvertBytesToString(byte[] bytes)
+        private static string ConvertBytesToString(byte[] bytes)
         {
             string value = "";
 
@@ -143,27 +163,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
             value = Encoding.ASCII.GetString(realData);
             return value;
-        }
-
-        private byte[] ReadBytes(byte[] source, int start, int length)
-        {
-            if (source.Length >= start + length)
-            {
-                byte[] readBytes = new byte[length];
-                int j = 0;
-                for (int i = start; i < start + length; i++)
-                {
-                    readBytes[j] = source[i];
-                    j++;
-                }
-
-                if (this._isLittleEndian)
-                    readBytes.Reverse();
-
-                return readBytes;
-            }
-            else
-                throw new IndexOutOfRangeException("Not enough bytes in source to read");
         }
     }
 
