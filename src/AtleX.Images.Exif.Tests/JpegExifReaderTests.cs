@@ -25,7 +25,7 @@ namespace AtleX.Images.Exif.Tests
         public void CreateReaderAndLoadCorrectlyLoadJpegWithWrongExtension()
         {
             IExifReader r = CreateReaderAndOpenImage<JpegExifReader>(this.JpegWithWrongExtension);
-            ExifData d = r.ReadExif();
+            ExifData d = r.GetExif();
 
             Assert.IsNotNull(d);
         }
@@ -42,7 +42,7 @@ namespace AtleX.Images.Exif.Tests
         public void ReadExifFromJpeg()
         {
             IExifReader r = CreateReaderAndOpenImage<JpegExifReader>(this.JpegImageFileName);
-            ExifData d = r.ReadExif();
+            ExifData d = r.GetExif();
 
             Assert.IsNotNull(d);
         }

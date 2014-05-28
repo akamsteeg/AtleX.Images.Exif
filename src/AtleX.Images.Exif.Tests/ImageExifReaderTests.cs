@@ -47,7 +47,7 @@ namespace AtleX.Images.Exif.Tests
         public void CreateJpegReaderViaStaticCreate()
         {
             IExifReader r = TestImageExifReader.Create(this.JpegImageFileName);
-            r.ReadExif();
+            r.GetExif();
         }
 
         [Test]

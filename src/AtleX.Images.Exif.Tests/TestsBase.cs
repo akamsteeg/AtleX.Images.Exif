@@ -12,7 +12,7 @@ namespace AtleX.Images.Exif.Tests
         {
             get
             {
-                return @"..\..\..\Testfiles\Jpeg\Nikon_D3100\mattus82_10709867984.jpg";
+                return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
                 //return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6573.jpg";
 
             }

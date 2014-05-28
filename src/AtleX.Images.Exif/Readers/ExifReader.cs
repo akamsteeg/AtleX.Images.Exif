@@ -32,6 +32,6 @@ namespace AtleX.Images.Exif.Readers
         /// Read the EXIF info (if any) from the image
         /// </summary>
         /// <returns></returns>
-        public abstract ExifData ReadExif();
+        public abstract ExifData GetExif();
     }
 }

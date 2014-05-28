@@ -17,8 +17,7 @@ namespace AtleX.Images.Exif
     /// </summary>
     /// <remarks>This reader acts as a factory for file-specific readers</remarks>
     public class ImageExifReader : ExifReader
-    {
-           
+    {           
         protected IExifReader Reader
         {
             get;
@@ -75,9 +74,9 @@ namespace AtleX.Images.Exif
         /// Read the EXIF info (if any) from the image
         /// </summary>
         /// <returns></returns>
-        public override ExifData ReadExif()
+        public override ExifData GetExif()
         {
-            ExifData data = this.Reader.ReadExif();
+            ExifData data = this.Reader.GetExif();
 
             return data;
         }
