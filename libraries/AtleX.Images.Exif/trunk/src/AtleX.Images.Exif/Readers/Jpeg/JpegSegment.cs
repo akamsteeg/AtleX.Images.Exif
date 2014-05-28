@@ -33,7 +33,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     {
         protected bool _isLittleEndian;
 
-        public abstract Dictionary<string, string> Parse(RawJpegSegment segment);
+        public abstract Dictionary<ExifTag, string> Parse(RawJpegSegment segment);
 
         protected byte[] ReadBytes(byte[] source, int start, int length)
         {
@@ -60,9 +60,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     {
         private bool _hasTiff;
 
-        public override Dictionary<string, string> Parse(RawJpegSegment segment)
+        public override Dictionary<ExifTag, string> Parse(RawJpegSegment segment)
         {
-            Dictionary<string, string> values = new Dictionary<string, string>();
+            Dictionary<ExifTag, string> values = null;
             this._hasTiff = false;
 
             /* 
@@ -100,14 +100,15 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                  */
                 byte[] tiffData = this.ReadBytes(segment.Data, 6 + ifdOffset, segment.Data.Length - ifdOffset - 6);
                 
-                this.ReadTiff(tiffData);
+                values = this.ReadTiff(tiffData);
             }
 
             return values;
         }
 
-        private void ReadTiff(byte[] tiffData)
+        private Dictionary<ExifTag, string> ReadTiff(byte[] tiffData)
         {
+            Dictionary<ExifTag, string> values = new Dictionary<ExifTag, string>();
             int numberOfEntries = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tiffData, 0, 2));
 
             for (int i = 0; i < numberOfEntries; i++)
@@ -126,10 +127,14 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     case 1: // Byte
                     case 2: // ASCII
                         {
+                            ExifTag currentTag = (ExifTag)tagType;
+
                             // TODO: Find out and document why the -8 has to happen?
                             byte[] data = this.ReadBytes(tiffData, dataOffset-8, count);
 
                             string value = ByteConvertor.ConvertBytesToString(data);
+
+                            values.Add(currentTag, value);
                         }
                         break;
                     case 3: // Short (2 bytes, uint16)
@@ -141,6 +146,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         break;
                 }
             }
+
+            return values;
         }
     }
 

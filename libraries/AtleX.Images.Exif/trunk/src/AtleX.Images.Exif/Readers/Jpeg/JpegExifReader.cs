@@ -54,7 +54,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                         if (parser != null)
                         {
-                            foreach (KeyValuePair<string, string> keyValue in parser.Parse(currentSegment))
+                            foreach (KeyValuePair<ExifTag, string> keyValue in parser.Parse(currentSegment))
                             {
                             }
                         }
