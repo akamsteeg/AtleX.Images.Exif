@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif
 {
-    internal enum FileType
+    internal enum ImageFileType
     {
         Unknown,
         Jpeg
@@ -21,9 +21,9 @@ namespace AtleX.Images.Exif
         /// <remarks>This is not a lazy extension-check but it reads the magic numbers at the beginning of the file</remarks>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static FileType DetermineFileType(string fileName)
+        public static ImageFileType DetermineFileType(string fileName)
         {
-            FileType result = FileType.Unknown;
+            ImageFileType result = ImageFileType.Unknown;
 
             using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
@@ -44,8 +44,10 @@ namespace AtleX.Images.Exif
                     && buffer[1] == 216  // D8
                     )
                 {
-                    result = FileType.Jpeg;
+                    result = ImageFileType.Jpeg;
                 }
+
+                bReader.Close();
             }
 
             return result;
