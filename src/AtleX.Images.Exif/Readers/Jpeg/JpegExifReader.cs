@@ -40,9 +40,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 {
                     BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding());
 
-                    JpegFileParser jfp = new JpegFileParser();
-
-                    IEnumerable<RawJpegSegment> segments = jfp.ParseHeaderIntoSegments(bReader);
+                    IEnumerable<RawJpegSegment> segments = JpegFileParser.ParseHeaderIntoSegments(bReader);
 
                     JpegSegmentParser parser = null;
                     foreach (RawJpegSegment currentSegment in segments)

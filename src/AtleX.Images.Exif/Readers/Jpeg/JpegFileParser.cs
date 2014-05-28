@@ -8,18 +8,14 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif.Readers.Jpeg
 {
-    internal class JpegFileParser
+    internal static class JpegFileParser
     {
-        internal JpegFileParser()
-        {
-        }
-
         /// <summary>
         /// Parse the file header into segments
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public IEnumerable<RawJpegSegment> ParseHeaderIntoSegments(BinaryReader reader)
+        public static IEnumerable<RawJpegSegment> ParseHeaderIntoSegments(BinaryReader reader)
         {
             /*
              * Reset the stream because we want the full header to extract the App 
@@ -51,6 +47,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                             // The length of the segment is specified after the segment marker in two bytes
                             byte[] segmentLengthSpecification = reader.ReadBytes(2);
+                            // TODO: Why is my ByteConvertor slower than bitwise stuff?
                             int segmentLength = ByteConvertor.ConvertBytesToInt(segmentLengthSpecification);  //segmentLengthSpecification[0] << 8 | segmentLengthSpecification[1];
 
                             // Read the data
@@ -89,7 +86,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// </remarks>
         /// <param name="reader"></param>
         /// <returns></returns>
-        protected static JpegSegmentType AdvanceReaderToNextSegment(BinaryReader reader)
+        private static JpegSegmentType AdvanceReaderToNextSegment(BinaryReader reader)
         {
             bool segmentFound = false;
             JpegSegmentType type = JpegSegmentType.Unknown;
@@ -112,7 +109,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             return type;
         }
 
-        protected static bool HasApp1(BinaryReader reader)
+        private static bool HasApp1(BinaryReader reader)
         {
             bool result = false;
             /*
@@ -138,7 +135,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// </summary>
         /// <param name="segmentCode">The two bytes of the segment marker</param>
         /// <returns></returns>
-        protected static JpegSegmentType GetTypeFromSegmentCode(byte[] segmentCode)
+        private static JpegSegmentType GetTypeFromSegmentCode(byte[] segmentCode)
         {
             if (segmentCode.Length != 2)
                 throw new ArgumentException("A segment code is two bytes", "segmentCode");

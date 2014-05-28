@@ -48,8 +48,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 j++;
             }
 
-            //if (this._isLittleEndian)
-            //    readBytes.Reverse();
+            if (!this._isLittleEndian)
+                readBytes.Reverse();
 
             return readBytes;
 
