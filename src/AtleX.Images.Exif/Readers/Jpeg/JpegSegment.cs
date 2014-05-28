@@ -22,7 +22,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         Unknown,
     }
 
-    [DebuggerDisplay("{Type} segment ({Data.Length} bytes)")]
+    [DebuggerDisplay("{Type} ({Data.Length} bytes)")]
     internal class RawJpegSegment
     {
         public JpegSegmentType Type { get; set; }
@@ -48,8 +48,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 j++;
             }
 
-            if (this._isLittleEndian)
-                readBytes.Reverse();
+            //if (this._isLittleEndian)
+            //    readBytes.Reverse();
 
             return readBytes;
 
@@ -75,7 +75,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
             byte[] header = this.ReadBytes(segment.Data, 0, 14);
 
-            //Has TIFF header?
+            // Has TIFF header?
             if ((header[6] == 73 && header[7] == 73) || // Intel
                 (header[6] == 77 && header[7] == 77)) // Motorola
             {
@@ -90,10 +90,17 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
             if (this._hasTiff)
             {
-                
-               byte[] tiffData = this.ReadBytes(segment.Data, 14, segment.Data.Length -14);
 
-               this.ReadTiff(tiffData);
+                // Get IFD offset, it's 0x00 00 00 08 if the IFD is directly after the TIFF header
+                int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(header, 10, 4));
+
+                /* 
+                 * Why '6 + ifdOffset'? Because it's counting from the start of the TIFF header at 
+                 * positions 6 & 7
+                 */
+                byte[] tiffData = this.ReadBytes(segment.Data, 6 + ifdOffset, segment.Data.Length - ifdOffset - 6);
+                
+                this.ReadTiff(tiffData);
             }
 
             return values;
@@ -101,16 +108,17 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
         private void ReadTiff(byte[] tiffData)
         {
-            int numberOfEntries = ByteConvertor.ConvertBytesToInt(new byte[] {tiffData[0], tiffData[1]});
+            int numberOfEntries = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tiffData, 0, 2));
 
             for (int i = 0; i < numberOfEntries; i++)
             {
+                // TODO: Why '2+...'?
                 // Segments are 12 bytes long
-                byte[] tag = this.ReadBytes(tiffData, 2+ (i * 12) , 12);
+                byte[] tag = this.ReadBytes(tiffData, 2 + (i * 12) , 12);
 
                 int tagType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 0, 2));
                 int contentType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 2, 2));
-                int dataLength = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
+                int count = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
                 int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
 
                 switch (contentType)
@@ -118,7 +126,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     case 1: // Byte
                     case 2: // ASCII
                         {
-                            byte[] data = this.ReadBytes(tiffData, dataOffset-2, dataLength-1);
+                            // TODO: Find out and document why the -8 has to happen?
+                            byte[] data = this.ReadBytes(tiffData, dataOffset-8, count);
 
                             string value = ByteConvertor.ConvertBytesToString(data);
                         }
