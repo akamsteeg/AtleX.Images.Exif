@@ -23,15 +23,9 @@ namespace AtleX.Images.Exif.Readers
         }
 
         /// <summary>
-        /// Open the image
-        /// </summary>
-        /// <param name="imageFileName"></param>
-        public abstract void Open(string imageFileName);
-
-        /// <summary>
         /// Read the EXIF info (if any) from the image
         /// </summary>
         /// <returns></returns>
-        public abstract ExifData GetExif();
+        public abstract ExifData GetExifData();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtleX.Images.Exif.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -52,39 +53,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
             return readBytes;
 
-        }
-
-        protected static int ConvertBytesToInt(byte[] bytes)
-        {
-            int value = 0;
-
-            if (bytes.Length == 2)
-                value = BitConverter.ToInt16(bytes, 0);
-            else
-                value = BitConverter.ToInt32(bytes, 0);
-
-            return value;
-        }
-
-        protected static string ConvertBytesToString(byte[] bytes)
-        {
-            string value = "";
-
-            // Find 0-terminator
-            int nullTerminatorPosition = 0;
-            for (nullTerminatorPosition = bytes.Length - 1; nullTerminatorPosition > 0; nullTerminatorPosition--)
-            {
-                if (bytes[nullTerminatorPosition] == 0x0)
-                    break;
-            }
-
-            byte[] realData = new byte[bytes.Length - (bytes.Length - nullTerminatorPosition)];
-            for (int i = 0; i < realData.Length; i++)
-                realData[i] = bytes[i];
-
-            value = Encoding.ASCII.GetString(realData);
-            return value;
-        }
+        }       
     }
 
     internal class JpegSegmentParserApp1 : JpegSegmentParser
@@ -132,17 +101,17 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
         private void ReadTiff(byte[] tiffData)
         {
-            int numberOfEntries = ConvertBytesToInt(new byte[] {tiffData[0], tiffData[1]});
+            int numberOfEntries = ByteConvertor.ConvertBytesToInt(new byte[] {tiffData[0], tiffData[1]});
 
             for (int i = 0; i < numberOfEntries; i++)
             {
                 // Segments are 12 bytes long
                 byte[] tag = this.ReadBytes(tiffData, 2+ (i * 12) , 12);
 
-                int tagType = ConvertBytesToInt(this.ReadBytes(tag, 0, 2));
-                int contentType = ConvertBytesToInt(this.ReadBytes(tag, 2, 2));
-                int dataLength = ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
-                int dataOffset = ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
+                int tagType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 0, 2));
+                int contentType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 2, 2));
+                int dataLength = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
+                int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
 
                 switch (contentType)
                 {
@@ -151,7 +120,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         {
                             byte[] data = this.ReadBytes(tiffData, dataOffset-2, dataLength-1);
 
-                            string value = ConvertBytesToString(data);
+                            string value = ByteConvertor.ConvertBytesToString(data);
                         }
                         break;
                     case 3: // Short (2 bytes, uint16)
