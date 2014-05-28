@@ -26,8 +26,9 @@ namespace AtleX.Images.Exif
             FileType result = FileType.Unknown;
 
             using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-            using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
             {
+                BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding());
+
                 /*
                  * According to Wikipedia (http://en.wikipedia.org/wiki/List_of_file_signatures)
                  * the longest magic number is 30 bytes and is used by the

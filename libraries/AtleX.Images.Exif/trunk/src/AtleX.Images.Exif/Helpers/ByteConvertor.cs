@@ -11,47 +11,52 @@ namespace AtleX.Images.Exif.Helpers
         /// <summary>
         /// Convert a 2 or 4 bytes long array to an integer
         /// </summary>
-        /// <param name="bytes">A 2 or 4 bytes long array</param>
+        /// <param name="value">A 2 or 4 bytes long array</param>
         /// <exception cref="ArgumentException">Thrown when there are less than 2 or more than 4 bytes in the parameter</exception>
         /// <returns></returns>
-        public static int ConvertBytesToInt(byte[] bytes)
+        public static int ConvertBytesToInt(byte[] value)
         {
-            if (bytes.Length < 2 || bytes.Length > 4)
-                throw new ArgumentException("An integer is either 2 or 4 bytes long", "bytes");
+            if (value == null)
+                throw new ArgumentNullException("value");
+            if (value.Length < 2 || value.Length > 4)
+                throw new ArgumentException("An integer is either 2 or 4 bytes long", "value");
 
-            int value;
+            int result;
 
-            if (bytes.Length == 2)
-                value = BitConverter.ToInt16(bytes, 0);
+            if (value.Length == 2)
+                result = BitConverter.ToInt16(value, 0);
             else // Implies 4 bytes
-                value = BitConverter.ToInt32(bytes, 0);
+                result = BitConverter.ToInt32(value, 0);
 
-            return value;
+            return result;
         }
 
         /// <summary>
         /// Converts a byte array to a ASCII string
         /// </summary>
-        /// <param name="bytes">Byte array to convert to a string</param>
+        /// <param name="value">Byte array to convert to a string</param>
         /// <returns></returns>
-        public static string ConvertBytesToString(byte[] bytes)
+        public static string ConvertBytesToString(byte[] value)
         {
-            string value = "";
+            if (value == null)
+                throw new ArgumentNullException("value");
+
+            string result = "";
 
             // Find 0-terminator
             int nullTerminatorPosition = 0;
-            for (nullTerminatorPosition = bytes.Length - 1; nullTerminatorPosition > 0; nullTerminatorPosition--)
+            for (nullTerminatorPosition = value.Length - 1; nullTerminatorPosition > 0; nullTerminatorPosition--)
             {
-                if (bytes[nullTerminatorPosition] == 0x0)
+                if (value[nullTerminatorPosition] == 0x0)
                     break;
             }
 
-            byte[] realData = new byte[bytes.Length - (bytes.Length - nullTerminatorPosition)];
+            byte[] realData = new byte[value.Length - (value.Length - nullTerminatorPosition)];
             for (int i = 0; i < realData.Length; i++)
-                realData[i] = bytes[i];
+                realData[i] = value[i];
 
-            value = Encoding.ASCII.GetString(realData);
-            return value;
+            result = Encoding.ASCII.GetString(realData);
+            return result;
         }
     }
 }
