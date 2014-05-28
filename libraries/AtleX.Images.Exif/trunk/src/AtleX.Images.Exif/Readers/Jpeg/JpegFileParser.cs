@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtleX.Images.Exif.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         public IEnumerable<RawJpegSegment> ParseHeaderIntoSegments(BinaryReader reader)
         {
             /*
-             * Reset the stream because we want the full header to extract the App segments from
+             * Reset the stream because we want the full header to extract the App 
+             * segments from the whole file
              */
             reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
@@ -40,35 +42,37 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             {
                 JpegSegmentType segmentType = AdvanceReaderToNextSegment(reader);
 
-                // App1 and App2 are the ones we are interested in
-                if (segmentType == JpegSegmentType.App1
-                    || segmentType == JpegSegmentType.App2
-                    )
+                switch(segmentType)
                 {
-                    long segmentStartPos = reader.BaseStream.Position;
-                    
-                    // The length of the segment is specified after the segment marker in two bytes
-                    byte[] segmentLengthSpecification = reader.ReadBytes(2);
-                    int segmentLength = segmentLengthSpecification[0] << 8 | segmentLengthSpecification[1];
+                    case JpegSegmentType.App1:
+                    case JpegSegmentType.App2:
+                        {
+                            long segmentStartPos = reader.BaseStream.Position;
 
-                    // Read the data
-                    byte[] segmentData = reader.ReadBytes(segmentLength);
+                            // The length of the segment is specified after the segment marker in two bytes
+                            byte[] segmentLengthSpecification = reader.ReadBytes(2);
+                            int segmentLength = ByteConvertor.ConvertBytesToInt(segmentLengthSpecification);  //segmentLengthSpecification[0] << 8 | segmentLengthSpecification[1];
 
-                    RawJpegSegment segment = new RawJpegSegment()
-                    {
-                        Data = segmentData,
-                        Type = segmentType,
-                    };
-                    segments.Add(segment);
-                }
-                // DHT, DQT, DRI & SOF mark the end of the header
-                else if (segmentType == JpegSegmentType.Dht
-                    || segmentType == JpegSegmentType.Dqt
-                    || segmentType == JpegSegmentType.Dri
-                    || segmentType == JpegSegmentType.Sos
-                )
-                {
-                    headerEnd = true;
+                            // Read the data
+                            byte[] segmentData = reader.ReadBytes(segmentLength);
+
+                            RawJpegSegment segment = new RawJpegSegment()
+                            {
+                                Data = segmentData,
+                                Type = segmentType,
+                            };
+                            segments.Add(segment);
+
+                            break;
+                        }
+                    case JpegSegmentType.Dht:
+                    case JpegSegmentType.Dqt:
+                    case JpegSegmentType.Dri:
+                    case JpegSegmentType.Sos:
+                        {
+                            headerEnd = true;
+                            break;
+                        }
                 }
             }
 

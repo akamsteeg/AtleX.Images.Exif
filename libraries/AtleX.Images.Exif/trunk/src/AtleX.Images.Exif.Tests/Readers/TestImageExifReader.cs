@@ -8,6 +8,13 @@ namespace AtleX.Images.Exif.Tests.Readers
 {
     public class TestImageExifReader : ImageExifReader
     {
+
+        public TestImageExifReader(string imageFileName)
+            : base(imageFileName)
+        {
+
+        }
+
         public Type GetReaderType()
         {
             return this.Reader.GetType();

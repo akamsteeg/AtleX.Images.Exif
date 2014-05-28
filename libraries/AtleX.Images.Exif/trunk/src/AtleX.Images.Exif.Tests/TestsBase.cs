@@ -41,13 +41,5 @@ namespace AtleX.Images.Exif.Tests
                 return @".\image.unknown";
             }
         }
-
-        public static IExifReader CreateReaderAndOpenImage<T>(string imageFileName) where T : new()
-        {
-            IExifReader reader = new T() as IExifReader;
-            reader.Open(imageFileName);
-
-            return reader;
-        }
     }
 }

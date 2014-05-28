@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,16 +11,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 {
     public class JpegExifReader : ExifReader
     {
-        /// <summary>
-        /// Open the image
-        /// </summary>
-        /// <param name="imageFileName"></param>
-        public override void Open(string imageFileName)
+
+        public JpegExifReader(string imageFileName)
         {
             if (string.IsNullOrEmpty(imageFileName))
                 throw new ArgumentNullException(imageFileName);
             if (!File.Exists(imageFileName))
-                throw new FileNotFoundException(string.Format("Can't find file '{0}'", imageFileName));
+                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find file '{0}'", imageFileName));
 
             if (FileTypeHelper.DetermineFileType(imageFileName) == FileType.Jpeg)
             {
@@ -29,18 +27,18 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             else
             {
                 this.CanRead = false;
-                throw new FileLoadException(string.Format("File '{0}' is not a JPEG file", this.ImageFileName));
+                throw new FileLoadException(string.Format(CultureInfo.InvariantCulture, "File '{0}' is not a JPEG file", this.ImageFileName));
             }
         }
 
-        public override ExifData GetExif()
+        public override ExifData GetExifData()
         {
             if (this.CanRead)
             {
                 ExifData ed = new ExifData();
                 using (FileStream stream = new FileStream(this.ImageFileName, FileMode.Open, FileAccess.Read))
-                using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
                 {
+                    BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding());
 
                     JpegFileParser jfp = new JpegFileParser();
 
@@ -63,6 +61,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             }
                         }
                     }
+
+                    bReader.Close();
                 }
 
                 return ed;

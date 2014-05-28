@@ -26,18 +26,17 @@ namespace AtleX.Images.Exif
 
         public static IExifReader Create(string imageFileName)
         {
-            IExifReader r = new ImageExifReader();
-            r.Open(imageFileName);
+            IExifReader r = new ImageExifReader(imageFileName);
 
             return r;
         }
 
-        public override void Open(string imageFileName)
+        public ImageExifReader(string imageFileName)
         {
             if (string.IsNullOrEmpty(imageFileName))
                 throw new ArgumentNullException(imageFileName);
             if (!File.Exists(imageFileName))
-                throw new FileNotFoundException(string.Format("Can't find file '{0}'", imageFileName));
+                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find file '{0}'", imageFileName));
 
             this.ImageFileName = imageFileName;
             this.CanRead = true; // Positive scenario, we'll set this to False if we try to load an unknown file.
@@ -49,24 +48,17 @@ namespace AtleX.Images.Exif
             {
                 case FileType.Jpeg:
                     {
-                        newReader = new JpegExifReader();
+                        newReader = new JpegExifReader(imageFileName);
                         break;
                     }
                 case FileType.Unknown:
                 default:
                     this.CanRead = false;
-                    throw new FileLoadException(string.Format("File '{0}' is not a supported file", this.ImageFileName));
+                    throw new FileLoadException(string.Format(CultureInfo.InvariantCulture, "File '{0}' is not a supported file", this.ImageFileName));
             }
 
-            try
-            {
-                newReader.Open(imageFileName);
-                this.Reader = newReader;
-            }
-            finally
-            {
-                this.CanRead = false;
-            }
+            this.Reader = newReader;
+            this.CanRead = true;
         }
 
 
@@ -74,9 +66,9 @@ namespace AtleX.Images.Exif
         /// Read the EXIF info (if any) from the image
         /// </summary>
         /// <returns></returns>
-        public override ExifData GetExif()
+        public override ExifData GetExifData()
         {
-            ExifData data = this.Reader.GetExif();
+            ExifData data = this.Reader.GetExifData();
 
             return data;
         }
