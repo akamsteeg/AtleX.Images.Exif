@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif.Readers.Jpeg
 {
-    public class JpegExifReader : ExifDataReader
+    public class JpegExifReader : ExifReader
     {
         /// <summary>
         /// Open the image
@@ -33,37 +33,44 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             }
         }
 
-        /// <summary>
-        /// Read the data from the file
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        protected override ExifData ReadExifFromBinaryReader(BinaryReader reader)
+        public override ExifData GetExif()
         {
-            ExifData ed = new ExifData();
-            
-            JpegFileParser jfp = new JpegFileParser();
-
-            IEnumerable<RawJpegSegment> segments = jfp.ParseHeaderIntoSegments(reader);
-
-            JpegSegmentParser parser = null;
-            foreach (RawJpegSegment currentSegment in segments)
+            if (this.CanRead)
             {
-                switch (currentSegment.Type)
+                ExifData ed = new ExifData();
+                using (FileStream stream = new FileStream(this.ImageFileName, FileMode.Open, FileAccess.Read))
+                using (BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding()))
                 {
-                    case JpegSegmentType.App1:
-                        parser = new JpegSegmentParserApp1();
-                        break;
-                }
 
-                if (parser != null)
-                {
-                    foreach (KeyValuePair<string, string> keyValue in parser.Parse(currentSegment))
+                    JpegFileParser jfp = new JpegFileParser();
+
+                    IEnumerable<RawJpegSegment> segments = jfp.ParseHeaderIntoSegments(bReader);
+
+                    JpegSegmentParser parser = null;
+                    foreach (RawJpegSegment currentSegment in segments)
                     {
+                        switch (currentSegment.Type)
+                        {
+                            case JpegSegmentType.App1:
+                                parser = new JpegSegmentParserApp1();
+                                break;
+                        }
+
+                        if (parser != null)
+                        {
+                            foreach (KeyValuePair<string, string> keyValue in parser.Parse(currentSegment))
+                            {
+                            }
+                        }
                     }
                 }
+
+                return ed;
             }
-            return ed;
+            else
+            {
+                throw new InvalidOperationException("Can't read EXIF because the reader isn't ready (have you called Open()?)");
+            }
         }
     }
 }

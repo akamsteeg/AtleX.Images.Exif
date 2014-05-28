@@ -18,6 +18,6 @@ namespace AtleX.Images.Exif
         /// Read the EXIF info (if any) from the image
         /// </summary>
         /// <returns></returns>
-        ExifData ReadExif();
+        ExifData GetExif();
     }
 }

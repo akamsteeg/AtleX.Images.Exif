@@ -33,6 +33,58 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         protected bool _isLittleEndian;
 
         public abstract Dictionary<string, string> Parse(RawJpegSegment segment);
+
+        protected byte[] ReadBytes(byte[] source, int start, int length)
+        {
+            if (source.Length < start + length)
+                throw new ArgumentOutOfRangeException("length", "Can't read past the end of the source");
+
+            byte[] readBytes = new byte[length];
+            int j = 0;
+            for (int i = start; i < start + length; i++)
+            {
+                readBytes[j] = source[i];
+                j++;
+            }
+
+            if (this._isLittleEndian)
+                readBytes.Reverse();
+
+            return readBytes;
+
+        }
+
+        protected static int ConvertBytesToInt(byte[] bytes)
+        {
+            int value = 0;
+
+            if (bytes.Length == 2)
+                value = BitConverter.ToInt16(bytes, 0);
+            else
+                value = BitConverter.ToInt32(bytes, 0);
+
+            return value;
+        }
+
+        protected static string ConvertBytesToString(byte[] bytes)
+        {
+            string value = "";
+
+            // Find 0-terminator
+            int nullTerminatorPosition = 0;
+            for (nullTerminatorPosition = bytes.Length - 1; nullTerminatorPosition > 0; nullTerminatorPosition--)
+            {
+                if (bytes[nullTerminatorPosition] == 0x0)
+                    break;
+            }
+
+            byte[] realData = new byte[bytes.Length - (bytes.Length - nullTerminatorPosition)];
+            for (int i = 0; i < realData.Length; i++)
+                realData[i] = bytes[i];
+
+            value = Encoding.ASCII.GetString(realData);
+            return value;
+        }
     }
 
     internal class JpegSegmentParserApp1 : JpegSegmentParser
@@ -111,58 +163,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         break;
                 }
             }
-        }
-
-        private byte[] ReadBytes(byte[] source, int start, int length)
-        {
-            if (source.Length < start + length)
-                throw new ArgumentOutOfRangeException("length", "Can't read past the end of the stream");
-            
-            byte[] readBytes = new byte[length];
-            int j = 0;
-            for (int i = start; i < start + length; i++)
-            {
-                readBytes[j] = source[i];
-                j++;
-            }
-
-            if (this._isLittleEndian)
-                readBytes.Reverse();
-
-            return readBytes;
-                
-        }
-
-        private static int ConvertBytesToInt(byte[] bytes)
-        {
-            int value = 0;
-
-            if (bytes.Length == 2)
-                value = BitConverter.ToInt16(bytes, 0);
-            else
-                value = BitConverter.ToInt32(bytes, 0);
-
-            return value;
-        }
-
-        private static string ConvertBytesToString(byte[] bytes)
-        {
-            string value = "";
-
-            // Find 0-terminator
-            int nullTerminatorPosition = 0;
-            for (nullTerminatorPosition = bytes.Length - 1; nullTerminatorPosition > 0; nullTerminatorPosition--)
-            {
-                if (bytes[nullTerminatorPosition] == 0x0)
-                    break;
-            }
-
-            byte[] realData = new byte[bytes.Length - (bytes.Length - nullTerminatorPosition)];
-            for (int i = 0; i < realData.Length; i++)
-                realData[i] = bytes[i];
-
-            value = Encoding.ASCII.GetString(realData);
-            return value;
         }
     }
 

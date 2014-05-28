@@ -48,7 +48,6 @@
     <Compile Include="ExifData.cs" />
     <Compile Include="FileTypeHelper.cs" />
     <Compile Include="IExifReader.cs" />
-    <Compile Include="Readers\ExifDataReader.cs" />
     <Compile Include="Readers\Jpeg\JpegExifReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ImageExifReader.cs" />
