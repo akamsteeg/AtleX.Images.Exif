@@ -38,27 +38,12 @@ namespace AtleX.Images.Exif
             if (!File.Exists(imageFileName))
                 throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find file '{0}'", imageFileName));
 
-            this.ImageFileName = imageFileName;
-            this.CanRead = true; // Positive scenario, we'll set this to False if we try to load an unknown file.
+            this.ImageFileName = imageFileName;          
 
-            IExifReader newReader;
-
-            FileType fileType = FileTypeHelper.DetermineFileType(imageFileName);
-            switch (fileType)
-            {
-                case FileType.Jpeg:
-                    {
-                        newReader = new JpegExifReader(imageFileName);
-                        break;
-                    }
-                case FileType.Unknown:
-                default:
-                    this.CanRead = false;
-                    throw new FileLoadException(string.Format(CultureInfo.InvariantCulture, "File '{0}' is not a supported file", this.ImageFileName));
-            }
-
-            this.Reader = newReader;
-            this.CanRead = true;
+            this.Reader = CreateReader(imageFileName);
+            this.CanRead = (this.Reader != null);
+            if (!this.CanRead)
+                throw new FileLoadException(string.Format(CultureInfo.InvariantCulture, "File '{0}' is not a supported file", this.ImageFileName));          
         }
 
 
@@ -71,6 +56,29 @@ namespace AtleX.Images.Exif
             ExifData data = this.Reader.GetExifData();
 
             return data;
+        }
+
+        private static IExifReader CreateReader(string imageFileName)
+        {
+            IExifReader readerToUse = null;
+
+            ImageFileType fileType = FileTypeHelper.DetermineFileType(imageFileName);
+            switch (fileType)
+            {
+                case ImageFileType.Jpeg:
+                    {
+                        readerToUse = new JpegExifReader(imageFileName);
+                        break;
+                    }
+                case ImageFileType.Unknown:
+                default:
+                    {
+                        readerToUse = null;
+                        break;
+                    }
+            }
+
+            return readerToUse;
         }
     }
 }
