@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExifData.cs" />
+    <Compile Include="ExifTag.cs" />
     <Compile Include="FileTypeHelper.cs" />
     <Compile Include="Helpers\ByteConvertor.cs" />
     <Compile Include="IExifReader.cs" />
