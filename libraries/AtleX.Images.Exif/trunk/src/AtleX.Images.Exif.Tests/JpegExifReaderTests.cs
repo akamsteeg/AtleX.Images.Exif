@@ -14,10 +14,28 @@ namespace AtleX.Images.Exif.Tests
     [TestFixture]
     public class JpegExifReaderTests : TestsBase
     {
+        public override string TestImageFileName
+        {
+            get
+            {
+                return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
+                //return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6573.jpg";
+
+            }
+        }
+
+        public string JpegWithWrongExtension
+        {
+            get
+            {
+                return @"..\..\..\Testfiles\Jpeg\Canon_7D\jpegwithwrongextension.gif";
+            }
+        }
+
         [Test]
         public void CreateJpegReader()
         {
-            IExifReader r = new JpegExifReader(this.JpegImageFileName);
+            IExifReader r = new JpegExifReader(this.TestImageFileName);
             Assert.IsTrue(r is JpegExifReader);
         }
 
@@ -41,7 +59,7 @@ namespace AtleX.Images.Exif.Tests
         [Test]
         public void ReadExifFromJpeg()
         {
-            IExifReader r = new JpegExifReader(this.JpegImageFileName);
+            IExifReader r = new JpegExifReader(this.TestImageFileName);
             ExifData d = r.GetExifData();
 
             Assert.IsNotNull(d);

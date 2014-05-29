@@ -13,10 +13,19 @@ namespace AtleX.Images.Exif.Tests
     [TestFixture]
     public class ImageExifReaderTests : TestsBase
     {
+        public override string TestImageFileName
+        {
+            get
+            {
+                return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
+
+            }
+        }
+
         [Test]
         public void CreateJpegReader()
         {
-            TestImageExifReader r = new TestImageExifReader(this.JpegImageFileName);
+            TestImageExifReader r = new TestImageExifReader(this.TestImageFileName);
 
             Assert.That(r.GetReaderType() == typeof(JpegExifReader));
         }
@@ -40,7 +49,7 @@ namespace AtleX.Images.Exif.Tests
         [Test]
         public void CreateJpegReaderViaStaticCreate()
         {
-            IExifReader r = TestImageExifReader.Create(this.JpegImageFileName);
+            IExifReader r = TestImageExifReader.Create(this.TestImageFileName);
             r.GetExifData();
         }
 

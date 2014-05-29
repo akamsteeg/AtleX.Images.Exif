@@ -6,24 +6,12 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif.Tests
 {
-    public class TestsBase
+    public abstract class TestsBase
     {
-        public string JpegImageFileName
-        {
-            get
-            {
-                return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
-                //return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6573.jpg";
 
-            }
-        }
-
-        public string JpegWithWrongExtension
+        public abstract string TestImageFileName
         {
-            get
-            {
-                return @"..\..\..\Testfiles\Jpeg\Canon_7D\jpegwithwrongextension.gif";
-            }
+            get;
         }
 
         public string InvalidFilePng
