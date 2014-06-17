@@ -36,14 +36,18 @@ namespace AtleX.Images.Exif
             if (string.IsNullOrEmpty(imageFileName))
                 throw new ArgumentNullException(imageFileName);
             if (!File.Exists(imageFileName))
-                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find file '{0}'", imageFileName));
+                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find file '{0}'", imageFileName));         
 
-            this.ImageFileName = imageFileName;          
+            FileStream fs = new FileStream(imageFileName, FileMode.Open, FileAccess.Read);
+            this.Open(fs);
+        }
 
-            this.Reader = CreateReader(imageFileName);
-            this.CanRead = (this.Reader != null);
-            if (!this.CanRead)
-                throw new FileLoadException(string.Format(CultureInfo.InvariantCulture, "File '{0}' is not a supported file", this.ImageFileName));          
+        public ImageExifReader(Stream imageData)
+        {
+            if (imageData == null)
+                throw new ArgumentNullException("imageData");
+
+            this.Open(imageData);
         }
 
 
@@ -58,16 +62,24 @@ namespace AtleX.Images.Exif
             return data;
         }
 
-        private static IExifReader CreateReader(string imageFileName)
+        private void Open(Stream imageData)
         {
+            this.Reader = CreateReader(imageData);
+            this.CanRead = (this.Reader != null);
+            if (!this.CanRead)
+                throw new InvalidDataException("Data is not from a supported image");
+        }
+
+        private static IExifReader CreateReader(Stream imageData)
+        {   
             IExifReader readerToUse = null;
 
-            ImageFileType fileType = FileTypeHelper.DetermineFileType(imageFileName);
+            ImageFileType fileType = FileTypeHelper.DetermineFileType(imageData);
             switch (fileType)
             {
                 case ImageFileType.Jpeg:
                     {
-                        readerToUse = new JpegExifReader(imageFileName);
+                        readerToUse = new JpegExifReader(imageData);
                         break;
                     }
                 case ImageFileType.Unknown:

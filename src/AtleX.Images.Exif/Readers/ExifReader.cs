@@ -10,7 +10,7 @@ namespace AtleX.Images.Exif.Readers
 {
     public abstract class ExifReader : IExifReader
     {
-        protected string ImageFileName
+        protected Stream ImageDataStream
         {
             get;
             set;
