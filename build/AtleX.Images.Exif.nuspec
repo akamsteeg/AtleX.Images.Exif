@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>AtleX.Cache</id>
-	<title>AtleX.Cache</title>
+    <id>AtleX.Images.Exif</id>
+	<title>AtleX.Images.Exif</title>
     <version>1.0.0-dev</version>
     <authors>Alex Kamsteeg</authors>
     <owners>Alex Kamsteeg</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>AtleX.Cache</description>
+    <description>AtleX.Images.Exif</description>
     <releaseNotes>-</releaseNotes>
     <copyright>Copyright 2014</copyright>
-    <tags>atlex cache caching</tags>
+    <tags>atlex image jpeg exif</tags>
     <dependencies>
     </dependencies>
   </metadata>
