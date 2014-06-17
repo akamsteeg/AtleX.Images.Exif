@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>AtleX.Cache</id>
+	<title>AtleX.Cache</title>
+    <version>1.0.0-dev</version>
+    <authors>Alex Kamsteeg</authors>
+    <owners>Alex Kamsteeg</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>AtleX.Cache</description>
+    <releaseNotes>-</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>atlex cache caching</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="artifacts\bin\$configuration$\*.dll" exclude="artifacts\bin\$configuration$\*.Tests.dll;artifacts\bin\$configuration$\nunit.framework.dll" target="lib\net45\" />
+	<file src="artifacts\bin\$configuration$\*.pdb" exclude="*.Tests.pdb" target="lib\net45\" />
+  </files>
+</package>
