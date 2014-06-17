@@ -41,7 +41,7 @@ namespace AtleX.Images.Exif.Tests
         [Test]
         public void CreateJpegReaderInvalidFile()
         {
-            Assert.Throws<FileLoadException>(
+            Assert.Throws<InvalidDataException>(
                 () => { new TestImageExifReader(this.InvalidFilePng); }
                 );
         }
@@ -64,7 +64,7 @@ namespace AtleX.Images.Exif.Tests
         [Test]
         public void CreateJpegReaderViaStaticCreateInvalidFile()
         {
-            Assert.Throws<FileLoadException>(
+            Assert.Throws<InvalidDataException>(
                 () => { TestImageExifReader.Create(this.InvalidFilePng); }
                 );
         }

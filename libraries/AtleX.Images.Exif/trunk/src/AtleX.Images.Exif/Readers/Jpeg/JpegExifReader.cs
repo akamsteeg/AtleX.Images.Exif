@@ -12,22 +12,20 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     public class JpegExifReader : ExifReader
     {
 
-        public JpegExifReader(string imageFileName)
+        public JpegExifReader(Stream imageDataStream)
         {
-            if (string.IsNullOrEmpty(imageFileName))
-                throw new ArgumentNullException(imageFileName);
-            if (!File.Exists(imageFileName))
-                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find file '{0}'", imageFileName));
+            if (imageDataStream == null)
+                throw new ArgumentNullException("imageDataStream");
 
-            if (FileTypeHelper.DetermineFileType(imageFileName) == ImageFileType.Jpeg)
+            if (FileTypeHelper.DetermineFileType(imageDataStream) == ImageFileType.Jpeg)
             {
-                this.ImageFileName = imageFileName;
+                this.ImageDataStream = imageDataStream;
                 this.CanRead = true;
             }
             else
             {
                 this.CanRead = false;
-                throw new FileLoadException(string.Format(CultureInfo.InvariantCulture, "File '{0}' is not a JPEG file", this.ImageFileName));
+                throw new InvalidDataException("Data is not from a valid JPEG");
             }
         }
 
@@ -37,32 +35,29 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 throw new InvalidOperationException("Can't read from image");
 
             ExifData ed = new ExifData();
-            using (FileStream stream = new FileStream(this.ImageFileName, FileMode.Open, FileAccess.Read))
+            BinaryReader bReader = new BinaryReader(this.ImageDataStream, new ASCIIEncoding());
+
+            IEnumerable<RawJpegSegment> segments = JpegFileParser.ParseHeaderIntoSegments(bReader);
+
+            JpegSegmentParser parser = null;
+            foreach (RawJpegSegment currentSegment in segments)
             {
-                BinaryReader bReader = new BinaryReader(stream, new ASCIIEncoding());
-
-                IEnumerable<RawJpegSegment> segments = JpegFileParser.ParseHeaderIntoSegments(bReader);
-
-                JpegSegmentParser parser = null;
-                foreach (RawJpegSegment currentSegment in segments)
+                switch (currentSegment.Type)
                 {
-                    switch (currentSegment.Type)
-                    {
-                        case JpegSegmentType.App1:
-                            parser = new JpegSegmentParserApp1();
-                            break;
-                    }
-
-                    if (parser != null)
-                    {
-                        foreach (KeyValuePair<ExifTag, string> keyValue in parser.Parse(currentSegment))
-                        {
-                        }
-                    }
+                    case JpegSegmentType.App1:
+                        parser = new JpegSegmentParserApp1();
+                        break;
                 }
 
-                bReader.Close();
+                if (parser != null)
+                {
+                    foreach (KeyValuePair<ExifTag, string> keyValue in parser.Parse(currentSegment))
+                    {
+                    }
+                }
             }
+
+            bReader.Close();
 
             return ed;
         }
