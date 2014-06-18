@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtleX.Images.Exif.Data;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
@@ -26,6 +27,6 @@ namespace AtleX.Images.Exif.Readers
         /// Read the EXIF info (if any) from the image
         /// </summary>
         /// <returns></returns>
-        public abstract ExifData GetExifData();
+        public abstract Dictionary<ExifTag, ExifValue> GetExifData();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AtleX.Images.Exif;
+using AtleX.Images.Exif.Data;
 using AtleX.Images.Exif.Readers;
 using AtleX.Images.Exif.Readers.Jpeg;
 using NUnit.Framework;
@@ -43,7 +44,7 @@ namespace AtleX.Images.Exif.Tests
         public void CreateReaderAndLoadCorrectlyLoadJpegWithWrongExtension()
         {
             IExifReader r = new JpegExifReader(OpenAsStream(this.JpegWithWrongExtension));
-            ExifData d = r.GetExifData();
+            Dictionary<ExifTag, ExifValue> d = r.GetExifData();
 
             Assert.IsNotNull(d);
         }
@@ -60,7 +61,7 @@ namespace AtleX.Images.Exif.Tests
         public void ReadExifFromJpeg()
         {
             IExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
-            ExifData d = r.GetExifData();
+            Dictionary<ExifTag, ExifValue> d = r.GetExifData();
 
             Assert.IsNotNull(d);
         }

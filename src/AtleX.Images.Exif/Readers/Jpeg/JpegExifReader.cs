@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtleX.Images.Exif.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -29,12 +30,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             }
         }
 
-        public override ExifData GetExifData()
+        public override Dictionary<ExifTag, ExifValue> GetExifData()
         {
             if (!this.CanRead)
-                throw new InvalidOperationException("Can't read from image");
+                throw new InvalidOperationException("Can't read from invalid or unopened data. Have you instantiated this reader with valid data?");
 
-            ExifData ed = new ExifData();
+            Dictionary<ExifTag, ExifValue> ed = new Dictionary<ExifTag, ExifValue>();
+
             BinaryReader bReader = new BinaryReader(this.ImageDataStream, new ASCIIEncoding());
 
             IEnumerable<RawJpegSegment> segments = JpegFileParser.ParseHeaderIntoSegments(bReader);
@@ -51,9 +53,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                 if (parser != null)
                 {
-                    foreach (KeyValuePair<ExifTag, string> keyValue in parser.Parse(currentSegment))
-                    {
-                    }
+                    ed = parser.Parse(currentSegment);
                 }
             }
 
