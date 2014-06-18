@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AtleX.Images.Exif")]
-[assembly: AssemblyCopyright("Copyright © Alex Kamsteeg 2014")]
+[assembly: AssemblyCopyright("Copyright © Alex Kamsteeg")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
