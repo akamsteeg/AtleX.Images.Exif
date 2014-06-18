@@ -10,9 +10,9 @@ namespace AtleX.Images.Exif
     public interface IExifReader
     {
         /// <summary>
-        /// Read the EXIF info (if any) from the image
+        /// Read and returns the EXIF info (if any) from the image
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A Dictionary with the tags and the values read from the image</returns>
         Dictionary<ExifTag, ExifValue> GetExifData();
     }
 }
