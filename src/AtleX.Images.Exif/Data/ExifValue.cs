@@ -28,6 +28,6 @@ namespace AtleX.Images.Exif.Data
 
     public abstract class ExifValue
     {
-
+        // To facilitate the non-generic references in IExifReader
     }
 }
