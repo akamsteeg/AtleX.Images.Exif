@@ -145,9 +145,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         private static JpegSegmentType GetTypeFromSegmentCode(byte[] segmentCode)
         {
             if (segmentCode.Length != 2)
-                throw new ArgumentException("A segment code is two bytes", "segmentCode");
+                throw new ArgumentException(Strings.ExceptionSegmentTypeIsTwoBytes, "segmentCode");
             if (segmentCode[0] != 255)
-                throw new ArgumentException("The first byte of a segment code should be 0xFF");
+                throw new ArgumentException(Strings.ExceptionSegmentInvalidFirstByte);
 
             JpegSegmentType result = JpegSegmentType.Unknown;
             switch (segmentCode[1])

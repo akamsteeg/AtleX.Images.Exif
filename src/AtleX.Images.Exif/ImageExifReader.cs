@@ -42,7 +42,7 @@ namespace AtleX.Images.Exif
             if (string.IsNullOrEmpty(imageFileName))
                 throw new ArgumentNullException(imageFileName);
             if (!File.Exists(imageFileName))
-                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, "Can't find file '{0}'", imageFileName));         
+                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, imageFileName));         
 
             FileStream fs = new FileStream(imageFileName, FileMode.Open, FileAccess.Read);
             this.Open(fs);
@@ -81,7 +81,7 @@ namespace AtleX.Images.Exif
             this.Reader = CreateReader(imageData);
             this.CanRead = (this.Reader != null);
             if (!this.CanRead)
-                throw new InvalidDataException("Data is not from a supported image");
+                throw new InvalidDataException(Strings.ExceptionUnsupportedImageData);
         }
 
         /// <summary>
