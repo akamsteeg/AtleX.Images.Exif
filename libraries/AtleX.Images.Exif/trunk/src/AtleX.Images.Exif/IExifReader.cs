@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtleX.Images.Exif.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,6 @@ namespace AtleX.Images.Exif
         /// Read the EXIF info (if any) from the image
         /// </summary>
         /// <returns></returns>
-        ExifData GetExifData();
+        Dictionary<ExifTag, ExifValue> GetExifData();
     }
 }

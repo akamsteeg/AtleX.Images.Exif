@@ -1,4 +1,5 @@
-﻿using AtleX.Images.Exif.Helpers;
+﻿using AtleX.Images.Exif.Data;
+using AtleX.Images.Exif.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,7 +34,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     {
         protected bool _isLittleEndian;
 
-        public abstract Dictionary<ExifTag, string> Parse(RawJpegSegment segment);
+        public abstract Dictionary<ExifTag, ExifValue> Parse(RawJpegSegment segment);
 
         protected byte[] ReadBytes(byte[] source, int start, int length)
         {
@@ -60,9 +61,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     {
         private bool _hasTiff;
 
-        public override Dictionary<ExifTag, string> Parse(RawJpegSegment segment)
+        public override Dictionary<ExifTag, ExifValue> Parse(RawJpegSegment segment)
         {
-            Dictionary<ExifTag, string> values = null;
+            Dictionary<ExifTag, ExifValue> values = null;
             this._hasTiff = false;
 
             /* 
@@ -106,9 +107,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             return values;
         }
 
-        private Dictionary<ExifTag, string> ReadTiff(byte[] tiffData)
+        private Dictionary<ExifTag, ExifValue> ReadTiff(byte[] tiffData)
         {
-            Dictionary<ExifTag, string> values = new Dictionary<ExifTag, string>();
+            Dictionary<ExifTag, ExifValue> values = new Dictionary<ExifTag, ExifValue>();
             int numberOfEntries = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tiffData, 0, 2));
 
             for (int i = 0; i < numberOfEntries; i++)
@@ -134,7 +135,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                             string value = ByteConvertor.ConvertBytesToString(data);
 
-                            values.Add(currentTag, value);
+                            values.Add(currentTag, new ExifStringValue(currentTag, value));
                         }
                         break;
                     case 3: // Short (2 bytes, uint16)

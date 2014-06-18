@@ -45,7 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExifData.cs" />
+    <Compile Include="Data\ExifByteValue.cs" />
+    <Compile Include="Data\ExifIntegerValue.cs" />
+    <Compile Include="Data\ExifStringValue.cs" />
+    <Compile Include="Data\ExifValue.cs" />
     <Compile Include="ExifTag.cs" />
     <Compile Include="FileTypeHelper.cs" />
     <Compile Include="Helpers\ByteConvertor.cs" />

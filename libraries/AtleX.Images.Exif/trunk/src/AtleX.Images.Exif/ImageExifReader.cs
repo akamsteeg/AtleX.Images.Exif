@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using AtleX.Images.Exif.Data;
 
 namespace AtleX.Images.Exif
 {
@@ -55,9 +56,9 @@ namespace AtleX.Images.Exif
         /// Read the EXIF info (if any) from the image
         /// </summary>
         /// <returns></returns>
-        public override ExifData GetExifData()
+        public override Dictionary<ExifTag, ExifValue> GetExifData()
         {
-            ExifData data = this.Reader.GetExifData();
+            Dictionary<ExifTag, ExifValue> data = this.Reader.GetExifData();
 
             return data;
         }
