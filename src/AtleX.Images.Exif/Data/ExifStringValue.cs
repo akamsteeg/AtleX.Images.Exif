@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif.Data
 {
+    /// <summary>
+    /// String value stored the EXIF data
+    /// </summary>
     public class ExifStringValue : ExifValue<string>
     {
         public ExifStringValue(ExifTag tag, string value)

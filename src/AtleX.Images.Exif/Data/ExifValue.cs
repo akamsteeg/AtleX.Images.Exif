@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif.Data
 {
+    /// <summary>
+    /// Value stored the EXIF data
+    /// </summary>
     public abstract class ExifValue<Tvalue> : ExifValue
     {
         public Tvalue Value
-        {
-            get;
-            protected set;
-        }
-
-        public ExifTag Tag
         {
             get;
             protected set;
@@ -26,8 +23,23 @@ namespace AtleX.Images.Exif.Data
         }
     }
 
+    /// <summary>
+    /// Value stored the EXIF data
+    /// </summary>
+    /// <remarks>
+    /// This only function of this non-generic class
+    /// is to let IExifReaders return multiple different
+    /// strong-typed values from the image's EXIF
+    /// </remarks>
     public abstract class ExifValue
     {
-        // To facilitate the non-generic references in IExifReader
+        /// <summary>
+        /// The identifying tag of the data
+        /// </summary>
+        public ExifTag Tag
+        {
+            get;
+            protected set;
+        }
     }
 }
