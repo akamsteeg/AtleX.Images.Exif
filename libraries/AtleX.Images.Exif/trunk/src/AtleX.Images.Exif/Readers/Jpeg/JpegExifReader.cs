@@ -27,7 +27,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             else
             {
                 this.CanRead = false;
-                throw new InvalidDataException("Data is not from a valid JPEG");
+                throw new InvalidDataException(Strings.ExceptionImageInvalidJpeg);
             }
         }
 
@@ -38,7 +38,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         public override Dictionary<ExifTag, ExifValue> GetExifData()
         {
             if (!this.CanRead)
-                throw new InvalidOperationException("Can't read from invalid or unopened data. Have you instantiated this reader with valid data?");
+                throw new InvalidOperationException(Strings.ExceptionReaderCanNotRead);
 
             Dictionary<ExifTag, ExifValue> ed = new Dictionary<ExifTag, ExifValue>();
 

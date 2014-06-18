@@ -19,7 +19,7 @@ namespace AtleX.Images.Exif.Helpers
             if (value == null)
                 throw new ArgumentNullException("value");
             if (value.Length < 2 || value.Length > 4)
-                throw new ArgumentException("An integer is either 2 or 4 bytes long", "value");
+                throw new ArgumentException(Strings.ExceptionCantConvertBytesToInteger, "value");
 
             int result;
 
