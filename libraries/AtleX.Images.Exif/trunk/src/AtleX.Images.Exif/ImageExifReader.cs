@@ -1,16 +1,11 @@
-﻿using System.Diagnostics;
-using System.Net.Mime;
+﻿using AtleX.Images.Exif.Data;
+using AtleX.Images.Exif.Helpers;
 using AtleX.Images.Exif.Readers;
 using AtleX.Images.Exif.Readers.Jpeg;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Globalization;
-using AtleX.Images.Exif.Data;
-using AtleX.Images.Exif.Helpers;
+using System.IO;
 
 namespace AtleX.Images.Exif
 {
