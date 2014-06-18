@@ -91,7 +91,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
             if (this._hasTiff)
             {
-
                 // Get IFD offset, it's 0x00 00 00 08 if the IFD is directly after the TIFF header
                 int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(header, 10, 4));
 

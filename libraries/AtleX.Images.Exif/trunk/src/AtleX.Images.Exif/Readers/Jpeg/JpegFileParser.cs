@@ -83,6 +83,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// While this might seem a very inefficient method (no buffering, reading 
         /// 2 bytes at a time), it's actually very fast when the reader reads from a FileStream
         /// because a FileStream is buffered by default (http://blogs.msdn.com/b/brada/archive/2004/04/15/114329.aspx)
+        /// 
+        /// With something like a MemoryStream we benefit from reading from hardware
+        /// that easily reaches multiple gigabytes per second. That might look like
+        /// an easy way oit ("loads of bandwith, let's be lazy!") but I actually
+        /// measured several solutions including in-library caching and reading larger
+        /// chunks from the Stream. The current solution is a trade-off between 
+        /// memory usage (low, lower, lowest!) and speed (fast, faster, fastest!).
         /// </remarks>
         /// <param name="reader"></param>
         /// <returns></returns>
