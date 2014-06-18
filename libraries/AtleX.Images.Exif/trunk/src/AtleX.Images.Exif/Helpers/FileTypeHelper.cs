@@ -13,7 +13,7 @@ namespace AtleX.Images.Exif.Helpers
         Jpeg
     }
 
-    internal abstract class FileTypeHelper
+    internal static class FileTypeHelper
     {
         /// <summary>
         /// Determines and returns the file type of the specified file
