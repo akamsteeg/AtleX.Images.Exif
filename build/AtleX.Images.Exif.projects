@@ -2,5 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 	<ItemGroup>
 		<Projects Include="$(MSBuildProjectDirectory)\..\src\AtleX.Images.Exif\AtleX.Images.Exif.csproj" />
+		<Projects Include="$(MSBuildProjectDirectory)\..\src\AtleX.Images.Exif.Tests\AtleX.Images.Exif.Tests.csproj" />
 	</ItemGroup>
 </Project>
