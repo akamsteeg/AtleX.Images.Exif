@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AtleX.Images.Exif.Data
 {
     /// <summary>
-    /// Byte value stored the EXIF data
+    /// Byte value stored in the EXIF data
     /// </summary>
     public class ExifByteValue : ExifValue<byte>
     {
