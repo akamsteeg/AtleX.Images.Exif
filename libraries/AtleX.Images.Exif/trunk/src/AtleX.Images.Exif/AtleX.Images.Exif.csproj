@@ -50,7 +50,7 @@
     <Compile Include="Data\ExifStringValue.cs" />
     <Compile Include="Data\ExifValue.cs" />
     <Compile Include="ExifTag.cs" />
-    <Compile Include="FileTypeHelper.cs" />
+    <Compile Include="Helpers\FileTypeHelper.cs" />
     <Compile Include="Helpers\ByteConvertor.cs" />
     <Compile Include="IExifReader.cs" />
     <Compile Include="Readers\Jpeg\JpegExifReader.cs" />

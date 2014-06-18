@@ -1,4 +1,5 @@
 ﻿using AtleX.Images.Exif.Data;
+using AtleX.Images.Exif.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;

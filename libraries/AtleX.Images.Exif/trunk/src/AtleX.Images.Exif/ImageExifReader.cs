@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using AtleX.Images.Exif.Data;
+using AtleX.Images.Exif.Helpers;
 
 namespace AtleX.Images.Exif
 {
