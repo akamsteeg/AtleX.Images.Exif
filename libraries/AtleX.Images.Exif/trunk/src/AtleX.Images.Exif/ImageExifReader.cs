@@ -33,6 +33,10 @@ namespace AtleX.Images.Exif
             return r;
         }
 
+        /// <summary>
+        /// Create the reader and configure it to read from a file
+        /// </summary>
+        /// <param name="imageFileName">A valid filename of an image</param>
         public ImageExifReader(string imageFileName)
         {
             if (string.IsNullOrEmpty(imageFileName))
@@ -44,6 +48,10 @@ namespace AtleX.Images.Exif
             this.Open(fs);
         }
 
+        /// <summary>
+        /// Create the reader and configure it to read from a Stream
+        /// </summary>
+        /// <param name="imageData">A readable stream with binary image data</param>
         public ImageExifReader(Stream imageData)
         {
             if (imageData == null)
@@ -54,9 +62,9 @@ namespace AtleX.Images.Exif
 
 
         /// <summary>
-        /// Read the EXIF info (if any) from the image
+        /// Read and returns the EXIF info (if any) from the image
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A Dictionary with the tags and the values read from the image</returns>
         public override Dictionary<ExifTag, ExifValue> GetExifData()
         {
             Dictionary<ExifTag, ExifValue> data = this.Reader.GetExifData();
@@ -64,6 +72,10 @@ namespace AtleX.Images.Exif
             return data;
         }
 
+        /// <summary>
+        /// Create a reader based on the contents of the Stream
+        /// </summary>
+        /// <param name="imageData"></param>
         private void Open(Stream imageData)
         {
             this.Reader = CreateReader(imageData);
@@ -72,6 +84,12 @@ namespace AtleX.Images.Exif
                 throw new InvalidDataException("Data is not from a supported image");
         }
 
+        /// <summary>
+        /// Detect the image type from the passed Stream and instantiate
+        /// the approriate reader for it.
+        /// </summary>
+        /// <param name="imageData"></param>
+        /// <returns></returns>
         private static IExifReader CreateReader(Stream imageData)
         {   
             IExifReader readerToUse = null;

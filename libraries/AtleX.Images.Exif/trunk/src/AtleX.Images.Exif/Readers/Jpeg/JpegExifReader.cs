@@ -31,6 +31,10 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             }
         }
 
+        /// <summary>
+        /// Read and returns the EXIF info (if any) from the image
+        /// </summary>
+        /// <returns>A Dictionary with the tags and the values read from the image</returns>
         public override Dictionary<ExifTag, ExifValue> GetExifData()
         {
             if (!this.CanRead)
