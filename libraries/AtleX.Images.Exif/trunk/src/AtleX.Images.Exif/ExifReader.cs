@@ -1,4 +1,5 @@
 ﻿using AtleX.Images.Exif.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,7 +11,7 @@ namespace AtleX.Images.Exif
     /// <remarks>
     /// This is a base class for all readers
     /// </remarks>
-    public abstract class ExifReader
+    public abstract class ExifReader : IDisposable
     {
         protected Stream ImageDataStream
         {
@@ -29,5 +30,11 @@ namespace AtleX.Images.Exif
         /// </summary>
         /// <returns>A Dictionary with the tags and the values read from the image</returns>
         public abstract IEnumerable<ExifValue> GetExifData();
-    }
+    
+        public void Dispose()
+        {
+ 	        if (this.ImageDataStream != null)
+                this.ImageDataStream.Dispose();
+        }
+}
 }
