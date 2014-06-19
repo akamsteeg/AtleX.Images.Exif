@@ -9,6 +9,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 {
     internal enum JpegSegmentType
     {
+        Unknown,
         Soi, // Start of Image  (FF D8 / 255 216)
         Jfif, // JFIF (FF E0 / 255 224)
         App1, // Application Segment 1 (FF E1 / 255 225)
@@ -19,7 +20,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         Sof, // Start of Frame (FF C0 / 255 192)
         Sos, // Start of Scan (FF C0 / 255 218)
         Eoi, // End of Image (FF D9 / 255 217)
-        Unknown,
     }
 
     [DebuggerDisplay("{Type} ({Data.Length} bytes)")]
