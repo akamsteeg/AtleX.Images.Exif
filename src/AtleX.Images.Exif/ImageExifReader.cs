@@ -15,15 +15,15 @@ namespace AtleX.Images.Exif
     /// <remarks>This reader acts as a factory for file-specific readers</remarks>
     public class ImageExifReader : ExifReader
     {           
-        protected IExifReader Reader
+        protected ExifReader Reader
         {
             get;
             set;
         }
 
-        public static IExifReader Create(string imageFileName)
+        public static ExifReader Create(string imageFileName)
         {
-            IExifReader r = new ImageExifReader(imageFileName);
+            ExifReader r = new ImageExifReader(imageFileName);
 
             return r;
         }
@@ -35,7 +35,7 @@ namespace AtleX.Images.Exif
         public ImageExifReader(string imageFileName)
         {
             if (string.IsNullOrEmpty(imageFileName))
-                throw new ArgumentNullException(imageFileName);
+                throw new ArgumentNullException(imageFileName, "imageFileName");
             if (!File.Exists(imageFileName))
                 throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, imageFileName));         
 
@@ -85,9 +85,9 @@ namespace AtleX.Images.Exif
         /// </summary>
         /// <param name="imageData"></param>
         /// <returns></returns>
-        private static IExifReader CreateReader(Stream imageData)
-        {   
-            IExifReader readerToUse = null;
+        private static ExifReader CreateReader(Stream imageData)
+        {
+            ExifReader readerToUse = null;
 
             ImageFileType fileType = FileTypeHelper.DetermineFileType(imageData);
             switch (fileType)
