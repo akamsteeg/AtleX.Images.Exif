@@ -7,7 +7,7 @@ namespace AtleX.Images.Exif.Data
     /// </summary>
     public class ExifByteValue : ExifValue<byte>
     {
-        public ExifByteValue(ExifTag tag, byte value)
+        public ExifByteValue(ExifFieldType field, byte value)
         {
             throw new NotImplementedException();
         }

@@ -60,9 +60,9 @@ namespace AtleX.Images.Exif
         /// Read and returns the EXIF info (if any) from the image
         /// </summary>
         /// <returns>A Dictionary with the tags and the values read from the image</returns>
-        public override Dictionary<ExifTag, ExifValue> GetExifData()
+        public override IEnumerable<ExifValue> GetExifData()
         {
-            Dictionary<ExifTag, ExifValue> data = this.Reader.GetExifData();
+            IEnumerable<ExifValue> data = this.Reader.GetExifData();
 
             return data;
         }

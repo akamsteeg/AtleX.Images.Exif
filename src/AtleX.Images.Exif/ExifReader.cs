@@ -28,6 +28,6 @@ namespace AtleX.Images.Exif
         /// Read and returns the EXIF info (if any) from the image
         /// </summary>
         /// <returns>A Dictionary with the tags and the values read from the image</returns>
-        public abstract Dictionary<ExifTag, ExifValue> GetExifData();
+        public abstract IEnumerable<ExifValue> GetExifData();
     }
 }

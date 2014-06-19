@@ -1,9 +1,11 @@
 ﻿
+using System.Diagnostics;
 namespace AtleX.Images.Exif.Data
 {
     /// <summary>
     /// Value stored in the EXIF data
     /// </summary>
+    [DebuggerDisplay("{Field} - {Value}")]
     public abstract class ExifValue<Tvalue> : ExifValue
     {
         public Tvalue Value
@@ -31,7 +33,7 @@ namespace AtleX.Images.Exif.Data
         /// <summary>
         /// The identifying tag of the data
         /// </summary>
-        public ExifTag Tag
+        public ExifFieldType Field
         {
             get;
             protected set;

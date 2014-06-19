@@ -7,7 +7,7 @@ namespace AtleX.Images.Exif.Data
     /// </summary>
     public class ExifIntegerValue : ExifValue<int>
     {
-        public ExifIntegerValue(ExifTag tag, int value)
+        public ExifIntegerValue(ExifFieldType field, int value)
         {
             throw new NotImplementedException();
         }
