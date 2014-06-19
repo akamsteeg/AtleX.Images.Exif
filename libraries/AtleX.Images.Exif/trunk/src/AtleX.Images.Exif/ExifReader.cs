@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace AtleX.Images.Exif.Readers
+namespace AtleX.Images.Exif
 {
-    public abstract class ExifReader : IExifReader
+    /// <summary>
+    /// Read exif data from an image
+    /// </summary>
+    /// <remarks>
+    /// This is a base class for all readers
+    /// </remarks>
+    public abstract class ExifReader
     {
         protected Stream ImageDataStream
         {

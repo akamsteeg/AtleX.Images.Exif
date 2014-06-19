@@ -36,14 +36,14 @@ namespace AtleX.Images.Exif.Tests
         [Test]
         public void CreateJpegReader()
         {
-            IExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
+            ExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
             Assert.IsTrue(r is JpegExifReader);
         }
 
         [Test]
         public void CreateReaderAndLoadCorrectlyLoadJpegWithWrongExtension()
         {
-            IExifReader r = new JpegExifReader(OpenAsStream(this.JpegWithWrongExtension));
+            ExifReader r = new JpegExifReader(OpenAsStream(this.JpegWithWrongExtension));
             Dictionary<ExifTag, ExifValue> d = r.GetExifData();
 
             Assert.IsNotNull(d);
@@ -60,7 +60,7 @@ namespace AtleX.Images.Exif.Tests
         [Test]
         public void ReadExifFromJpeg()
         {
-            IExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
+            ExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
             Dictionary<ExifTag, ExifValue> d = r.GetExifData();
             var x = d.First().Value;
 

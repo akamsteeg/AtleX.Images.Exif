@@ -14,6 +14,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <returns></returns>
         public static IEnumerable<RawJpegSegment> ParseHeaderIntoSegments(BinaryReader reader)
         {
+            if (reader == null)
+                throw new ArgumentNullException("reader");
+
             /*
              * Reset the stream because we want the full header to extract the App 
              * segments from the whole file
@@ -144,7 +147,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             if (segmentCode.Length != 2)
                 throw new ArgumentException(Strings.ExceptionSegmentTypeIsTwoBytes, "segmentCode");
             if (segmentCode[0] != 255)
-                throw new ArgumentException(Strings.ExceptionSegmentInvalidFirstByte);
+                throw new ArgumentException(Strings.ExceptionSegmentInvalidFirstByte, "segmentCode");
 
             JpegSegmentType result = JpegSegmentType.Unknown;
             switch (segmentCode[1])
