@@ -3,13 +3,13 @@ using System.Text;
 
 namespace AtleX.Images.Exif.Helpers
 {
-    internal enum ImageFileType
+    public enum ImageFileType
     {
         Unknown,
         Jpeg
     }
 
-    internal static class FileTypeHelper
+    public static class FileTypeHelper
     {
         /// <summary>
         /// Determines and returns the file type of the specified file

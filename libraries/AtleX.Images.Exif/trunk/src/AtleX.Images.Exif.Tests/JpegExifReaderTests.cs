@@ -62,6 +62,7 @@ namespace AtleX.Images.Exif.Tests
         {
             IExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
             Dictionary<ExifTag, ExifValue> d = r.GetExifData();
+            var x = d.First().Value;
 
             Assert.IsNotNull(d);
         }
