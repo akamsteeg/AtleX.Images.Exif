@@ -83,7 +83,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// 
         /// With something like a MemoryStream we benefit from reading from hardware
         /// that easily reaches multiple gigabytes per second. That might look like
-        /// an easy way oit ("loads of bandwith, let's be lazy!") but I actually
+        /// an easy way out ("loads of bandwith, let's be lazy!") but I actually
         /// measured several solutions including in-library caching and reading larger
         /// chunks from the Stream. The current solution is a trade-off between 
         /// memory usage (low, lower, lowest!) and speed (fast, faster, fastest!).
