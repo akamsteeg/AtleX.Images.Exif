@@ -31,8 +31,10 @@ namespace AtleX.Images.Exif
         /// <returns>A Dictionary with the tags and the values read from the image</returns>
         public abstract IEnumerable<ExifValue> GetExifData();
     
-        public void Dispose()
+        public virtual void Dispose()
         {
+            GC.SuppressFinalize(this);
+
  	        if (this.ImageDataStream != null)
                 this.ImageDataStream.Dispose();
         }

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace AtleX.Images.Exif.Helpers
@@ -19,6 +21,11 @@ namespace AtleX.Images.Exif.Helpers
         /// <returns></returns>
         public static ImageFileType DetermineFileType(string fileName)
         {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException("fileName");
+            if (!File.Exists(fileName))
+                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, fileName));  
+
             ImageFileType result = ImageFileType.Unknown;
             using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
@@ -30,6 +37,9 @@ namespace AtleX.Images.Exif.Helpers
 
         public static ImageFileType DetermineFileType(Stream fileContents)
         {
+            if (fileContents == null)
+                throw new ArgumentNullException("fileContents");
+
             ImageFileType result = ImageFileType.Unknown;
             BinaryReader bReader = new BinaryReader(fileContents, new ASCIIEncoding());
 
