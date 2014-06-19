@@ -47,7 +47,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                             // The length of the segment is specified after the segment marker in two bytes
                             byte[] segmentLengthSpecification = reader.ReadBytes(2);
-                            // TODO: Why is my ByteConvertor slower than bitwise stuff?
                             int segmentLength = ByteConvertor.ConvertBytesToInt(segmentLengthSpecification);  //segmentLengthSpecification[0] << 8 | segmentLengthSpecification[1];
                             
                             if (segmentLength > 0) // We'll silently discard invalid or empty segments
@@ -153,6 +152,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             {
                 case 216:
                     result = JpegSegmentType.Soi;
+                    break;
+                case 224:
+                    result = JpegSegmentType.Jfif;
                     break;
                 case 225:
                     result = JpegSegmentType.App1;

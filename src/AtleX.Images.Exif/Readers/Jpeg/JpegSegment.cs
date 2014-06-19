@@ -10,6 +10,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     internal enum JpegSegmentType
     {
         Soi, // Start of Image  (FF D8 / 255 216)
+        Jfif, // JFIF (FF E0 / 255 224)
         App1, // Application Segment 1 (FF E1 / 255 225)
         App2, // Application Segment 2 (FF E2 / 255 226)
         Dqt, // Define Quantization Table (FF DB / 255 219)
@@ -120,16 +121,16 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 int count = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
                 int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
 
+                ExifFieldType currentTag = (ExifFieldType)tagType;
+                byte[] data;
+
                 switch (contentType)
                 {
                     case 1: // Byte
                     case 2: // ASCII
                         {
-                            ExifFieldType currentTag = (ExifFieldType)tagType;
-
                             // TODO: Find out and document why the -8 has to happen?
-                            byte[] data = this.ReadBytes(tiffData, dataOffset-8, count);
-
+                            data = this.ReadBytes(tiffData, dataOffset - 8, count);
                             string value = ByteConvertor.ConvertBytesToString(data);
 
                             values.Add(new ExifStringValue(currentTag, value));
