@@ -19,7 +19,7 @@ namespace AtleX.Images.Exif.Tests
         {
             get
             {
-                return @"..\..\..\Testfiles\Invalid\invalid.png";
+                return @"..\..\..\..\Testfiles\Invalid\invalid.png";
             }
         }
 

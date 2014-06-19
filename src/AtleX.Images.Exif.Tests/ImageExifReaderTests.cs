@@ -17,7 +17,7 @@ namespace AtleX.Images.Exif.Tests
         {
             get
             {
-                return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
+                return @"..\..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
 
             }
         }
