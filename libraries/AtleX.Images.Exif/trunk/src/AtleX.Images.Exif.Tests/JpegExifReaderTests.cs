@@ -19,9 +19,9 @@ namespace AtleX.Images.Exif.Tests
         {
             get
             {
-                return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
-                //return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6573.jpg";
-
+                //return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
+                return @"..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6573.jpg";
+                //return @"..\..\..\Testfiles\Jpeg\Nikon_D3100\mattus82_10709867984.jpg";
             }
         }
 
@@ -44,7 +44,7 @@ namespace AtleX.Images.Exif.Tests
         public void CreateReaderAndLoadCorrectlyLoadJpegWithWrongExtension()
         {
             ExifReader r = new JpegExifReader(OpenAsStream(this.JpegWithWrongExtension));
-            Dictionary<ExifTag, ExifValue> d = r.GetExifData();
+            IEnumerable<ExifValue> d = r.GetExifData();
 
             Assert.IsNotNull(d);
         }
@@ -61,8 +61,7 @@ namespace AtleX.Images.Exif.Tests
         public void ReadExifFromJpeg()
         {
             ExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
-            Dictionary<ExifTag, ExifValue> d = r.GetExifData();
-            var x = d.First().Value;
+            IEnumerable<ExifValue> d = r.GetExifData();
 
             Assert.IsNotNull(d);
         }

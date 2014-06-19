@@ -49,16 +49,19 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             byte[] segmentLengthSpecification = reader.ReadBytes(2);
                             // TODO: Why is my ByteConvertor slower than bitwise stuff?
                             int segmentLength = ByteConvertor.ConvertBytesToInt(segmentLengthSpecification);  //segmentLengthSpecification[0] << 8 | segmentLengthSpecification[1];
-
-                            // Read the data
-                            byte[] segmentData = reader.ReadBytes(segmentLength);
-
-                            RawJpegSegment segment = new RawJpegSegment()
+                            
+                            if (segmentLength > 0) // We'll silently discard invalid or empty segments
                             {
-                                Data = segmentData,
-                                Type = segmentType,
-                            };
-                            segments.Add(segment);
+                                // Read the data
+                                byte[] segmentData = reader.ReadBytes(segmentLength);
+
+                                RawJpegSegment segment = new RawJpegSegment()
+                                {
+                                    Data = segmentData,
+                                    Type = segmentType,
+                                };
+                                segments.Add(segment);
+                            }
 
                             break;
                         }
@@ -105,11 +108,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 {
                     type = GetTypeFromSegmentCode(markerBytes);
                     if (type != JpegSegmentType.Unknown)
-                    {
-                        // Reset the reader to the beginning of the marker
-                        //reader.BaseStream.Seek(, SeekOrigin.Current);
                         segmentFound = true;
-                    }
                 }
             }
 

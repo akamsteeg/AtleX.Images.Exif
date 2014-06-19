@@ -32,12 +32,12 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// Read and returns the EXIF info (if any) from the image
         /// </summary>
         /// <returns>A Dictionary with the tags and the values read from the image</returns>
-        public override Dictionary<ExifTag, ExifValue> GetExifData()
+        public override IEnumerable<ExifValue> GetExifData()
         {
             if (!this.CanRead)
                 throw new InvalidOperationException(Strings.ExceptionReaderCanNotRead);
 
-            Dictionary<ExifTag, ExifValue> ed = new Dictionary<ExifTag, ExifValue>();
+            List<ExifValue> values = new List<ExifValue>();
 
             BinaryReader bReader = new BinaryReader(this.ImageDataStream, new ASCIIEncoding());
 
@@ -54,14 +54,12 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 }
 
                 if (parser != null)
-                {
-                    ed = parser.Parse(currentSegment);
-                }
+                    values.AddRange(parser.Parse(currentSegment));
             }
 
             bReader.Close();
 
-            return ed;
+            return values;
         }
     }
 }

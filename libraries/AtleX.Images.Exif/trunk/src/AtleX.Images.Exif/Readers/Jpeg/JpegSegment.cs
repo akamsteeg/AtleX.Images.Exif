@@ -32,7 +32,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     {
         protected bool _isLittleEndian;
 
-        public abstract Dictionary<ExifTag, ExifValue> Parse(RawJpegSegment segment);
+        public abstract IEnumerable<ExifValue> Parse(RawJpegSegment segment);
 
         protected byte[] ReadBytes(byte[] source, int start, int length)
         {
@@ -59,9 +59,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     {
         private bool _hasTiff;
 
-        public override Dictionary<ExifTag, ExifValue> Parse(RawJpegSegment segment)
+        public override IEnumerable<ExifValue> Parse(RawJpegSegment segment)
         {
-            Dictionary<ExifTag, ExifValue> values = null;
+            IEnumerable<ExifValue> values = null;
             this._hasTiff = false;
 
             /* 
@@ -104,9 +104,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             return values;
         }
 
-        private Dictionary<ExifTag, ExifValue> ReadTiff(byte[] tiffData)
+        private IEnumerable<ExifValue> ReadTiff(byte[] tiffData)
         {
-            Dictionary<ExifTag, ExifValue> values = new Dictionary<ExifTag, ExifValue>();
+            List<ExifValue> values = new List<ExifValue>();
             int numberOfEntries = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tiffData, 0, 2));
 
             for (int i = 0; i < numberOfEntries; i++)
@@ -125,14 +125,14 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     case 1: // Byte
                     case 2: // ASCII
                         {
-                            ExifTag currentTag = (ExifTag)tagType;
+                            ExifFieldType currentTag = (ExifFieldType)tagType;
 
                             // TODO: Find out and document why the -8 has to happen?
                             byte[] data = this.ReadBytes(tiffData, dataOffset-8, count);
 
                             string value = ByteConvertor.ConvertBytesToString(data);
 
-                            values.Add(currentTag, new ExifStringValue(currentTag, value));
+                            values.Add(new ExifStringValue(currentTag, value));
                         }
                         break;
                     case 3: // Short (2 bytes, uint16)
