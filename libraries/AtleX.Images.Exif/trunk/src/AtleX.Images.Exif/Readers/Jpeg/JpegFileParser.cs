@@ -99,7 +99,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         {
             bool segmentFound = false;
             JpegSegmentType type = JpegSegmentType.Unknown;
-            while (reader.BaseStream.Position != reader.BaseStream.Length && !segmentFound)
+            long streamLength = reader.BaseStream.Length;
+
+            while (reader.BaseStream.Position != streamLength && !segmentFound)
             {
                 Byte[] markerBytes = reader.ReadBytes(2);
 
