@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Text;
 
 namespace AtleX.Images.Exif.Helpers
@@ -21,7 +22,7 @@ namespace AtleX.Images.Exif.Helpers
             int result;
 
             if (value.Length == 2) // TODO: Determine unsigned or signed int
-                result = BitConverter.ToInt16(value, 0);
+                result = BitConverter.ToUInt16(value, 0);
             else // Implies 4 bytes
                 result = BitConverter.ToInt32(value, 0);
 
