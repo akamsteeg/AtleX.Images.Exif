@@ -24,7 +24,7 @@ namespace AtleX.Images.Exif.Data
     /// Value stored in the EXIF data
     /// </summary>
     /// <remarks>
-    /// This only function of this non-generic class
+    /// The only function of this non-generic class
     /// is to let IExifReaders return multiple different
     /// strong-typed values from the image's EXIF
     /// </remarks>
