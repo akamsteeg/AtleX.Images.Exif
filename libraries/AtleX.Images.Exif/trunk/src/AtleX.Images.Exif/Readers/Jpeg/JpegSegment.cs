@@ -58,12 +58,10 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
     internal class JpegSegmentParserApp1 : JpegSegmentParser
     {
-        private bool _hasTiff;
-
         public override IEnumerable<ExifValue> Parse(RawJpegSegment segment)
         {
             IEnumerable<ExifValue> values = null;
-            this._hasTiff = false;
+            bool hasTiff = false;
 
             /* 
              * APP1 starts with 4 bytes (0×45, 0×78, 0×69, 0×66) followed
@@ -79,7 +77,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             if ((header[6] == 73 && header[7] == 73) || // Intel
                 (header[6] == 77 && header[7] == 77)) // Motorola
             {
-                this._hasTiff = true;
+                hasTiff = true;
                 /*
                  * After the TIFF header comes an extra indicator for the TIFF 
                  * header. It's 0x2A00 (4200) for little endian or 0x002A (0042)
@@ -88,7 +86,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 _isLittleEndian = (header[8] == 42 && header[9] == 0);
             }
 
-            if (this._hasTiff)
+            if (hasTiff)
             {
                 // Get IFD offset, it's 0x00 00 00 08 if the IFD is directly after the TIFF header
                 int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(header, 10, 4));
