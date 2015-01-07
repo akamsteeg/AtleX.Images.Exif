@@ -33,10 +33,20 @@ namespace AtleX.Images.Exif
     
         public virtual void Dispose()
         {
+            this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
 
- 	        if (this.ImageDataStream != null)
-                this.ImageDataStream.Dispose();
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.ImageDataStream != null)
+                {
+                    this.ImageDataStream.Dispose();
+                    this.ImageDataStream = null;
+                }
+            }
         }
 }
 }
