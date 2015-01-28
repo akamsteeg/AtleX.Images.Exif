@@ -18,6 +18,12 @@ namespace AtleX.Images.Exif.Data
         {
             return this.Value.ToString();
         }
+
+        public ExifValue(ExifFieldType field, Tvalue value)
+        {
+            this.Field = field;
+            this.Value = value;
+        }
     }
 
     /// <summary>

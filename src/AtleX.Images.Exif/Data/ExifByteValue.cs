@@ -8,8 +8,8 @@ namespace AtleX.Images.Exif.Data
     public class ExifByteValue : ExifValue<byte>
     {
         public ExifByteValue(ExifFieldType field, byte value)
+            : base(field, value)
         {
-            throw new NotImplementedException();
         }
     }
 }

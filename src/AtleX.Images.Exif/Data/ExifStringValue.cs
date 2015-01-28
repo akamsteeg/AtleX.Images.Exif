@@ -7,9 +7,8 @@ namespace AtleX.Images.Exif.Data
     public class ExifStringValue : ExifValue<string>
     {
         public ExifStringValue(ExifFieldType field, string value)
+            : base(field, value)
         {
-            this.Field = field;
-            this.Value = value;
         }
     }
 }

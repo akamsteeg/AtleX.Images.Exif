@@ -8,8 +8,8 @@ namespace AtleX.Images.Exif.Data
     public class ExifIntegerValue : ExifValue<int>
     {
         public ExifIntegerValue(ExifFieldType field, int value)
+            : base(field, value)
         {
-            throw new NotImplementedException();
         }
     }
 }
