@@ -35,6 +35,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
         public abstract IEnumerable<ExifValue> Parse(RawJpegSegment segment);
 
+        /// <summary>
+        /// Read a specified number of bytes from a byte array
+        /// </summary>
+        /// <param name="source">The byte array to read from</param>
+        /// <param name="start">The starting position in the source</param>
+        /// <param name="length">The number of bytes to read</param>
+        /// <returns>The read number of bytes</returns>
         protected byte[] ReadBytes(byte[] source, int start, int length)
         {
             if (source.Length < start + length)
@@ -52,7 +59,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 readBytes.Reverse();
 
             return readBytes;
-
         }       
     }
 
@@ -103,6 +109,11 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             return values;
         }
 
+        /// <summary>
+        /// Read the TIFF (EXIF) values from the data
+        /// </summary>
+        /// <param name="tiffData"></param>
+        /// <returns></returns>
         private IEnumerable<ExifValue> ReadTiff(byte[] tiffData)
         {
             List<ExifValue> values = new List<ExifValue>();
@@ -116,8 +127,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                 int tagType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 0, 2));
                 int contentType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 2, 2));
-                int count = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
-                int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
+                int count = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4));                
 
                 ExifFieldType currentTag = (ExifFieldType)tagType;
                 byte[] data;
@@ -125,8 +135,16 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 switch (contentType)
                 {
                     case 1: // Byte
+                        {
+                            data = this.ReadBytes(tag, 8, 4);
+
+                            byte value = data[0];
+                            values.Add(new ExifByteValue(currentTag, value));
+                        }
+                        break;
                     case 2: // ASCII
                         {
+                            int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
                             // TODO: Find out and document why the -8 has to happen?
                             data = this.ReadBytes(tiffData, dataOffset - 8, count);
                             string value = ByteConvertor.ConvertBytesToString(data);
@@ -136,10 +154,20 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         break;
                     case 3: // Short (2 bytes, uint16)
                     case 4: // Long (4 bytes, uint32)
-                    case 5: // Rational (two Longs, first one is the nominator, second is the denominator)
-                    case 7: // Undefined (1 byte)
                     case 9: // Slong (4 bytes, int32)
+                        {
+                            data = this.ReadBytes(tag, 8, 4);
+
+                            int value = ByteConvertor.ConvertBytesToInt(data);
+                            values.Add(new ExifIntegerValue(currentTag, value));
+                        }
+                        break;
+                    case 5: // Rational (two Longs, first one is the nominator, second is the denominator)
                     case 10: // Srational (two slongs, first one is the nominator, second is the denominator)
+                        {
+                        }
+                        break;
+                    case 7: // Undefined (1 byte)
                         break;
                 }
             }

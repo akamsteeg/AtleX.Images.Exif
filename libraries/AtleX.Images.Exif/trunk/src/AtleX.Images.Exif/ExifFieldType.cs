@@ -11,6 +11,15 @@ namespace AtleX.Images.Exif
     public enum ExifFieldType
     {
         /// <summary>
+        /// Image width
+        /// </summary>
+        ImageWidth = 256,
+        /// <summary>
+        /// Image height
+        /// </summary>
+        ImageHeigt = 257,
+
+        /// <summary>
         /// Image title
         /// </summary>
         ImageDescription = 270,
@@ -22,6 +31,11 @@ namespace AtleX.Images.Exif
         /// Camera model
         /// </summary>
         CameraModel = 272,
+
+        /// <summary>
+        ///  Unit of X and Y resolution
+        /// </summary>
+        ResolutionUnit = 296,
 
         /// <summary>
         /// The editing software used
