@@ -141,4 +141,7 @@
   <data name="ExceptionUnsupportedImageData" xml:space="preserve">
     <value>Data is not from a supported image</value>
   </data>
+  <data name="ExceptionValueCanNotBeLessThanZero" xml:space="preserve">
+    <value>Value can not be less than zero</value>
+  </data>
 </root>
