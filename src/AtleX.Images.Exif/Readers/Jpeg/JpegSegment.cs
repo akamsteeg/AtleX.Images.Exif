@@ -31,7 +31,11 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
     internal abstract class JpegSegmentParser
     {
-        protected bool _isLittleEndian; // TODO This doesn't work when we load Big-Endian files :/
+        protected bool IsLittleEndian // TODO This doesn't work when we load Big-Endian files :/
+        {
+            get;
+            set;
+        }
 
         public abstract IEnumerable<ExifValue> Parse(RawJpegSegment segment);
 
@@ -60,7 +64,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             }
 
             // We're working with little endiannes only
-            if (!this._isLittleEndian)
+            if (!this.IsLittleEndian)
                 readBytes = readBytes.Reverse().ToArray();
 
             return readBytes;
@@ -85,7 +89,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             if ((segment.Data[6] == 73 && segment.Data[7] == 73) || // Intel
                 (segment.Data[6] == 77 && segment.Data[7] == 77)) // Motorola
             {
-                this._isLittleEndian = (segment.Data[6] == 73 && segment.Data[7] == 73);
+                this.IsLittleEndian = (segment.Data[6] == 73 && segment.Data[7] == 73);
                 // Get IFD offset, it's 0x00 00 00 08 if the IFD is located directly after the TIFF header
                 int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(segment.Data, 10, 4));
 
