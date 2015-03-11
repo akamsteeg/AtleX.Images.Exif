@@ -16,7 +16,7 @@ namespace AtleX.Images.Exif.Tests.Readers
 
         public Type GetReaderType()
         {
-            return this.Reader.GetType();
+            return this.InternalReader.GetType();
         }
     }
 }
