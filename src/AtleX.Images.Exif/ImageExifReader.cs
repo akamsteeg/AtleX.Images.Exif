@@ -23,7 +23,7 @@ namespace AtleX.Images.Exif
     /// </remarks>
     public class ImageExifReader : ExifReader
     {           
-        protected ExifReader Reader
+        protected ExifReader InternalReader
         {
             get;
             set;
@@ -75,7 +75,7 @@ namespace AtleX.Images.Exif
         /// <returns>A Dictionary with the tags and the values read from the image</returns>
         public override IEnumerable<ExifValue> GetExifData()
         {
-            IEnumerable<ExifValue> data = this.Reader.GetExifData();
+            IEnumerable<ExifValue> data = this.InternalReader.GetExifData();
 
             return data;
         }
@@ -86,8 +86,8 @@ namespace AtleX.Images.Exif
         /// <param name="imageData"></param>
         protected virtual void Open(Stream imageData)
         {
-            this.Reader = this.CreateReader(imageData);
-            this.CanRead = (this.Reader != null);
+            this.InternalReader = this.CreateReader(imageData);
+            this.CanRead = (this.InternalReader != null);
             if (!this.CanRead)
                 throw new InvalidDataException(Strings.ExceptionUnsupportedImageData);
         }
