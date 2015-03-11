@@ -19,17 +19,7 @@ namespace AtleX.Images.Exif.Tests
         {
             get
             {
-                //return @"..\..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
-                //return @"..\..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6573.jpg";
-                return @"..\..\..\..\Testfiles\Jpeg\Nikon_D3100\mattus82_10709867984.jpg";
-            }
-        }
-
-        public string JpegWithWrongExtension
-        {
-            get
-            {
-                return @"..\..\..\..\Testfiles\Jpeg\Canon_7D\jpegwithwrongextension.gif";
+                return @"..\..\..\..\Testfiles\Jpeg\Canon_7D\IMG_6701.jpg";
             }
         }
 
@@ -41,29 +31,23 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void CreateReaderAndLoadCorrectlyLoadJpegWithWrongExtension()
-        {
-            ExifReader r = new JpegExifReader(OpenAsStream(this.JpegWithWrongExtension));
-            IEnumerable<ExifValue> d = r.GetExifData();
-
-            Assert.IsNotNull(d);
-        }
-
-        [Test]
-        public void CreateReaderAndLoadInvalidFile()
-        {
-            Assert.Throws<InvalidDataException>(
-                () => {  new JpegExifReader(OpenAsStream(this.InvalidFilePng)); }
-                );
-        }
-
-        [Test]
         public void ReadExifFromJpeg()
         {
             ExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
             IEnumerable<ExifValue> d = r.GetExifData();
 
             Assert.IsNotNull(d);
+        }
+
+        public void ReadImageWidth()
+        {
+            ExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
+            IEnumerable<ExifValue> d = r.GetExifData();
+
+            ExifIntegerValue width = d.First(v => v.Field == ExifFieldType.ImageWidth) as ExifIntegerValue;
+
+            Assert.IsNotNull(width);
+            Assert.AreEqual(60, width.Value);
         }
     }
 }

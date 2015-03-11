@@ -13,23 +13,7 @@ namespace AtleX.Images.Exif.Tests
         public abstract string TestImageFileName
         {
             get;
-        }
-
-        public string InvalidFilePng
-        {
-            get
-            {
-                return @"..\..\..\..\Testfiles\Invalid\invalid.png";
-            }
-        }
-
-        public string NonExistantFile
-        {
-            get
-            {
-                return @".\image.unknown";
-            }
-        }
+        }        
 
         public static Stream OpenAsStream(string fileName)
         {
