@@ -44,6 +44,10 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <returns>The read number of bytes</returns>
         protected byte[] ReadBytes(byte[] source, int start, int length)
         {
+            if (start < 0)
+                throw new ArgumentOutOfRangeException("start", Strings.ExceptionValueCanNotBeLessThanZero);
+            if (length < 0)
+                throw new ArgumentOutOfRangeException("length", Strings.ExceptionValueCanNotBeLessThanZero);
             if (source.Length < start + length)
                 throw new ArgumentOutOfRangeException("length", Strings.ExceptionSourceInvalidLength);
 
@@ -60,7 +64,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 readBytes = readBytes.Reverse().ToArray();
 
             return readBytes;
-        }       
+        }
     }
 
     internal class JpegSegmentParserApp1 : JpegSegmentParser
@@ -141,6 +145,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         }
                         break;
                     case 3: // Short (2 bytes, uint16)
+                        {
+                            data = this.ReadBytes(tag, 8, 2);
+
+                            int value = ByteConvertor.ConvertBytesToInt(data);
+                            values.Add(new ExifIntegerValue(currentTag, value));
+                        }
+                        break;
                     case 4: // Long (4 bytes, uint32)
                     case 9: // Slong (4 bytes, int32)
                         {
