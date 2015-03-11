@@ -17,7 +17,7 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Image height
         /// </summary>
-        ImageHeigth = 257,
+        ImageHeight = 257,
 
         /// <summary>
         /// Image title
