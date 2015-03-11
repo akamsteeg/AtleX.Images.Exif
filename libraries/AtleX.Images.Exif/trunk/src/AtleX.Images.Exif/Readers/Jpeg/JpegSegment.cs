@@ -31,7 +31,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
     internal abstract class JpegSegmentParser
     {
-        protected bool _isLittleEndian;
+        protected bool _isLittleEndian; // TODO This doesn't work when we load Big-Endian files :/
 
         public abstract IEnumerable<ExifValue> Parse(RawJpegSegment segment);
 
@@ -55,8 +55,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 j++;
             }
 
+            // We're working with little endiannes only
             if (!this._isLittleEndian)
-                readBytes.Reverse();
+                readBytes = readBytes.Reverse().ToArray();
 
             return readBytes;
         }       
@@ -67,7 +68,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         public override IEnumerable<ExifValue> Parse(RawJpegSegment segment)
         {
             IEnumerable<ExifValue> values = null;
-            bool hasTiff = false;
 
             /* 
              * APP1 starts with 4 bytes (0×45, 0×78, 0×69, 0×66) followed
@@ -77,25 +77,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
              * or 0x4D4D (7777) for Motorola (MM, big endian)
              */
 
-            byte[] header = this.ReadBytes(segment.Data, 0, 14);
-
             // Has TIFF header?
-            if ((header[6] == 73 && header[7] == 73) || // Intel
-                (header[6] == 77 && header[7] == 77)) // Motorola
+            if ((segment.Data[6] == 73 && segment.Data[7] == 73) || // Intel
+                (segment.Data[6] == 77 && segment.Data[7] == 77)) // Motorola
             {
-                hasTiff = true;
-                /*
-                 * After the TIFF header comes an extra indicator for the TIFF 
-                 * header. It's 0x2A00 (4200) for little endian or 0x002A (0042)
-                 * for big endian so we can use it to determine endiannes
-                 */
-                _isLittleEndian = (header[8] == 42 && header[9] == 0);
-            }
-
-            if (hasTiff)
-            {
-                // Get IFD offset, it's 0x00 00 00 08 if the IFD is directly after the TIFF header
-                int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(header, 10, 4));
+                this._isLittleEndian = (segment.Data[6] == 73 && segment.Data[7] == 73);
+                // Get IFD offset, it's 0x00 00 00 08 if the IFD is located directly after the TIFF header
+                int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(segment.Data, 10, 4));
 
                 /* 
                  * Why '6 + ifdOffset'? Because it's counting from the start of the TIFF header at 
