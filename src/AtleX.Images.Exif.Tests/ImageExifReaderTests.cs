@@ -39,7 +39,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void CreateJpegReader()
+        public void CreateJpegReader_Successful()
         {
             TestImageExifReader r = new TestImageExifReader(this.TestImageFileName);
 
@@ -47,7 +47,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void CreateJpegReaderNonExistantFile()
+        public void CreateJpegReaderNonExistantFileThrowsException_Successful()
         {
             Assert.Throws<FileNotFoundException>(
                 () => { new TestImageExifReader(this.NonExistantFile); } 
@@ -55,7 +55,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void CreateJpegReaderInvalidFile()
+        public void CreateJpegReaderInvalidFileThrowsException_Successful()
         {
             Assert.Throws<InvalidDataException>(
                 () => { new TestImageExifReader(this.InvalidFilePng); }
@@ -63,15 +63,15 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void CreateJpegReaderViaStaticCreate()
+        public void CreateJpegReaderViaStaticCreate_Successful()
         {
             ExifReader r = TestImageExifReader.Create(this.TestImageFileName);
 
-            Assert.IsInstanceOf<JpegExifReader>(r);
+            Assert.IsInstanceOf<ImageExifReader>(r);
         }
 
         [Test]
-        public void CreateJpegReaderViaStaticCreateNonExistantFile()
+        public void CreateJpegReaderViaStaticCreateNonExistantFileThrowsException_Successful()
         {
             Assert.Throws<FileNotFoundException>(
                 () => { TestImageExifReader.Create(this.NonExistantFile); }
@@ -79,7 +79,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void CreateJpegReaderViaStaticCreateInvalidFile()
+        public void CreateJpegReaderViaStaticCreateInvalidFileThrowsException_Successful()
         {
             Assert.Throws<InvalidDataException>(
                 () => { TestImageExifReader.Create(this.InvalidFilePng); }
