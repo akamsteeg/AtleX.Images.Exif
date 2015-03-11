@@ -22,6 +22,22 @@ namespace AtleX.Images.Exif.Tests
             }
         }
 
+        public string InvalidFilePng
+        {
+            get
+            {
+                return @"..\..\..\..\Testfiles\Invalid\invalid.png";
+            }
+        }
+
+        public string NonExistantFile
+        {
+            get
+            {
+                return @".\image.unknown";
+            }
+        }
+
         [Test]
         public void CreateJpegReader()
         {
@@ -50,7 +66,8 @@ namespace AtleX.Images.Exif.Tests
         public void CreateJpegReaderViaStaticCreate()
         {
             ExifReader r = TestImageExifReader.Create(this.TestImageFileName);
-            r.GetExifData();
+
+            Assert.IsInstanceOf<JpegExifReader>(r);
         }
 
         [Test]
