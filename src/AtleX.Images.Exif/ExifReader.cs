@@ -9,7 +9,7 @@ namespace AtleX.Images.Exif
     /// Read exif data from an image
     /// </summary>
     /// <remarks>
-    /// This is a base class for all readers
+    /// This is the base class for all readers
     /// </remarks>
     public abstract class ExifReader : IDisposable
     {
@@ -19,6 +19,13 @@ namespace AtleX.Images.Exif
             set;
         }
 
+        /// <summary>
+        /// Is true when the ExifReader can read data from the image, false otherwise
+        /// </summary>
+        /// <remarks>
+        /// GetExifData() must check the value of CanRead. It should throw an error
+        /// when CanRead is false
+        /// </remarks>
         protected bool CanRead
         {
             get;
