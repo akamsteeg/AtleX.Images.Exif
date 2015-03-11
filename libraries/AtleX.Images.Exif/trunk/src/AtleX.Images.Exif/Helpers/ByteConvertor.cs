@@ -22,9 +22,13 @@ namespace AtleX.Images.Exif.Helpers
             int result;
 
             if (value.Length == 2) // TODO: Determine unsigned or signed int
-                result = BitConverter.ToUInt16(value, 0);
+            {
+                result = value[0] | (value[1] << 8);
+            }
             else // Implies 4 bytes
-                result = BitConverter.ToInt32(value, 0);
+            {
+                result = value[0] | (value[1] << 8) | (value[2] << 16) | (value[3] << 24);
+            }
 
             return result;
         }
