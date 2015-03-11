@@ -10,9 +10,17 @@ using System.IO;
 namespace AtleX.Images.Exif
 {
     /// <summary>
-    /// Reads EXIF from a supported file
+    /// Reads EXIF data from a supported file
     /// </summary>
-    /// <remarks>This reader acts as a factory for file-specific readers</remarks>
+    /// <remarks>
+    /// This reader acts as a factory for file-specific readers. It determines
+    /// the file type of the image and instantiates the correct type-specific
+    /// reader. 
+    /// 
+    /// Just like the type-specific readers it implements ExifReader, so its
+    /// public signature is the same. This makes it interchangeable with 
+    /// manually instantiating type-specific readers.
+    /// </remarks>
     public class ImageExifReader : ExifReader
     {           
         protected ExifReader Reader
@@ -21,6 +29,11 @@ namespace AtleX.Images.Exif
             set;
         }
 
+        /// <summary>
+        /// Instantiates a reader and loads the image
+        /// </summary>
+        /// <param name="imageFileName"></param>
+        /// <returns></returns>
         public static ExifReader Create(string imageFileName)
         {
             ExifReader r = new ImageExifReader(imageFileName);
@@ -37,7 +50,7 @@ namespace AtleX.Images.Exif
             if (string.IsNullOrEmpty(imageFileName))
                 throw new ArgumentNullException("imageFileName");
             if (!File.Exists(imageFileName))
-                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, imageFileName));         
+                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, imageFileName));
 
             FileStream fs = new FileStream(imageFileName, FileMode.Open, FileAccess.Read);
             this.Open(fs);
@@ -71,9 +84,9 @@ namespace AtleX.Images.Exif
         /// Create a reader based on the contents of the Stream
         /// </summary>
         /// <param name="imageData"></param>
-        private void Open(Stream imageData)
+        protected virtual void Open(Stream imageData)
         {
-            this.Reader = CreateReader(imageData);
+            this.Reader = this.CreateReader(imageData);
             this.CanRead = (this.Reader != null);
             if (!this.CanRead)
                 throw new InvalidDataException(Strings.ExceptionUnsupportedImageData);
@@ -85,7 +98,7 @@ namespace AtleX.Images.Exif
         /// </summary>
         /// <param name="imageData"></param>
         /// <returns></returns>
-        private static ExifReader CreateReader(Stream imageData)
+        protected virtual ExifReader CreateReader(Stream imageData)
         {
             ExifReader readerToUse = null;
 
