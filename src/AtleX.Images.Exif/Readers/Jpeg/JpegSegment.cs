@@ -147,7 +147,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
                             // TODO: Find out and document why the -8 has to happen?
                             data = this.ReadBytes(tiffData, dataOffset - 8, count);
-                            string value = ByteConvertor.ConvertBytesToString(data);
+                            string value = ByteConvertor.ConvertBytesToASCIIString(data);
 
                             values.Add(new ExifStringValue(currentTag, value));
                         }

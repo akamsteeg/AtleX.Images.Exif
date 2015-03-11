@@ -34,7 +34,7 @@ namespace AtleX.Images.Exif.Helpers
         /// </summary>
         /// <param name="value">Byte array to convert to a string</param>
         /// <returns></returns>
-        public static string ConvertBytesToString(byte[] value)
+        public static string ConvertBytesToASCIIString(byte[] value)
         {
             if (value == null)
                 throw new ArgumentNullException("value");
