@@ -61,6 +61,15 @@ namespace AtleX.Images.Exif {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not read from the stream.
+        /// </summary>
+        internal static string ExceptionCanNotReadFromStream {
+            get {
+                return ResourceManager.GetString("ExceptionCanNotReadFromStream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An integer is either 2 or 4 bytes long.
         /// </summary>
         internal static string ExceptionCantConvertBytesToInteger {
