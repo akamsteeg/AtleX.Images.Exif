@@ -132,5 +132,14 @@ namespace AtleX.Images.Exif
 
             return readerToUse;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                this.InternalReader.Dispose();
+            }
+        }
     }
 }
