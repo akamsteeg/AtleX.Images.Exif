@@ -14,20 +14,20 @@ namespace AtleX.Images.Exif.Helpers
     public static class FileTypeHelper
     {
         /// <summary>
-        /// Determines and returns the file type of the specified file
+        /// Determines and returns the file type of the specified file.
         /// </summary>
-        /// <remarks>This is not a lazy extension-check but it reads the magic numbers at the beginning of the file</remarks>
-        /// <param name="fileName"></param>
+        /// <see cref="DetermineFileType(Stream fileContents)"/>
+        /// <param name="path">A relative or absolute path for the file</param>
         /// <returns></returns>
-        public static ImageFileType DetermineFileType(string fileName)
+        public static ImageFileType DetermineFileType(string path)
         {
-            if (string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("fileName");
-            if (!File.Exists(fileName))
-                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, fileName));  
+            if (!File.Exists(path))
+                throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, path));
 
             ImageFileType result = ImageFileType.Unknown;
-            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
                 result = FileTypeHelper.DetermineFileType(stream);
             }
@@ -35,10 +35,22 @@ namespace AtleX.Images.Exif.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Determines and returns the file type of the specified file
+        /// </summary>
+        /// <remarks>
+        /// This is not a lazy extension-check but it reads the magic numbers at the beginning 
+        /// of the file. It currently only supports JPEG, but that's enough for the this library
+        /// and for the time being.
+        /// </remarks>
+        /// <param name="fileContents"></param>
+        /// <returns></returns>
         public static ImageFileType DetermineFileType(Stream fileContents)
         {
             if (fileContents == null)
                 throw new ArgumentNullException("fileContents");
+            if (!fileContents.CanRead)
+                throw new ArgumentException(Strings.ExceptionCanNotReadFromStream, "fileContents");
 
             ImageFileType result = ImageFileType.Unknown;
             BinaryReader bReader = new BinaryReader(fileContents, new ASCIIEncoding());
@@ -61,7 +73,11 @@ namespace AtleX.Images.Exif.Helpers
                 result = ImageFileType.Jpeg;
             }
 
-            fileContents.Seek(0, SeekOrigin.Begin); // Reset the stream to avoid problems in calling methods
+            if (fileContents.CanSeek)
+            {
+                // Reset the stream to avoid problems in calling methods
+                fileContents.Seek(0, SeekOrigin.Begin);
+            }
 
             return result;
         }
