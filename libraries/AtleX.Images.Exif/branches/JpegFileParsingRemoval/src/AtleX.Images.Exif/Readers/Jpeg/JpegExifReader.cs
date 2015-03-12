@@ -36,7 +36,10 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <summary>
         /// Read and returns the EXIF info (if any) from the image
         /// </summary>
-        /// <returns>A Dictionary with the tags and the values read from the image</returns>
+        /// <returns>A collection with the tags and the values read from the image</returns>
+        /// <remarks>
+        /// Every time this gets called the data is read again from the image.
+        /// </remarks>
         public override IEnumerable<ExifValue> GetExifData()
         {
             if (!this.CanRead)
@@ -57,8 +60,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <summary>
         /// Parse the file header into segments
         /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
+        /// <param name="reader">A <see cref="BinaryReader"/> object raw image data</param>
+        /// <returns>A byte-array with the raw Exif/IPTC data when the image has this, null otherwise</returns>
         private byte[] GetRawIptcData(BinaryReader reader)
         {
             if (reader == null)
@@ -134,12 +137,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             (segmentData[6] == 77 && segmentData[7] == 77)) // Motorola
                         {
                             this._isLittleEndian = (segmentData[6] == 73 && segmentData[7] == 73);
+
                             // Get IFD offset, it's 0x00 00 00 08 if the IFD is located directly after the TIFF header
                             int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(segmentData, 10, 4));
 
                             /* 
                              * Why '6 + ifdOffset'? Because it's counting from the start of the TIFF header at 
-                             * positions 6 & 7
+                             * positions 6 & 7 in the segment data.
                              */
                             byte[] tiffData = this.ReadBytes(segmentData, 6 + ifdOffset, segmentData.Length - ifdOffset - 6);
 
@@ -155,8 +159,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <summary>
         /// Read the TIFF (EXIF) values from the data
         /// </summary>
-        /// <param name="app1Data"></param>
-        /// <returns></returns>
+        /// <param name="app1Data">The raw contents of the App1 segment</param>
+        /// <returns>A collection with the tags and the values read from the image</returns>
         private IEnumerable<ExifValue> ParseExif(byte[] app1Data)
         {
             List<ExifValue> values = new List<ExifValue>();
@@ -253,11 +257,12 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             if (source.Length < start + length)
                 throw new ArgumentOutOfRangeException("length", Strings.ExceptionSourceInvalidLength);
 
-            byte[] readBytes = new byte[length];
+            byte[] result = new byte[length];
+
             int j = 0;
             for (int i = start; i < start + length; i++)
             {
-                readBytes[j] = source[i];
+                result[j] = source[i];
                 j++;
             }
 
@@ -268,7 +273,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                // readBytes = readBytes.Reverse().ToArray();
             }
 
-            return readBytes;
+            return result;
         }
     }
 }
