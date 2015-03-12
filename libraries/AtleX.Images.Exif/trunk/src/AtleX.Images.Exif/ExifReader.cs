@@ -9,7 +9,10 @@ namespace AtleX.Images.Exif
     /// Read exif data from an image
     /// </summary>
     /// <remarks>
-    /// This is the base class for all readers
+    /// This is the base class for all readers. It assures a common
+    /// api for them without restricting ourselves to an
+    /// IExifReader interface that can never change in the future
+    /// without breaking existing implementations.
     /// </remarks>
     public abstract class ExifReader : IDisposable
     {
@@ -20,11 +23,12 @@ namespace AtleX.Images.Exif
         }
 
         /// <summary>
-        /// Is true when the ExifReader can read data from the image, false otherwise
+        /// Is true when the ExifReader can read data from the image, false 
+        /// otherwise
         /// </summary>
         /// <remarks>
-        /// GetExifData() must check the value of CanRead. It should throw an error
-        /// when CanRead is false
+        /// GetExifData() must check the value of CanRead. It should throw an 
+        /// error when CanRead is false
         /// </remarks>
         protected bool CanRead
         {
@@ -35,10 +39,13 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Read and returns the EXIF info (if any) from the image
         /// </summary>
-        /// <returns>A Dictionary with the tags and the values read from the image</returns>
+        /// <returns>A collection with the tags and the values read from the image</returns>
         public abstract IEnumerable<ExifValue> GetExifData();
     
-        public virtual void Dispose()
+        /// <summary>
+        /// Release all resources used by this instance
+        /// </summary>
+        public void Dispose()
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
