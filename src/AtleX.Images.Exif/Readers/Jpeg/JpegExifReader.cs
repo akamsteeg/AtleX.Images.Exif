@@ -163,12 +163,25 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <returns>A collection with the tags and the values read from the image</returns>
         private IEnumerable<ExifValue> ParseExif(byte[] app1Data)
         {
-            List<ExifValue> values = new List<ExifValue>();
             /*
              * The two first bytes of the App1 segment are indicating
              * how many Exif/IPTC entries there are.
              */
             int numberOfEntries = ByteConvertor.ConvertBytesToInt(this.ReadBytes(app1Data, 0, 2));
+
+            /*
+             * Typically the number of Exif values will be the same or more
+             * than the total number of Exif/IPTC entries in the segment. The
+             * documentation(https://msdn.microsoft.com/en-us/library/4kf43ys3.aspx)
+             * states that when a new list is instantiated with the parameterless
+             * constructor the default capacity is 0. 
+             * 
+             * Because we'll almost always store data in the list there's no
+             * point in starting with a zero-capacity list. Adding data would
+             * case growth, and growth causes copying data from the internal
+             * array of the list.
+             */
+            List<ExifValue> values = new List<ExifValue>(numberOfEntries);
 
             for (int i = 0; i < numberOfEntries; i++)
             {
