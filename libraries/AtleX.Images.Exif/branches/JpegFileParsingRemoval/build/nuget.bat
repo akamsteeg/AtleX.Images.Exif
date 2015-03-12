@@ -1,1 +1,0 @@
-nuget.exe pack AtleX.Images.Exif.nuspec -Prop Configuration=Release
