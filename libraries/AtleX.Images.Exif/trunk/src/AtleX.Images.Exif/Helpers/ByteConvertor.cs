@@ -7,7 +7,7 @@ namespace AtleX.Images.Exif.Helpers
     public static class ByteConvertor
     {
         /// <summary>
-        /// Convert a 2 or 4 bytes long array to an integer
+        /// Convert a 2 or 4 bytes long array to a 16 or 32 bits integer
         /// </summary>
         /// <param name="value">A 2 or 4 bytes long array</param>
         /// <exception cref="ArgumentException">Thrown when there are less than 2 or more than 4 bytes in the parameter</exception>
