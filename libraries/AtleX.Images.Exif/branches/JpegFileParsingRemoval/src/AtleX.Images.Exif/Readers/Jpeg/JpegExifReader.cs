@@ -48,7 +48,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             {
                 byte[] tiffData = this.GetRawIptcData(bReader);
 
-                values = this.ReadTiff(tiffData);
+                values = this.ParseExif(tiffData);
             }
 
             return values;
@@ -155,18 +155,26 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <summary>
         /// Read the TIFF (EXIF) values from the data
         /// </summary>
-        /// <param name="tiffData"></param>
+        /// <param name="app1Data"></param>
         /// <returns></returns>
-        private IEnumerable<ExifValue> ReadTiff(byte[] tiffData)
+        private IEnumerable<ExifValue> ParseExif(byte[] app1Data)
         {
             List<ExifValue> values = new List<ExifValue>();
-            int numberOfEntries = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tiffData, 0, 2));
+            /*
+             * The two first bytes of the App1 segment are indicating
+             * how many Exif/IPTC entries there are.
+             */
+            int numberOfEntries = ByteConvertor.ConvertBytesToInt(this.ReadBytes(app1Data, 0, 2));
 
             for (int i = 0; i < numberOfEntries; i++)
             {
+                /*
+                 * Tags are 12 bytes long. The first two indicate the tag, the next
+                 * two the content type and the final four the data, or a pointer
+                 * to the data
+                 */
                 // TODO: Why '2+...'?
-                // Segments are 12 bytes long
-                byte[] tag = this.ReadBytes(tiffData, 2 + (i * 12), 12);
+                byte[] tag = this.ReadBytes(app1Data, 2 + (i * 12), 12);
 
                 int tagType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 0, 2));
                 int contentType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 2, 2));
@@ -189,7 +197,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         {
                             int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
                             // TODO: Find out and document why the -8 has to happen?
-                            data = this.ReadBytes(tiffData, dataOffset - 8, count);
+                            data = this.ReadBytes(app1Data, dataOffset - 8, count);
                             string value = ByteConvertor.ConvertBytesToASCIIString(data);
 
                             values.Add(new ExifStringValue(currentTag, value));
@@ -232,6 +240,10 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <param name="start">The starting position in the source</param>
         /// <param name="length">The number of bytes to read</param>
         /// <returns>The read number of bytes</returns>
+        /// <remarks>
+        /// This can propably be done a lot more efficiently
+        /// instead of copying values in a loop.
+        /// </remarks>
         protected byte[] ReadBytes(byte[] source, int start, int length)
         {
             if (start < 0)
