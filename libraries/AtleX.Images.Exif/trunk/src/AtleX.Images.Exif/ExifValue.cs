@@ -50,17 +50,17 @@ namespace AtleX.Images.Exif
         /// </summary>
         /// <typeparam name="T">The type where to cast the value to</typeparam>
         /// <returns>The value of this <see cref="ExifValue"/> as T, or null if the cast fails</returns>
-        public T GetValue<T>() where T: class
+        public T GetValue<T>()
         {
-            T result = null;
+            T result = default(T);
 
             if (typeof(T) == typeof(string))
             {
-                result = this.Value.ToString() as T;
+                result = (T)(object)this.Value.ToString(); // HACK!
             }
             else
             {
-                result = this.Value as T;
+                result = (T)this.Value;
             }
 
             return result;
