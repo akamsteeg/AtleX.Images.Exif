@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExifValueTests.cs" />
     <Compile Include="JpegExifReaderTests.cs" />
     <Compile Include="ImageExifReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
