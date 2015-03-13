@@ -50,9 +50,20 @@ namespace AtleX.Images.Exif
         /// </summary>
         /// <typeparam name="T">The type where to cast the value to</typeparam>
         /// <returns>The value of this <see cref="ExifValue"/> as T, or null if the cast fails</returns>
-        public T GetValue<T>() where T: class, new()
+        public T GetValue<T>() where T: class
         {
-            return Value as T;
+            T result = null;
+
+            if (typeof(T) == typeof(string))
+            {
+                result = this.Value.ToString() as T;
+            }
+            else
+            {
+                result = this.Value as T;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -61,7 +72,7 @@ namespace AtleX.Images.Exif
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("{0} - {1}", Field, Value as string);
+            return string.Format("{0} - {1}", Field, this.GetValue<string>());
         }
 
         /// <summary>
