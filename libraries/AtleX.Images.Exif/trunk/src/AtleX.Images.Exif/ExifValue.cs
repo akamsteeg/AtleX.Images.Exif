@@ -38,15 +38,18 @@ namespace AtleX.Images.Exif
         /// <param name="value">The value of the field</param>
         public ExifValue(ExifFieldType field, object value)
         {
+            if (value == null)
+                throw new ArgumentNullException("value");
+
             _field = field;
             _value = value;
         }
 
         /// <summary>
-        /// Gets the value of the field, cast to type T
+        /// Gets the value of the field
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">The type where to cast the value to</typeparam>
+        /// <returns>The value of this <see cref="ExifValue"/> as T, or null if the cast fails</returns>
         public T GetValue<T>() where T: class, new()
         {
             return Value as T;
