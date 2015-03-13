@@ -31,30 +31,5 @@ namespace AtleX.Images.Exif.Tests
             ExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
             Assert.IsTrue(r is JpegExifReader);
         }
-
-        [Test]
-        public void ReadExifFromJpeg_Successful()
-        {
-            ExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
-            IEnumerable<ExifValue> d = r.GetExifData();
-
-            Assert.IsNotNull(d);
-        }
-
-        [Test]
-        public void ReadImageDimensions_Successful()
-        {
-            ExifReader r = new JpegExifReader(OpenAsStream(this.TestImageFileName));
-            IEnumerable<ExifValue> d = r.GetExifData();
-
-            ExifIntegerValue width = d.First(v => v.Field == ExifFieldType.ImageWidth) as ExifIntegerValue;
-            ExifIntegerValue height = d.First(v => v.Field == ExifFieldType.ImageHeight) as ExifIntegerValue;
-
-            Assert.IsNotNull(width);
-            Assert.AreEqual(60, width.Value);
-
-            Assert.IsNotNull(height);
-            Assert.AreEqual(40, height.Value);
-        }
     }
 }
