@@ -1,5 +1,4 @@
-﻿using AtleX.Images.Exif.Data;
-using AtleX.Images.Exif.Helpers;
+﻿using AtleX.Images.Exif.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -230,7 +229,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             data = this.ReadBytes(tag, 8, 4);
 
                             byte value = data[0];
-                            values.Add(new ExifByteValue(currentTag, value));
+                            values.Add(new ExifValue(currentTag, value));
                         }
                         break;
                     case 2: // ASCII
@@ -240,7 +239,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             data = this.ReadBytes(app1Data, dataOffset - 8, count);
                             string value = ByteConvertor.ConvertBytesToASCIIString(data);
 
-                            values.Add(new ExifStringValue(currentTag, value));
+                            values.Add(new ExifValue(currentTag, value));
                         }
                         break;
                     case 3: // Short (2 bytes, uint16)
@@ -248,7 +247,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             data = this.ReadBytes(tag, 8, 2);
 
                             int value = ByteConvertor.ConvertBytesToInt(data);
-                            values.Add(new ExifIntegerValue(currentTag, value));
+                            values.Add(new ExifValue(currentTag, value));
                         }
                         break;
                     case 4: // Long (4 bytes, uint32)
@@ -257,7 +256,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             data = this.ReadBytes(tag, 8, 4);
 
                             int value = ByteConvertor.ConvertBytesToInt(data);
-                            values.Add(new ExifIntegerValue(currentTag, value));
+                            values.Add(new ExifValue(currentTag, value));
                         }
                         break;
                     case 5: // Rational (two Longs, first one is the nominator, second is the denominator)
