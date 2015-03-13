@@ -8,7 +8,7 @@ using AtleX.Images.Exif.Tests.Readers;
 using NUnit.Framework;
 using System.IO;
 
-namespace AtleX.Images.Exif.Tests
+namespace AtleX.Images.Exif.Tests.Readers
 {
     [TestFixture]
     public class ImageExifReaderTests
