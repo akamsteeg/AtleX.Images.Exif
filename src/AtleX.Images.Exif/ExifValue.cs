@@ -56,7 +56,7 @@ namespace AtleX.Images.Exif
         }
 
         /// <summary>
-        /// 
+        /// Returns a string representation of this <see cref="ExifValue"/>
         /// </summary>
         /// <returns></returns>
         public override string ToString()
@@ -65,10 +65,10 @@ namespace AtleX.Images.Exif
         }
 
         /// <summary>
-        /// Compares two <see cref="ExifValue"/> for equality
+        /// Compares this <see cref="ExifValue"/> with the specified one for equality
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">The other <see cref="ExifValue"/> to compare this one with</param>
+        /// <returns>True if the other <see cref="ExifValue"/> is equal to this one, false otherwise</returns>
         public bool Equals(ExifValue other)
         {
             bool result = false;
