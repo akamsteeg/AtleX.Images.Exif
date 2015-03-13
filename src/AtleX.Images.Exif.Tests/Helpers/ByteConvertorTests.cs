@@ -40,7 +40,7 @@ namespace AtleX.Images.Exif.Tests.Helpers
         [Test]
         public void ConvertByteArrayToASCIIString_Successful()
         {
-            byte[] input = new byte[] { 0x45, 0x78, 0x69, 0x66 };
+            byte[] input = new byte[] { 69, 120, 105, 102, 0 };
 
             string output = ByteConvertor.ConvertBytesToASCIIString(input);
 
