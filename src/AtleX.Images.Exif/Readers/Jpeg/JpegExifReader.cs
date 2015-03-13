@@ -14,6 +14,12 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     /// </summary>
     public class JpegExifReader : ExifReader
     {
+        protected Stream ImageDataStream
+        {
+            get;
+            set;
+        }
+
         private bool _isLittleEndian; // TODO This doesn't work when we load Big-Endian files :/
 
         public JpegExifReader(Stream imageDataStream)
@@ -47,7 +53,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
             IEnumerable<ExifValue> values = null;
 
-            using (BinaryReader bReader = new BinaryReader(this.ImageDataStream, new ASCIIEncoding()))
+            /* 
+             * Reset the stream to the beginning to avoid exceptions
+             * when reading data from the same reader twice.
+             */
+            this.ImageDataStream.Seek(0, SeekOrigin.Begin);
+
+            using (BinaryReader bReader = new BinaryReader(this.ImageDataStream, new ASCIIEncoding(), true))
             {
                 byte[] tiffData = this.GetRawIptcData(bReader);
 
@@ -258,7 +270,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <param name="length">The number of bytes to read</param>
         /// <returns>The read number of bytes</returns>
         /// <remarks>
-        /// This can propably be done a lot more efficiently
+        /// This can probably be done a lot more efficiently
         /// instead of copying values in a loop.
         /// </remarks>
         protected byte[] ReadBytes(byte[] source, int start, int length)
@@ -287,6 +299,18 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             }
 
             return result;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.ImageDataStream != null)
+                {
+                    this.ImageDataStream.Dispose();
+                    this.ImageDataStream = null;
+                }
+            }
         }
     }
 }
