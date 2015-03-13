@@ -18,7 +18,7 @@ namespace AtleX.Images.Exif.Helpers
         {
             if (value == null)
                 throw new ArgumentNullException("value");
-            if (value.Length < 2 || value.Length > 4)
+            if (value.Length != 2 && value.Length != 4)
                 throw new ArgumentException(Strings.ExceptionCantConvertBytesToInteger, "value");
 
             if (!treatAsLittleEndian)
@@ -44,7 +44,12 @@ namespace AtleX.Images.Exif.Helpers
         /// Converts a byte array to a ASCII string
         /// </summary>
         /// <param name="value">Byte array to convert to a string</param>
-        /// <returns></returns>
+        /// <returns>
+        /// The converted string, or an empty string when no null-terminator 
+        /// was found in the byte array
+        /// </returns>
+        /// <remarks>
+        /// </remarks>
         public static string ConvertBytesToASCIIString(byte[] value)
         {
             if (value == null)
