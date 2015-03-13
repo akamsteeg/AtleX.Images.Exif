@@ -49,7 +49,7 @@ namespace AtleX.Images.Exif
         /// Gets the value of the field
         /// </summary>
         /// <typeparam name="T">The type where to cast the value to</typeparam>
-        /// <returns>The value of this <see cref="ExifValue"/> as T, or null if the cast fails</returns>
+        /// <returns>The value of this <see cref="ExifValue"/> as T</returns>
         public T GetValue<T>()
         {
             T result = default(T);
