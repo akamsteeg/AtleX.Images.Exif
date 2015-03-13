@@ -137,7 +137,11 @@ namespace AtleX.Images.Exif
             base.Dispose(disposing);
             if (disposing)
             {
-                this.InternalReader.Dispose();
+                if (this.InternalReader != null)
+                {
+                    this.InternalReader.Dispose();
+                    this.InternalReader = null;
+                }
             }
         }
     }
