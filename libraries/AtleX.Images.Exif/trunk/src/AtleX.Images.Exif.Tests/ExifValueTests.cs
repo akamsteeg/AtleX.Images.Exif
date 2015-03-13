@@ -17,7 +17,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void ToStringWithFieldAndValue([Values("Alex", 0, 0.1, true)] object value)
+        public void ToStringWithFieldAndValue_Successful([Values("Alex", 0, 0.1, true)] object value)
         {
             ExifValue ev = new ExifValue(ExifFieldType.Artist, value);
 
@@ -27,7 +27,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test, Sequential]
-        public void StorePrimitiveObjectsAndGetValueAsString([Values("Alex", 0, 0.1, true)] object value)
+        public void StorePrimitiveObjectsAndGetValueAsString_Successful([Values("Alex", 0, 0.1, true)] object value)
         {
             ExifValue ev = new ExifValue(ExifFieldType.Artist, value);
 
@@ -35,7 +35,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void StoreDateTimeAndGetValueAsString()
+        public void StoreDateTimeAndGetValueAsString_Successful()
         {
             DateTime dt = new DateTime(1986, 7, 8, 19, 30, 0);
 
@@ -45,7 +45,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void StoreDateTimeAndGetValueAsDateTime()
+        public void StoreDateTimeAndGetValueAsDateTime_Successful()
         {
             DateTime dt = new DateTime(1986, 7, 8, 19, 30, 0);
 
