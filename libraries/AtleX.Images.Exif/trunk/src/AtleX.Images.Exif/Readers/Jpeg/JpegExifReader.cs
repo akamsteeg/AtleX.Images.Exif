@@ -59,6 +59,17 @@ namespace AtleX.Images.Exif.Readers.Jpeg
              */
             this.ImageDataStream.Seek(0, SeekOrigin.Begin);
 
+            /*
+             * Use a BinaryReader to read from the Stream with image data
+             * and dispose it when we're done, but leave the Stream open.
+             * 
+             * Closing the Stream would cause problems when reading data
+             * from the same image twice, because you can't read from a
+             * closed/disposed Stream.
+             * 
+             * The Stream gets closed and disposed when the reader is disposed
+             * to clean-up all used resources.
+             */
             using (BinaryReader bReader = new BinaryReader(this.ImageDataStream, new ASCIIEncoding(), true))
             {
                 byte[] tiffData = this.GetRawIptcData(bReader);
@@ -74,7 +85,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// </summary>
         /// <param name="reader">A <see cref="BinaryReader"/> object raw image data</param>
         /// <returns>A byte-array with the raw Exif/IPTC data when the image has this, null otherwise</returns>
-        private byte[] GetRawIptcData(BinaryReader reader)
+        protected virtual byte[] GetRawIptcData(BinaryReader reader)
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
@@ -173,7 +184,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// </summary>
         /// <param name="app1Data">The raw contents of the App1 segment</param>
         /// <returns>A collection with the tags and the values read from the image</returns>
-        private IEnumerable<ExifValue> ParseExif(byte[] app1Data)
+        protected virtual IEnumerable<ExifValue> ParseExif(byte[] app1Data)
         {
             /*
              * The two first bytes of the App1 segment are indicating
@@ -273,7 +284,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// This can probably be done a lot more efficiently
         /// instead of copying values in a loop.
         /// </remarks>
-        protected byte[] ReadBytes(byte[] source, int start, int length)
+        private byte[] ReadBytes(byte[] source, int start, int length)
         {
             if (start < 0)
                 throw new ArgumentOutOfRangeException("start", Strings.ExceptionValueCanNotBeLessThanZero);
