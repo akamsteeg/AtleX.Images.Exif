@@ -11,7 +11,7 @@ namespace AtleX.Images.Exif
     /// Represents an Exif/IPTC value
     /// </summary>
     [DebuggerDisplay("{Field} - {Value}")]
-    public struct ExifValue
+    public struct ExifValue : IEquatable<ExifValue>
     {
         private ExifFieldType _field;
         /// <summary>
@@ -62,6 +62,23 @@ namespace AtleX.Images.Exif
         public override string ToString()
         {
             return string.Format("{0} - {1}", Field, Value as string);
+        }
+
+        /// <summary>
+        /// Compares two <see cref="ExifValue"/> for equality
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals(ExifValue other)
+        {
+            bool result = false;
+
+            if (this.Field == other.Field && this.Value == other.Value)
+            {
+                result = true;
+            }
+
+            return result;
         }
     }
 }
