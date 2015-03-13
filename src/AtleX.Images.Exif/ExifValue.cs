@@ -73,7 +73,7 @@ namespace AtleX.Images.Exif
         {
             bool result = false;
 
-            if (this.Field == other.Field && this.Value == other.Value)
+            if (this.Field == other.Field && this.Value.Equals(other.Value))
             {
                 result = true;
             }
