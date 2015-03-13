@@ -58,7 +58,7 @@ namespace AtleX.Images.Exif
         /// <param name="imageFileName">A valid filename of an image</param>
         public ImageExifReader(string imageFileName)
         {
-            if (string.IsNullOrEmpty(imageFileName))
+            if (string.IsNullOrWhiteSpace(imageFileName))
                 throw new ArgumentNullException("imageFileName");
             if (!File.Exists(imageFileName))
                 throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, imageFileName));

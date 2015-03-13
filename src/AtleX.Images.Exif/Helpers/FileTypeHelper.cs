@@ -21,7 +21,7 @@ namespace AtleX.Images.Exif.Helpers
         /// <returns></returns>
         public static ImageFileType DetermineFileType(string path)
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentNullException("fileName");
             if (!File.Exists(path))
                 throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, path));
