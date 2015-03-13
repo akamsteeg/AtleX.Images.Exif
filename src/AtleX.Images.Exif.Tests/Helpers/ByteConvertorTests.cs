@@ -38,9 +38,48 @@ namespace AtleX.Images.Exif.Tests.Helpers
         }
 
         [Test]
+        public void ConvertInvalidLengthByteArrayToInt_Throws()
+        {
+            // 1 byte
+            Assert.Throws<ArgumentException>(() =>
+                    { ByteConvertor.ConvertBytesToInt(new byte[] { 0 }); }
+                );
+
+            // 3 bytes
+            Assert.Throws<ArgumentException>(() =>
+                    { ByteConvertor.ConvertBytesToInt(new byte[] { 0, 0, 0 }); }
+                );
+
+            // 5 bytes
+            Assert.Throws<ArgumentException>(() =>
+                    { ByteConvertor.ConvertBytesToInt(new byte[] { 0, 0, 0, 0, 0 }); }
+                );
+        }
+
+        [Test]
         public void ConvertByteArrayToASCIIString_Successful()
         {
             byte[] input = new byte[] { 69, 120, 105, 102, 0 };
+
+            string output = ByteConvertor.ConvertBytesToASCIIString(input);
+
+            Assert.AreEqual("Exif", output);
+        }
+
+        [Test]
+        public void ByteArrayWithoutNullByteToString_Successful()
+        {
+            byte[] input = new byte[] { 69, 120, 105, 102 };
+
+            string output = ByteConvertor.ConvertBytesToASCIIString(input);
+
+            Assert.AreEqual("", output);
+        }
+
+        [Test]
+        public void DataAfterNullByteIgnored_Successful()
+        {
+            byte[] input = new byte[] { 69, 120, 105, 102, 0, 65 };
 
             string output = ByteConvertor.ConvertBytesToASCIIString(input);
 
