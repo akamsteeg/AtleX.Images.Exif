@@ -11,9 +11,9 @@ using System.IO;
 namespace AtleX.Images.Exif.Tests
 {
     [TestFixture]
-    public class ImageExifReaderTests : TestsBase
+    public class ImageExifReaderTests
     {
-        public override string TestImageFileName
+        public string TestImageFileName
         {
             get
             {

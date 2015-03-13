@@ -1,5 +1,4 @@
-﻿using AtleX.Images.Exif.Data;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif.Tests
 {
-    public abstract class TestsBase
+    public abstract class ExifReaderTestsBase
     {
         public abstract string TestImageFileName
         {
@@ -38,8 +37,8 @@ namespace AtleX.Images.Exif.Tests
             ExifReader r = new ImageExifReader(OpenAsStream(this.TestImageFileName));
             IEnumerable<ExifValue> d = r.GetExifData();
 
-            ExifIntegerValue width = d.First(v => v.Field == ExifFieldType.ImageWidth) as ExifIntegerValue;
-            ExifIntegerValue height = d.First(v => v.Field == ExifFieldType.ImageHeight) as ExifIntegerValue;
+            ExifValue width = d.First(v => v.Field == ExifFieldType.ImageWidth);
+            ExifValue height = d.First(v => v.Field == ExifFieldType.ImageHeight);
 
             Assert.IsNotNull(width);
             Assert.AreEqual(60, width.Value);
@@ -56,7 +55,7 @@ namespace AtleX.Images.Exif.Tests
             IEnumerable<ExifValue> d1 = r.GetExifData();
             IEnumerable<ExifValue> d2 = r.GetExifData();
 
-            Assert.AreEqual(d1.Count(), d2.Count());
+            Assert.AreEqual(d1, d2);
         }
     }
 }

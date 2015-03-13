@@ -1,5 +1,4 @@
-﻿using AtleX.Images.Exif.Data;
-using AtleX.Images.Exif.Helpers;
+﻿using AtleX.Images.Exif.Helpers;
 using AtleX.Images.Exif.Readers;
 using AtleX.Images.Exif.Readers.Jpeg;
 using System;

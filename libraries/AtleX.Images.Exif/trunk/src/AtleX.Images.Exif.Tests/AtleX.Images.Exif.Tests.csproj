@@ -48,7 +48,7 @@
     <Compile Include="ImageExifReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Readers\TestImageExifReader.cs" />
-    <Compile Include="TestsBase.cs" />
+    <Compile Include="ExifReaderTestsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AtleX.Images.Exif\AtleX.Images.Exif.csproj">

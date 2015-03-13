@@ -1,5 +1,4 @@
 ﻿using AtleX.Images.Exif;
-using AtleX.Images.Exif.Data;
 using AtleX.Images.Exif.Readers;
 using AtleX.Images.Exif.Readers.Jpeg;
 using NUnit.Framework;
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 namespace AtleX.Images.Exif.Tests
 {
     [TestFixture]
-    public class JpegExifReaderTests : TestsBase
+    public class JpegExifReaderTests : ExifReaderTestsBase
     {
         public override string TestImageFileName
         {
