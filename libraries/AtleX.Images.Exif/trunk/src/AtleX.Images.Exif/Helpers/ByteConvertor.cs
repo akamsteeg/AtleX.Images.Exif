@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Text;
+using System.Linq;
 
 namespace AtleX.Images.Exif.Helpers
 {
@@ -12,12 +13,17 @@ namespace AtleX.Images.Exif.Helpers
         /// <param name="value">A 2 or 4 bytes long array</param>
         /// <exception cref="ArgumentException">Thrown when there are less than 2 or more than 4 bytes in the parameter</exception>
         /// <returns></returns>
-        public static int ConvertBytesToInt(byte[] value)
+        public static int ConvertBytesToInt(byte[] value, bool treatAsLittleEndian = true)
         {
             if (value == null)
                 throw new ArgumentNullException("value");
             if (value.Length < 2 || value.Length > 4)
                 throw new ArgumentException(Strings.ExceptionCantConvertBytesToInteger, "value");
+
+            if (!treatAsLittleEndian)
+            {
+                value = value.Reverse().ToArray();
+            }
 
             int result;
 

@@ -19,7 +19,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             set;
         }
 
-        private bool _isLittleEndian; // TODO This doesn't work when we load Big-Endian files :/
+        private bool _isLittleEndian;
 
         public JpegExifReader(Stream imageDataStream)
         {
@@ -161,7 +161,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             this._isLittleEndian = (segmentData[6] == 73 && segmentData[7] == 73);
 
                             // Get IFD offset, it's 0x00 00 00 08 if the IFD is located directly after the TIFF header
-                            int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(segmentData, 10, 4));
+                            int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(segmentData, 10, 4), this._isLittleEndian);
 
                             /* 
                              * Why '6 + ifdOffset'? Because it's counting from the start of the TIFF header at 
@@ -189,7 +189,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
              * The two first bytes of the App1 segment are indicating
              * how many Exif/IPTC entries there are.
              */
-            int numberOfEntries = ByteConvertor.ConvertBytesToInt(this.ReadBytes(app1Data, 0, 2));
+            int numberOfEntries = ByteConvertor.ConvertBytesToInt(this.ReadBytes(app1Data, 0, 2), this._isLittleEndian);
 
             /*
              * Typically the number of Exif values will be the same or more
@@ -215,9 +215,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 // TODO: Why '2+...'?
                 byte[] tag = this.ReadBytes(app1Data, 2 + (i * 12), 12);
 
-                int tagType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 0, 2));
-                int contentType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 2, 2));
-                int count = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4));
+                int tagType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 0, 2), this._isLittleEndian);
+                int contentType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 2, 2), this._isLittleEndian);
+                int count = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4), this._isLittleEndian);
 
                 ExifFieldType currentTag = (ExifFieldType)tagType;
                 byte[] data;
@@ -234,7 +234,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         break;
                     case 2: // ASCII
                         {
-                            int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4));
+                            int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4), this._isLittleEndian);
                             // TODO: Find out and document why the -8 has to happen?
                             data = this.ReadBytes(app1Data, dataOffset - 8, count);
                             string value = ByteConvertor.ConvertBytesToASCIIString(data);
@@ -246,7 +246,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         {
                             data = this.ReadBytes(tag, 8, 2);
 
-                            int value = ByteConvertor.ConvertBytesToInt(data);
+                            int value = ByteConvertor.ConvertBytesToInt(data, this._isLittleEndian);
                             values.Add(new ExifValue(currentTag, value));
                         }
                         break;
@@ -255,7 +255,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         {
                             data = this.ReadBytes(tag, 8, 4);
 
-                            int value = ByteConvertor.ConvertBytesToInt(data);
+                            int value = ByteConvertor.ConvertBytesToInt(data, this._isLittleEndian);
                             values.Add(new ExifValue(currentTag, value));
                         }
                         break;
@@ -299,13 +299,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             {
                 result[j] = source[i];
                 j++;
-            }
-
-            // We're working with little endiannes only
-            if (!this._isLittleEndian)
-            {
-                throw new NotImplementedException(); // TODO
-               // readBytes = readBytes.Reverse().ToArray();
             }
 
             return result;
