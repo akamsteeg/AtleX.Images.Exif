@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AtleX.Images.Exif.Tests
+namespace AtleX.Images.Exif.Tests.Readers
 {
     public abstract class ExifReaderTestsBase
     {
@@ -41,9 +41,11 @@ namespace AtleX.Images.Exif.Tests
             ExifValue height = d.First(v => v.Field == ExifFieldType.ImageHeight);
 
             Assert.IsNotNull(width);
+            Assert.IsTrue(width.GetValue<int>() > 0);
             Assert.AreEqual(60, width.Value);
 
             Assert.IsNotNull(height);
+            Assert.IsTrue(height.GetValue<int>() > 0);
             Assert.AreEqual(40, height.Value);
         }
 
