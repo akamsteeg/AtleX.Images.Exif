@@ -16,12 +16,6 @@ namespace AtleX.Images.Exif
     /// </remarks>
     public abstract class ExifReader : IDisposable
     {
-        protected Stream ImageDataStream
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Is true when the ExifReader can read data from the image, false 
         /// otherwise
@@ -41,7 +35,7 @@ namespace AtleX.Images.Exif
         /// </summary>
         /// <returns>A collection with the tags and the values read from the image</returns>
         public abstract IEnumerable<ExifValue> GetExifData();
-    
+
         /// <summary>
         /// Release all resources used by this instance
         /// </summary>
@@ -52,15 +46,7 @@ namespace AtleX.Images.Exif
         }
 
         protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (this.ImageDataStream != null)
-                {
-                    this.ImageDataStream.Dispose();
-                    this.ImageDataStream = null;
-                }
-            }
+        { 
         }
-}
+    }
 }
