@@ -95,21 +95,7 @@ namespace AtleX.Images.Exif
         /// Create a reader based on the contents of the Stream
         /// </summary>
         /// <param name="imageData"></param>
-        protected virtual void Open(Stream imageData)
-        {
-            this.InternalReader = this.CreateReader(imageData);
-            this.CanRead = (this.InternalReader != null);
-            if (!this.CanRead)
-                throw new InvalidDataException(Strings.ExceptionUnsupportedImageData);
-        }
-
-        /// <summary>
-        /// Detect the image type from the passed Stream and instantiate
-        /// the approriate reader for it.
-        /// </summary>
-        /// <param name="imageData"></param>
-        /// <returns></returns>
-        protected virtual ExifReader CreateReader(Stream imageData)
+        private void Open(Stream imageData)
         {
             ExifReader readerToUse = null;
 
@@ -129,7 +115,10 @@ namespace AtleX.Images.Exif
                     }
             }
 
-            return readerToUse;
+            this.CanRead = (readerToUse != null);
+            this.InternalReader = readerToUse;
+            if (!this.CanRead)
+                throw new InvalidDataException(Strings.ExceptionUnsupportedImageData);
         }
 
         protected override void Dispose(bool disposing)
