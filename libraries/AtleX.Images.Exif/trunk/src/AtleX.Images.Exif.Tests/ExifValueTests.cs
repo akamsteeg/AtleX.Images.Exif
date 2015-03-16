@@ -39,7 +39,7 @@ namespace AtleX.Images.Exif.Tests
         {
             DateTime dt = new DateTime(1986, 7, 8, 19, 30, 0);
 
-            ExifValue ev = new ExifValue(ExifFieldType.Artist, dt);
+            ExifValue ev = new ExifValue(ExifFieldType.DateTime, dt);
 
             Assert.AreEqual(dt.ToString(), ev.GetValue<string>());
         }
@@ -49,7 +49,7 @@ namespace AtleX.Images.Exif.Tests
         {
             DateTime dt = new DateTime(1986, 7, 8, 19, 30, 0);
 
-            ExifValue ev = new ExifValue(ExifFieldType.Artist, dt);
+            ExifValue ev = new ExifValue(ExifFieldType.DateTime, dt);
 
             Assert.AreEqual(dt, ev.GetValue<DateTime>());
         }
@@ -57,7 +57,7 @@ namespace AtleX.Images.Exif.Tests
         [Test]
         public void StoreInvalidStringAndGetValueAsDateTime_Throws()
         {
-            ExifValue ev = new ExifValue(ExifFieldType.Artist, "");
+            ExifValue ev = new ExifValue(ExifFieldType.DateTime, "");
 
             Assert.Throws<InvalidCastException>(() => { ev.GetValue<DateTime>(); });
         }
