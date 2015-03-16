@@ -17,7 +17,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void ToStringWithFieldAndValue_Successful([Values("Alex", 0, 0.1, true)] object value)
+        public void ToStringWithFieldAndValue_Successful([Values("Donald Duck", 0, 0.1, true)] object value)
         {
             ExifValue ev = new ExifValue(ExifFieldType.Artist, value);
 
@@ -27,7 +27,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test, Sequential]
-        public void StorePrimitiveObjectsAndGetValueAsString_Successful([Values("Alex", 0, 0.1, true)] object value)
+        public void StorePrimitiveObjectsAndGetValueAsString_Successful([Values("Donald Duck", 0, 0.1, true)] object value)
         {
             ExifValue ev = new ExifValue(ExifFieldType.Artist, value);
 
@@ -60,6 +60,39 @@ namespace AtleX.Images.Exif.Tests
             ExifValue ev = new ExifValue(ExifFieldType.DateTime, "");
 
             Assert.Throws<InvalidCastException>(() => { ev.GetValue<DateTime>(); });
+        }
+
+        [Test]
+        public void TestEqualityWithSameFieldAndValue_Successful()
+        {
+            ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+            ExifValue right = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+
+            Assert.IsTrue(left.Equals(right));
+            Assert.IsTrue(left == right);
+            Assert.IsFalse(left != right);
+        }
+
+        [Test]
+        public void TestEqualityWithDifferentField_Successful()
+        {
+            ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+            ExifValue right = new ExifValue(ExifFieldType.CameraMake, "Donald Duck");
+
+            Assert.IsFalse(left.Equals(right));
+            Assert.IsFalse(left == right);
+            Assert.IsTrue(left != right);
+        }
+
+        [Test]
+        public void TestEqualityWithDifferentValue_Successful()
+        {
+            ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+            ExifValue right = new ExifValue(ExifFieldType.Artist, "Micky Mouse");
+
+            Assert.IsFalse(left.Equals(right));
+            Assert.IsFalse(left == right);
+            Assert.IsTrue(left != right);
         }
     }
 }
