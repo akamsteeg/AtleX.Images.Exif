@@ -132,7 +132,8 @@ namespace AtleX.Images.Exif
         /// <returns>A 32-bit signed integer that is the hash code for this instance</returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            int result = this.Field.GetHashCode() ^ this.Value.GetHashCode();
+            return result;
         }
     }
 }
