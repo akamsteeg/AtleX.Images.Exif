@@ -63,7 +63,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void TestEqualityWithSameFieldAndValue_Successful()
+        public void EqualityWithSameFieldAndValue_Successful()
         {
             ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
             ExifValue right = new ExifValue(ExifFieldType.Artist, "Donald Duck");
@@ -74,7 +74,7 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void TestEqualityWithDifferentField_Successful()
+        public void EqualityWithDifferentField_Successful()
         {
             ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
             ExifValue right = new ExifValue(ExifFieldType.CameraMake, "Donald Duck");
@@ -85,14 +85,41 @@ namespace AtleX.Images.Exif.Tests
         }
 
         [Test]
-        public void TestEqualityWithDifferentValue_Successful()
+        public void EqualityWithDifferentValue_Successful()
         {
             ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
-            ExifValue right = new ExifValue(ExifFieldType.Artist, "Micky Mouse");
+            ExifValue right = new ExifValue(ExifFieldType.Artist, "Mickey Mouse");
 
             Assert.IsFalse(left.Equals(right));
             Assert.IsFalse(left == right);
             Assert.IsTrue(left != right);
+        }
+
+        [Test]
+        public void HashCodeForSameFieldAndValue_Successful()
+        {
+            ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+            ExifValue right = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+
+            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+        }
+
+        [Test]
+        public void HashCodeForDifferentField_Successful()
+        {
+            ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+            ExifValue right = new ExifValue(ExifFieldType.CameraMake, "Donald Duck");
+
+            Assert.AreNotEqual(left.GetHashCode(), right.GetHashCode());
+        }
+
+        [Test]
+        public void HashCodeForDifferentValue_Successful()
+        {
+            ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+            ExifValue right = new ExifValue(ExifFieldType.Artist, "Mickey Mouse");
+
+            Assert.AreNotEqual(left.GetHashCode(), right.GetHashCode());
         }
     }
 }
