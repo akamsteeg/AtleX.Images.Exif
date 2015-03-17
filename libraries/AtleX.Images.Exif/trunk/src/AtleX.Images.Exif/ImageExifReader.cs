@@ -1,5 +1,4 @@
 ﻿using AtleX.Images.Exif.Helpers;
-using AtleX.Images.Exif.Readers;
 using AtleX.Images.Exif.Readers.Jpeg;
 using System;
 using System.Collections.Generic;
@@ -13,43 +12,18 @@ namespace AtleX.Images.Exif
     /// </summary>
     /// <remarks>
     /// This reader acts as a factory for file-specific readers. It determines
-    /// the file type of the image and instantiates the correct type-specific
-    /// reader. 
+    /// the file type of the image and instantiates the correct type-specific reader.
     /// 
     /// Just like the type-specific readers it implements ExifReader, so its
-    /// public signature is the same. This makes it interchangeable with 
+    /// public signature is the same. This makes it interchangeable with
     /// manually instantiating type-specific readers.
     /// </remarks>
     public class ImageExifReader : ExifReader
-    {           
+    {
         protected ExifReader InternalReader
         {
             get;
             set;
-        }
-
-        /// <summary>
-        /// Instantiates a reader and loads the image
-        /// </summary>
-        /// <param name="imageFileName">The filename of the image to load</param>
-        /// <returns></returns>
-        public static ExifReader Create(string imageFileName)
-        {
-            ExifReader r = new ImageExifReader(imageFileName);
-
-            return r;
-        }
-
-        /// <summary>
-        /// Instantiates a reader and loads the image
-        /// </summary>
-        /// <param name="imageData">Stream with the image data</param>
-        /// <returns></returns>
-        public static ExifReader Create(Stream imageData)
-        {
-            ExifReader r = new ImageExifReader(imageData);
-
-            return r;
         }
 
         /// <summary>
@@ -79,16 +53,54 @@ namespace AtleX.Images.Exif
             this.Open(imageData);
         }
 
+        /// <summary>
+        /// Instantiates a reader and loads the image
+        /// </summary>
+        /// <param name="imageFileName">The filename of the image to load</param>
+        /// <returns></returns>
+        public static ExifReader Create(string imageFileName)
+        {
+            ExifReader r = new ImageExifReader(imageFileName);
+
+            return r;
+        }
+
+        /// <summary>
+        /// Instantiates a reader and loads the image
+        /// </summary>
+        /// <param name="imageData">Stream with the image data</param>
+        /// <returns></returns>
+        public static ExifReader Create(Stream imageData)
+        {
+            ExifReader r = new ImageExifReader(imageData);
+
+            return r;
+        }
 
         /// <summary>
         /// Read and returns the EXIF info (if any) from the image
         /// </summary>
-        /// <returns>A collection with the tags and the values read from the image</returns>
+        /// <returns>
+        /// A collection with the tags and the values read from the image
+        /// </returns>
         public override IEnumerable<ExifValue> GetExifData()
         {
             IEnumerable<ExifValue> data = this.InternalReader.GetExifData();
 
             return data;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                if (this.InternalReader != null)
+                {
+                    this.InternalReader.Dispose();
+                    this.InternalReader = null;
+                }
+            }
         }
 
         /// <summary>
@@ -119,19 +131,6 @@ namespace AtleX.Images.Exif
             this.InternalReader = readerToUse;
             if (!this.CanRead)
                 throw new InvalidDataException(Strings.ExceptionUnsupportedImageData);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                if (this.InternalReader != null)
-                {
-                    this.InternalReader.Dispose();
-                    this.InternalReader = null;
-                }
-            }
         }
     }
 }

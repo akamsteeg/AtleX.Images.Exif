@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AtleX.Images.Exif
 {
@@ -14,15 +10,16 @@ namespace AtleX.Images.Exif
     public struct ExifValue : IEquatable<ExifValue>
     {
         private readonly ExifFieldType _field;
+        private readonly object _value;
+
         /// <summary>
-        /// the type of the field
+        /// The type of the field
         /// </summary>
         public ExifFieldType Field
         {
             get { return _field; }
         }
 
-        private readonly object _value;
         /// <summary>
         /// The value of the field
         /// </summary>
@@ -45,6 +42,16 @@ namespace AtleX.Images.Exif
             _value = value;
         }
 
+        public static bool operator ==(ExifValue left, ExifValue right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ExifValue left, ExifValue right)
+        {
+            return !left.Equals(right);
+        }
+
         /// <summary>
         /// Gets the value of the field
         /// </summary>
@@ -61,7 +68,7 @@ namespace AtleX.Images.Exif
             {
                 /*
                  * Apparently converting a String to T-as-string is
-                 * not possible, so we convert the string back to 
+                 * not possible, so we convert the string back to
                  * an object so we can convert the object back
                  * to a string. Yes, my head was spinning too.
                  */
@@ -87,13 +94,20 @@ namespace AtleX.Images.Exif
         }
 
         /// <summary>
-        /// Compares this <see cref="ExifValue"/> with the specified one for equality.
+        /// Compares this <see cref="ExifValue"/> with the specified
+        /// one for equality.
         /// </summary>
-        /// <param name="other">The other <see cref="ExifValue"/> to compare this one with</param>
-        /// <returns>True if the other <see cref="ExifValue"/> is equal to this one, false otherwise</returns>
+        /// <param name="other">
+        /// The other <seecref="ExifValue"/> to compare this one with
+        /// </param>
+        /// <returns>
+        /// True if the other <see cref="ExifValue"/> is equal to this one, false
+        /// otherwise
+        /// </returns>
         /// <remarks>
-        /// Comparing structs for equality causes boxing & unboxing, with the associated performance hit. By
-        /// implementing IEquatable we avoid the whole boxing stuff
+        /// Comparing structs for equality causes boxing & unboxing, with the 
+        /// associated performance hit. By implementing IEquatable we avoid the 
+        /// whole boxing stuff
         /// </remarks>
         public bool Equals(ExifValue other)
         {
@@ -108,30 +122,25 @@ namespace AtleX.Images.Exif
         }
 
         /// <summary>
-        /// Indicates whether this <see cref="ExifValue"/> and a specified object are equal
+        /// Indicates whether this <see cref="ExifValue"/> and a specified
+        /// object are equal
         /// </summary>
         /// <param name="obj">Another object to compare to</param>
-        /// <returns>True if the other object is equal to this one, false otherwise</returns>
+        /// <returns>
+        /// True if the other object is equal to this one, false otherwise
+        /// </returns>
         public override bool Equals(object obj)
         {
             bool result = (obj is ExifValue && this.Equals(obj));
             return result;
         }
 
-        public static bool operator == (ExifValue left, ExifValue right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator != (ExifValue left, ExifValue right)
-        {
-            return !left.Equals(right);
-        }
-
         /// <summary>
         /// Returns the hash code for this instance
         /// </summary>
-        /// <returns>A 32-bit signed integer that is the hash code for this instance</returns>
+        /// <returns>
+        /// A 32-bit signed integer that is the hash code for this instance
+        /// </returns>
         public override int GetHashCode()
         {
             int result = this.Field.GetHashCode() ^ this.Value.GetHashCode();
