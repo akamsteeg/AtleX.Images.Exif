@@ -7,7 +7,7 @@ namespace AtleX.Images.Exif
     /// Represents an Exif/IPTC value
     /// </summary>
     [DebuggerDisplay("{Field} - {Value}")]
-    public struct ExifValue : IEquatable<ExifValue>
+    public class ExifValue : IEquatable<ExifValue>
     {
         private readonly ExifFieldType _field;
         private readonly object _value;
