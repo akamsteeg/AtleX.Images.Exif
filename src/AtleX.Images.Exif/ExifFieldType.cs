@@ -14,28 +14,28 @@ namespace AtleX.Images.Exif
         /// Image width
         /// </summary>
         /// <remarks>
-        /// The datatype is Long
+        /// The type is Long
         /// </remarks>
         ImageWidth = 256,
         /// <summary>
         /// Image height
         /// </summary>
         /// <remarks>
-        /// The datatype is Long
+        /// The type is Long
         /// </remarks>
         ImageHeight = 257,
         /// <summary>
         /// The number of bits per image component
         /// </summary>
         /// <remarks>
-        /// The datatype is Short
+        /// The type is Short
         /// </remarks>
         BitsPerSample = 258,
         /// <summary>
         /// The pixel composition
         /// </summary>
         /// <remarks>
-        /// The datatype is Short
+        /// The type is Short
         /// </remarks>
         PhotometricInterpretation = 262,
 
@@ -43,21 +43,21 @@ namespace AtleX.Images.Exif
         /// Image title
         /// </summary>
         /// <remarks>
-        /// The datatype is ASCII
+        /// The type is ASCII
         /// </remarks>
         ImageDescription = 270,
         /// <summary>
         /// Camera maker
         /// </summary>
         /// <remarks>
-        /// The datatype is ASCII
+        /// The type is ASCII
         /// </remarks>
         CameraMake = 271,
         /// <summary>
         /// Camera model
         /// </summary>
         /// <remarks>
-        /// The datatype is ASCII
+        /// The type is ASCII
         /// </remarks>
         CameraModel = 272,
 
@@ -65,21 +65,21 @@ namespace AtleX.Images.Exif
         /// The image orientation
         /// </summary>
         /// <remarks>
-        /// The datatype is Short
+        /// The type is Short
         /// </remarks>
         Orientation = 274,
         /// <summary>
         /// The number of components per pixel
         /// </summary>
         /// <remarks>
-        /// The datatype is Short
+        /// The type is Short
         /// </remarks>
         SamplesPerPixel = 277,
         /// <summary>
         ///  Unit of X and Y resolution
         /// </summary>
         /// <remarks>
-        /// The datatype is Short
+        /// The type is Short
         /// </remarks>
         ResolutionUnit = 296,
 
@@ -87,21 +87,21 @@ namespace AtleX.Images.Exif
         /// The editing software used
         /// </summary>
         /// <remarks>
-        /// The datatype is ASCII
+        /// The type is ASCII
         /// </remarks>
         SoftwareUsed = 305,
         /// <summary>
         /// Capture date/time
         /// </summary>
         /// <remarks>
-        /// The datatype is ASCII
+        /// The type is ASCII
         /// </remarks>
         DateTime = 306,
         /// <summary>
         /// Photographer
         /// </summary>
         /// <remarks>
-        /// The datatype is ASCII
+        /// The type is ASCII
         /// </remarks>
         Artist = 315,
 
@@ -110,7 +110,7 @@ namespace AtleX.Images.Exif
         /// the luminance component
         /// </summary>
         /// <remarks>
-        /// The datatype is Short
+        /// The type is Short
         /// </remarks>
         YCbCrPositioning = 531,
 
@@ -118,7 +118,7 @@ namespace AtleX.Images.Exif
         /// Copyright
         /// </summary>
         /// <remarks>
-        /// The datatype is ASCII
+        /// The type is ASCII
         /// </remarks>
         Copyright = 33432,
     }
