@@ -29,7 +29,9 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Create the reader and configure it to read from a file
         /// </summary>
-        /// <param name="imageFileName">A valid filename of an image</param>
+        /// <param name="imageFileName">
+        /// A valid filename of an image
+        /// </param>
         public ImageExifReader(string imageFileName)
         {
             if (string.IsNullOrWhiteSpace(imageFileName))
@@ -44,7 +46,9 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Create the reader and configure it to read from a Stream
         /// </summary>
-        /// <param name="imageData">A readable stream with binary image data</param>
+        /// <param name="imageData">
+        /// A readable stream with binary image data
+        /// </param>
         public ImageExifReader(Stream imageData)
         {
             if (imageData == null)
@@ -56,8 +60,11 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Instantiates a reader and loads the image
         /// </summary>
-        /// <param name="imageFileName">The filename of the image to load</param>
-        /// <returns></returns>
+        /// <param name="imageFileName">
+        /// The filename of the image to load
+        /// </param>
+        /// <returns>
+        /// </returns>
         public static ExifReader Create(string imageFileName)
         {
             ExifReader r = new ImageExifReader(imageFileName);
@@ -68,8 +75,11 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Instantiates a reader and loads the image
         /// </summary>
-        /// <param name="imageData">Stream with the image data</param>
-        /// <returns></returns>
+        /// <param name="imageData">
+        /// Stream with the image data
+        /// </param>
+        /// <returns>
+        /// </returns>
         public static ExifReader Create(Stream imageData)
         {
             ExifReader r = new ImageExifReader(imageData);
@@ -106,7 +116,8 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Create a reader based on the contents of the Stream
         /// </summary>
-        /// <param name="imageData"></param>
+        /// <param name="imageData">
+        /// </param>
         private void Open(Stream imageData)
         {
             ExifReader readerToUse = null;

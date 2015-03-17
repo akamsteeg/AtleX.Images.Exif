@@ -31,8 +31,12 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Initializes a new instance of <see cref="ExifValue"/>
         /// </summary>
-        /// <param name="field">The type of the field</param>
-        /// <param name="value">The value of the field</param>
+        /// <param name="field">
+        /// The type of the field
+        /// </param>
+        /// <param name="value">
+        /// The value of the field
+        /// </param>
         public ExifValue(ExifFieldType field, object value)
         {
             if (value == null)
@@ -55,8 +59,12 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Gets the value of the field
         /// </summary>
-        /// <typeparam name="T">The type where to cast the value to</typeparam>
-        /// <returns>The value of this <see cref="ExifValue"/> as T</returns>
+        /// <typeparam name="T">
+        /// The type where to cast the value to
+        /// </typeparam>
+        /// <returns>
+        /// The value of this <see cref="ExifValue"/> as T
+        /// </returns>
         /// <remarks>
         /// When called with String as T, it does a ToString() on the value internally
         /// </remarks>
@@ -85,7 +93,8 @@ namespace AtleX.Images.Exif
         /// <summary>
         /// Returns a string representation of this <see cref="ExifValue"/>
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// </returns>
         public override string ToString()
         {
             const string format = "{0} - {1}";
@@ -93,22 +102,13 @@ namespace AtleX.Images.Exif
             return string.Format(format, Field, this.GetValue<string>());
         }
 
-        /// <summary>
-        /// Compares this <see cref="ExifValue"/> with the specified
-        /// one for equality.
-        /// </summary>
-        /// <param name="other">
-        /// The other <seecref="ExifValue"/> to compare this one with
-        /// </param>
-        /// <returns>
-        /// True if the other <see cref="ExifValue"/> is equal to this one, false
-        /// otherwise
-        /// </returns>
-        /// <remarks>
-        /// Comparing structs for equality causes boxing & unboxing, with the 
-        /// associated performance hit. By implementing IEquatable we avoid the 
-        /// whole boxing stuff
-        /// </remarks>
+        /// <summary> Compares this <see cref="ExifValue"/> with the specified
+        /// one for equality. </summary> <param name="other"> The other
+        /// <seecref="ExifValue"/> to compare this one with </param> <returns>
+        /// True if the other <see cref="ExifValue"/> is equal to this one,
+        /// false otherwise </returns> <remarks> Comparing structs for equality
+        /// causes boxing & unboxing, with the associated performance hit. By
+        /// implementing IEquatable we avoid the whole boxing stuff </remarks>
         public bool Equals(ExifValue other)
         {
             bool result = false;
@@ -125,7 +125,9 @@ namespace AtleX.Images.Exif
         /// Indicates whether this <see cref="ExifValue"/> and a specified
         /// object are equal
         /// </summary>
-        /// <param name="obj">Another object to compare to</param>
+        /// <param name="obj">
+        /// Another object to compare to
+        /// </param>
         /// <returns>
         /// True if the other object is equal to this one, false otherwise
         /// </returns>

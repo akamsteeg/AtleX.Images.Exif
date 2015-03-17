@@ -1,12 +1,10 @@
-﻿
-namespace AtleX.Images.Exif
+﻿namespace AtleX.Images.Exif
 {
     /// <summary>
     /// The possible fields in the EXIF data
     /// </summary>
     /// <remarks>
-    /// Enum names are taken directly from 
-    /// the EXIF standard v.2
+    /// Enum names are taken directly from the EXIF standard v.2
     /// </remarks>
     public enum ExifFieldType
     {
@@ -17,6 +15,7 @@ namespace AtleX.Images.Exif
         /// The type is Long
         /// </remarks>
         ImageWidth = 256,
+
         /// <summary>
         /// Image height
         /// </summary>
@@ -24,6 +23,7 @@ namespace AtleX.Images.Exif
         /// The type is Long
         /// </remarks>
         ImageHeight = 257,
+
         /// <summary>
         /// The number of bits per image component
         /// </summary>
@@ -31,6 +31,7 @@ namespace AtleX.Images.Exif
         /// The type is Short
         /// </remarks>
         BitsPerSample = 258,
+
         /// <summary>
         /// The pixel composition
         /// </summary>
@@ -46,6 +47,7 @@ namespace AtleX.Images.Exif
         /// The type is ASCII
         /// </remarks>
         ImageDescription = 270,
+
         /// <summary>
         /// Camera maker
         /// </summary>
@@ -53,6 +55,7 @@ namespace AtleX.Images.Exif
         /// The type is ASCII
         /// </remarks>
         CameraMake = 271,
+
         /// <summary>
         /// Camera model
         /// </summary>
@@ -68,6 +71,7 @@ namespace AtleX.Images.Exif
         /// The type is Short
         /// </remarks>
         Orientation = 274,
+
         /// <summary>
         /// The number of components per pixel
         /// </summary>
@@ -75,8 +79,9 @@ namespace AtleX.Images.Exif
         /// The type is Short
         /// </remarks>
         SamplesPerPixel = 277,
+
         /// <summary>
-        ///  Unit of X and Y resolution
+        /// Unit of X and Y resolution
         /// </summary>
         /// <remarks>
         /// The type is Short
@@ -90,6 +95,7 @@ namespace AtleX.Images.Exif
         /// The type is ASCII
         /// </remarks>
         SoftwareUsed = 305,
+
         /// <summary>
         /// Capture date/time
         /// </summary>
@@ -97,6 +103,7 @@ namespace AtleX.Images.Exif
         /// The type is ASCII
         /// </remarks>
         DateTime = 306,
+
         /// <summary>
         /// Photographer
         /// </summary>
@@ -106,8 +113,7 @@ namespace AtleX.Images.Exif
         Artist = 315,
 
         /// <summary>
-        /// The position of chrominance components in relation to 
-        /// the luminance component
+        /// The position of chrominance components in relation to the luminance component
         /// </summary>
         /// <remarks>
         /// The type is Short
