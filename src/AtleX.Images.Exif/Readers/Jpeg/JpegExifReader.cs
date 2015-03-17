@@ -14,6 +14,12 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     {
         private bool _isLittleEndian;
 
+        protected Stream ImageDataStream
+        {
+            get;
+            set;
+        }
+
         public JpegExifReader(Stream imageDataStream)
         {
             if (imageDataStream == null)
@@ -30,13 +36,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 throw new InvalidDataException(Strings.ExceptionImageInvalidJpeg);
             }
         }
-
-        protected Stream ImageDataStream
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Read and returns the EXIF info (if any) from the image
         /// </summary>
