@@ -39,9 +39,9 @@ namespace AtleX.Images.Exif.Helpers
         /// Determines and returns the file type of the specified file
         /// </summary>
         /// <remarks>
-        /// This is not a lazy extension check but it reads the magic numbers at the beginning 
-        /// of the file. It currently only supports JPEG, but that's enough for the this library
-        /// and for the time being.
+        /// This is not a lazy extension check but it reads the magic numbers at
+        /// the beginning of the file. It currently only supports JPEG, but
+        /// that's enough for the this library and for the time being.
         /// </remarks>
         /// <param name="fileContents"></param>
         /// <returns></returns>

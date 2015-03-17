@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Text;
 using System.Linq;
+using System.Text;
 
 namespace AtleX.Images.Exif.Helpers
 {
@@ -11,8 +10,12 @@ namespace AtleX.Images.Exif.Helpers
         /// Convert a 2 or 4 bytes long array to a 16 or 32 bits integer
         /// </summary>
         /// <param name="value">A 2 or 4 bytes long array</param>
-        /// <param name="treatAsLittleEndian">True when the data is little endian, false when big endian.</param>
-        /// <exception cref="ArgumentException">Thrown when there are less than 2 or more than 4 bytes in the parameter</exception>
+        /// <param name="treatAsLittleEndian">
+        /// True when the data is little endian, false when big endian.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when there are less than 2 or more than 4 bytes in the parameter
+        /// </exception>
         /// <returns></returns>
         public static int ConvertBytesToInt(byte[] value, bool treatAsLittleEndian = true)
         {
@@ -45,11 +48,10 @@ namespace AtleX.Images.Exif.Helpers
         /// </summary>
         /// <param name="value">Byte array to convert to a string</param>
         /// <returns>
-        /// The converted string, or an empty string when no null-terminator 
-        /// was found in the byte array
+        /// The converted string, or an empty string when no null-terminator was
+        /// found in the byte array
         /// </returns>
-        /// <remarks>
-        /// </remarks>
+        /// <remarks></remarks>
         public static string ConvertBytesToASCIIString(byte[] value)
         {
             if (value == null)
