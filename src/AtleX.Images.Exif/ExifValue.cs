@@ -13,7 +13,7 @@ namespace AtleX.Images.Exif
     [DebuggerDisplay("{Field} - {Value}")]
     public struct ExifValue : IEquatable<ExifValue>
     {
-        private ExifFieldType _field;
+        private readonly ExifFieldType _field;
         /// <summary>
         /// the type of the field
         /// </summary>
@@ -22,7 +22,7 @@ namespace AtleX.Images.Exif
             get { return _field; }
         }
 
-        private object _value;
+        private readonly object _value;
         /// <summary>
         /// The value of the field
         /// </summary>
@@ -81,7 +81,9 @@ namespace AtleX.Images.Exif
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("{0} - {1}", Field, this.GetValue<string>());
+            const string format = "{0} - {1}";
+
+            return string.Format(format, Field, this.GetValue<string>());
         }
 
         /// <summary>
