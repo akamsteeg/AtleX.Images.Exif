@@ -37,8 +37,8 @@ namespace AtleX.Images.Exif.Tests.Readers
             ExifReader r = new ImageExifReader(OpenAsStream(this.TestImageFileName));
             IEnumerable<ExifValue> d = r.GetExifData();
 
-            ExifValue width = d.First(v => v.Field == ExifFieldType.ImageWidth);
-            ExifValue height = d.First(v => v.Field == ExifFieldType.ImageHeight);
+            ExifValue width = d.FirstOrDefault(v => v.Field == ExifFieldType.ImageWidth);
+            ExifValue height = d.FirstOrDefault(v => v.Field == ExifFieldType.ImageHeight);
 
             Assert.IsNotNull(width);
             Assert.IsTrue(width.GetValue<int>() > 0);
