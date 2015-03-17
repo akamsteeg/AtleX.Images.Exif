@@ -17,8 +17,12 @@ namespace AtleX.Images.Exif.Helpers
         /// Determines and returns the file type of the specified file.
         /// </summary>
         /// <see cref="DetermineFileType(Stream fileContents)"/>
-        /// <param name="path">A relative or absolute path for the file</param>
-        /// <returns></returns>
+        /// 
+        /// <param name="path">
+        /// A relative or absolute path for the file
+        /// </param>
+        /// <returns>
+        /// </returns>
         public static ImageFileType DetermineFileType(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -43,8 +47,10 @@ namespace AtleX.Images.Exif.Helpers
         /// the beginning of the file. It currently only supports JPEG, but
         /// that's enough for the this library and for the time being.
         /// </remarks>
-        /// <param name="fileContents"></param>
-        /// <returns></returns>
+        /// <param name="fileContents">
+        /// </param>
+        /// <returns>
+        /// </returns>
         public static ImageFileType DetermineFileType(Stream fileContents)
         {
             if (fileContents == null)

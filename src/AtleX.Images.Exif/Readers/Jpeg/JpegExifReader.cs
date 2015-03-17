@@ -189,7 +189,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <summary>
         /// Read the TIFF (EXIF) values from the data
         /// </summary>
-        /// <param name="app1Data">The raw contents of the App1 segment</param>
+        /// <param name="app1Data">
+        /// The raw contents of the App1 segment
+        /// </param>
         /// <returns>
         /// A collection with the tags and the values read from the image
         /// </returns>
@@ -302,10 +304,18 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// <summary>
         /// Read a specified number of bytes from a byte array
         /// </summary>
-        /// <param name="source">The byte array to read from</param>
-        /// <param name="start">The starting position in the source</param>
-        /// <param name="length">The number of bytes to read</param>
-        /// <returns>The read number of bytes</returns>
+        /// <param name="source">
+        /// The byte array to read from
+        /// </param>
+        /// <param name="start">
+        /// The starting position in the source
+        /// </param>
+        /// <param name="length">
+        /// The number of bytes to read
+        /// </param>
+        /// <returns>
+        /// The read number of bytes
+        /// </returns>
         /// <remarks>
         /// This can probably be done a lot more efficiently instead of copying
         /// values in a loop.
