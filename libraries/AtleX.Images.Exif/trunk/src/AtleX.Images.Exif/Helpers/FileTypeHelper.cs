@@ -58,32 +58,52 @@ namespace AtleX.Images.Exif.Helpers
             if (!fileContents.CanRead)
                 throw new ArgumentException(Strings.ExceptionCanNotReadFromStream, "fileContents");
 
-            ImageFileType result = ImageFileType.Unknown;
-            BinaryReader bReader = new BinaryReader(fileContents, new ASCIIEncoding());
-
-            /*
-             * According to Wikipedia (http://en.wikipedia.org/wiki/List_of_file_signatures)
-             * the longest magic number is 30 bytes and is used by the
-             * Flexible Image Transport System (FITS)
-             */
-            const int magicNumberLength = 30;
-
-            byte[] buffer = new byte[magicNumberLength];
-            buffer = bReader.ReadBytes(magicNumberLength);
-
-            // Check for JPEG header (FF D8)
-            if (buffer[0] == 255 // FF
-                && buffer[1] == 216  // D8
-                )
+            long originalPosition = fileContents.Position;
+            if (originalPosition != 0)
             {
-                result = ImageFileType.Jpeg;
-            }
-
-            if (fileContents.CanSeek)
-            {
-                // Reset the stream to avoid problems in calling methods
+                /*
+                 * The magic bytes are located in at the first n bytes of the file, so we need to 
+                 * reset the stream when something already read from it.
+                 */
                 fileContents.Seek(0, SeekOrigin.Begin);
             }
+
+            ImageFileType result = ImageFileType.Unknown;
+
+            /*
+             * We want to dispose the reader when we're done with it, but we have to leave the
+             * stream open because it was instantiated and most likely used by one of the calling
+             * methods
+             */
+            using (BinaryReader bReader = new BinaryReader(fileContents, new ASCIIEncoding(), true))
+            {
+
+                /*
+                 * According to Wikipedia (http://en.wikipedia.org/wiki/List_of_file_signatures)
+                 * the longest magic number is 30 bytes and is used by the
+                 * Flexible Image Transport System (FITS)
+                 */
+                const int magicNumberLength = 30;
+
+                byte[] buffer = new byte[magicNumberLength];
+                buffer = bReader.ReadBytes(magicNumberLength);
+
+                // Check for JPEG header (FF D8)
+                if (buffer[0] == 255 // FF
+                    && buffer[1] == 216  // D8
+                    )
+                {
+                    result = ImageFileType.Jpeg;
+                }
+            }
+
+            /*
+             * Reset the position of the stream to the same position it was
+             * in when it was passed to this method. This avoids errors and
+             * unexpected results in calling methods because they do not
+             * expect the position to change
+             */
+            fileContents.Seek(originalPosition, SeekOrigin.Begin);
 
             return result;
         }
