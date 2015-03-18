@@ -81,6 +81,24 @@
         SamplesPerPixel = 277,
 
         /// <summary>
+        /// The number of pixels per <see cref="ResolutionUnit"/> in
+        /// the <see cref="ImageWidth"> direction 
+        /// </summary>
+        /// <remarks>
+        /// The type is Rational
+        /// </remarks>
+        XResolution = 282,
+
+        /// <summary>
+        /// The number of pixels per <see cref="ResolutionUnit"/> in
+        /// the <see cref="ImageHeight"> direction 
+        /// </summary>
+        /// <remarks>
+        /// The type is Rational
+        /// </remarks>
+        YResolution = 283,
+
+        /// <summary>
         /// Unit of X and Y resolution
         /// </summary>
         /// <remarks>
