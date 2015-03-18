@@ -102,13 +102,17 @@ namespace AtleX.Images.Exif
             return string.Format(format, Field, this.GetValue<string>());
         }
 
-        /// <summary> Compares this <see cref="ExifValue"/> with the specified
-        /// one for equality. </summary> <param name="other"> The other
-        /// <seecref="ExifValue"/> to compare this one with </param> <returns>
+        /// <summary>
+        /// Compares this <see cref="ExifValue"/> with the specified
+        /// one for equality
+        /// </summary>
+        /// <param name="other">
+        /// The other <see cref="ExifValue"/> to compare this one with
+        /// </param>
+        /// <returns>
         /// True if the other <see cref="ExifValue"/> is equal to this one,
-        /// false otherwise </returns> <remarks> Comparing structs for equality
-        /// causes boxing & unboxing, with the associated performance hit. By
-        /// implementing IEquatable we avoid the whole boxing stuff </remarks>
+        /// false otherwise
+        /// </returns>
         public bool Equals(ExifValue other)
         {
             bool result = false;
