@@ -11,12 +11,15 @@ namespace AtleX.Images.Exif
     /// Reads EXIF data from a supported file
     /// </summary>
     /// <remarks>
+    /// <para>
     /// This reader acts as a factory for file-specific readers. It determines
     /// the file type of the image and instantiates the correct type-specific reader.
-    /// 
+    /// </para>
+    /// <para>
     /// Just like the type-specific readers it implements ExifReader, so its
     /// public signature is the same. This makes it interchangeable with
     /// manually instantiating type-specific readers.
+    /// </para>
     /// </remarks>
     public class ImageExifReader : ExifReader
     {
