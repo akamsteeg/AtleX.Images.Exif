@@ -236,6 +236,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 switch (contentType)
                 {
                     case 1: // Byte
+                    case 7: // Undefined (1 byte)
                         {
                             data = this.ReadBytes(tag, 8, 4);
 
@@ -277,10 +278,15 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     case 5: // Rational (two Longs, first one is the nominator, second is the denominator)
                     case 10: // Srational (two slongs, first one is the nominator, second is the denominator)
                         {
-                        }
-                        break;
+                            byte[] numeratorPart = this.ReadBytes(tag, 4, 4);
+                            byte[] denominatorPart = this.ReadBytes(tag, 8, 4);
 
-                    case 7: // Undefined (1 byte)
+                            int numerator = ByteConvertor.ConvertBytesToInt(numeratorPart, this._isLittleEndian);
+                            int denominator = ByteConvertor.ConvertBytesToInt(denominatorPart, this._isLittleEndian);
+
+                            int value = numerator / denominator;
+                            values.Add(new ExifValue(currentTag, value));
+                        }
                         break;
                 }
             }
