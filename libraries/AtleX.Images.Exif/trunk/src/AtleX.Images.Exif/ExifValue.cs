@@ -103,8 +103,7 @@ namespace AtleX.Images.Exif
         }
 
         /// <summary>
-        /// Compares this <see cref="ExifValue"/> with the specified
-        /// one for equality
+        /// Compares this <see cref="ExifValue"/> with the specified one for equality
         /// </summary>
         /// <param name="other">
         /// The other <see cref="ExifValue"/> to compare this one with
