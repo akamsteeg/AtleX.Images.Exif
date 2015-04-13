@@ -23,7 +23,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         public JpegExifReader(Stream imageDataStream)
         {
             if (imageDataStream == null)
-                throw new ArgumentNullException("imageDataStream");
+                throw new ArgumentNullException(nameof(ImageDataStream));
 
             if (FileTypeHelper.DetermineFileType(imageDataStream) == ImageFileType.Jpeg)
             {
@@ -92,7 +92,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         protected virtual byte[] GetRawIptcData(BinaryReader reader)
         {
             if (reader == null)
-                throw new ArgumentNullException("reader");
+                throw new ArgumentNullException(nameof(reader));
 
             byte[] result = null;
 
@@ -328,11 +328,11 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         private byte[] ReadBytes(byte[] source, int start, int length)
         {
             if (start < 0)
-                throw new ArgumentOutOfRangeException("start", Strings.ExceptionValueCanNotBeLessThanZero);
+                throw new ArgumentOutOfRangeException(nameof(start), Strings.ExceptionValueCanNotBeLessThanZero);
             if (length < 0)
-                throw new ArgumentOutOfRangeException("length", Strings.ExceptionValueCanNotBeLessThanZero);
+                throw new ArgumentOutOfRangeException(nameof(length), Strings.ExceptionValueCanNotBeLessThanZero);
             if (source.Length < start + length)
-                throw new ArgumentOutOfRangeException("length", Strings.ExceptionSourceInvalidLength);
+                throw new ArgumentOutOfRangeException(nameof(length), Strings.ExceptionSourceInvalidLength);
 
             byte[] result = new byte[length];
 

@@ -40,7 +40,7 @@ namespace AtleX.Images.Exif
         public ExifValue(ExifFieldType field, object value)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
 
             _field = field;
             _value = value;

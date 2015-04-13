@@ -38,7 +38,7 @@ namespace AtleX.Images.Exif
         public ImageExifReader(string imageFileName)
         {
             if (string.IsNullOrWhiteSpace(imageFileName))
-                throw new ArgumentNullException("imageFileName");
+                throw new ArgumentNullException(nameof(imageFileName));
             if (!File.Exists(imageFileName))
                 throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, imageFileName));
 

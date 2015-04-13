@@ -23,9 +23,9 @@ namespace AtleX.Images.Exif.Helpers
         public static int ConvertBytesToInt(byte[] value, bool treatAsLittleEndian = true)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             if (value.Length != 2 && value.Length != 4)
-                throw new ArgumentException(Strings.ExceptionCantConvertBytesToInteger, "value");
+                throw new ArgumentException(Strings.ExceptionCantConvertBytesToInteger, nameof(value));
 
             if (!treatAsLittleEndian)
             {
@@ -61,7 +61,7 @@ namespace AtleX.Images.Exif.Helpers
         public static string ConvertBytesToASCIIString(byte[] value)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
 
             string result = "";
 

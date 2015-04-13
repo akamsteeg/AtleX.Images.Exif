@@ -26,7 +26,7 @@ namespace AtleX.Images.Exif.Helpers
         public static ImageFileType DetermineFileType(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
-                throw new ArgumentNullException("fileName");
+                throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
                 throw new FileNotFoundException(string.Format(CultureInfo.InvariantCulture, Strings.ExceptionFileNotFound, path));
 
@@ -54,9 +54,9 @@ namespace AtleX.Images.Exif.Helpers
         public static ImageFileType DetermineFileType(Stream fileContents)
         {
             if (fileContents == null)
-                throw new ArgumentNullException("fileContents");
+                throw new ArgumentNullException(nameof(fileContents));
             if (!fileContents.CanRead)
-                throw new ArgumentException(Strings.ExceptionCanNotReadFromStream, "fileContents");
+                throw new ArgumentException(Strings.ExceptionCanNotReadFromStream, nameof(fileContents));
 
             long originalPosition = fileContents.Position;
             if (originalPosition != 0)
