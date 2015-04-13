@@ -46,16 +46,6 @@ namespace AtleX.Images.Exif
             _value = value;
         }
 
-        public static bool operator == (ExifValue left, ExifValue right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator != (ExifValue left, ExifValue right)
-        {
-            return !left.Equals(right);
-        }
-
         /// <summary>
         /// Gets the value of the field
         /// </summary>
@@ -95,12 +85,8 @@ namespace AtleX.Images.Exif
         /// </summary>
         /// <returns>
         /// </returns>
-        public override string ToString()
-        {
-            const string format = "{0} - {1}";
-
-            return string.Format(format, Field, this.GetValue<string>());
-        }
+        public override string ToString() => 
+            string.Format("{0} - {1}", Field, this.GetValue<string>());
 
         /// <summary>
         /// Compares this <see cref="ExifValue"/> with the specified one for equality
@@ -112,17 +98,8 @@ namespace AtleX.Images.Exif
         /// True if the other <see cref="ExifValue"/> is equal to this one,
         /// false otherwise
         /// </returns>
-        public bool Equals(ExifValue other)
-        {
-            bool result = false;
-
-            if (this.Field == other.Field && this.Value.Equals(other.Value))
-            {
-                result = true;
-            }
-
-            return result;
-        }
+        public bool Equals(ExifValue other) =>
+            (this.Field == other.Field && this.Value.Equals(other.Value));
 
         /// <summary>
         /// Indicates whether this <see cref="ExifValue"/> and a specified
@@ -134,11 +111,8 @@ namespace AtleX.Images.Exif
         /// <returns>
         /// True if the other object is equal to this one, false otherwise
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            bool result = (obj is ExifValue && this.Equals(obj));
-            return result;
-        }
+        public override bool Equals(object obj) => 
+            (obj is ExifValue && this.Equals(obj));
 
         /// <summary>
         /// Returns the hash code for this instance
@@ -146,10 +120,13 @@ namespace AtleX.Images.Exif
         /// <returns>
         /// A 32-bit signed integer that is the hash code for this instance
         /// </returns>
-        public override int GetHashCode()
-        {
-            int result = this.Field.GetHashCode() ^ this.Value.GetHashCode();
-            return result;
-        }
+        public override int GetHashCode() => 
+            this.Field.GetHashCode() ^ this.Value.GetHashCode();
+
+        public static bool operator ==(ExifValue left, ExifValue right) =>
+            left.Equals(right);
+
+        public static bool operator !=(ExifValue left, ExifValue right) =>
+            !left.Equals(right);
     }
 }
