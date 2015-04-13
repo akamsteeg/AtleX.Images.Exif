@@ -9,15 +9,12 @@ namespace AtleX.Images.Exif
     [DebuggerDisplay("{Field} - {Value}")]
     public sealed class ExifValue : IEquatable<ExifValue>
     {
-        private readonly ExifFieldType _field;
-        private readonly object _value;
-
         /// <summary>
         /// The type of the field
         /// </summary>
         public ExifFieldType Field
         {
-            get { return _field; }
+            get;
         }
 
         /// <summary>
@@ -25,7 +22,7 @@ namespace AtleX.Images.Exif
         /// </summary>
         public object Value
         {
-            get { return _value; }
+            get;
         }
 
         /// <summary>
@@ -42,8 +39,8 @@ namespace AtleX.Images.Exif
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            _field = field;
-            _value = value;
+            this.Field = field;
+            this.Value = value;
         }
 
         /// <summary>
