@@ -7,7 +7,7 @@ namespace AtleX.Images.Exif
     /// Represents an Exif/IPTC value
     /// </summary>
     [DebuggerDisplay("{Field} - {Value}")]
-    public class ExifValue : IEquatable<ExifValue>
+    public sealed class ExifValue : IEquatable<ExifValue>
     {
         private readonly ExifFieldType _field;
         private readonly object _value;
@@ -46,12 +46,12 @@ namespace AtleX.Images.Exif
             _value = value;
         }
 
-        public static bool operator ==(ExifValue left, ExifValue right)
+        public static bool operator == (ExifValue left, ExifValue right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(ExifValue left, ExifValue right)
+        public static bool operator != (ExifValue left, ExifValue right)
         {
             return !left.Equals(right);
         }
