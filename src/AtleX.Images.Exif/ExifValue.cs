@@ -85,18 +85,18 @@ namespace AtleX.Images.Exif
         public override string ToString() => 
             string.Format("{0} - {1}", Field, this.GetValue<string>());
 
-        /// <summary>
-        /// Compares this <see cref="ExifValue"/> with the specified one for equality
-        /// </summary>
-        /// <param name="other">
-        /// The other <see cref="ExifValue"/> to compare this one with
-        /// </param>
-        /// <returns>
-        /// True if the other <see cref="ExifValue"/> is equal to this one,
-        /// false otherwise
-        /// </returns>
-        public bool Equals(ExifValue other) =>
-            (this.Field == other.Field && this.Value.Equals(other.Value));
+		/// <summary>
+		/// Compares this <see cref="ExifValue"/> with the specified one for equality
+		/// </summary>
+		/// <param name="other">
+		/// The other <see cref="ExifValue"/> to compare this one with
+		/// </param>
+		/// <returns>
+		/// True if the other <see cref="ExifValue"/> is equal to this one,
+		/// false otherwise
+		/// </returns>
+		public bool Equals(ExifValue other) =>
+			(other != null && this.Field == other.Field && this.Value.Equals(other.Value));
 
         /// <summary>
         /// Indicates whether this <see cref="ExifValue"/> and a specified
@@ -120,10 +120,10 @@ namespace AtleX.Images.Exif
         public override int GetHashCode() => 
             this.Field.GetHashCode() ^ this.Value.GetHashCode();
 
-        public static bool operator ==(ExifValue left, ExifValue right) =>
-            left.Equals(right);
+        public static bool operator == (ExifValue left, ExifValue right) =>
+            (left != null && right != null && left.Equals(right));
 
-        public static bool operator !=(ExifValue left, ExifValue right) =>
-            !left.Equals(right);
-    }
+        public static bool operator != (ExifValue left, ExifValue right) =>
+			(left != null && right != null && !left.Equals(right));
+	}
 }

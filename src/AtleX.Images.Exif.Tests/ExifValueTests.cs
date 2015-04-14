@@ -95,7 +95,18 @@ namespace AtleX.Images.Exif.Tests
             Assert.IsTrue(left != right);
         }
 
-        [Test]
+		[Test]
+		public void EqualityWithNull_Successful()
+		{
+			ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+			ExifValue right = null;
+
+			Assert.IsFalse(left.Equals(right));
+			Assert.IsFalse(left == right);
+			Assert.IsTrue(left != right);
+		}
+
+		[Test]
         public void HashCodeForSameFieldAndValue_Successful()
         {
             ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
