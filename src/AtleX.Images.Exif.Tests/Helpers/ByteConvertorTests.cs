@@ -67,6 +67,16 @@ namespace AtleX.Images.Exif.Tests.Helpers
         }
 
         [Test]
+        public void ConvertEmptyByteArrayToASCIIString_Successful()
+        {
+            byte[] input = new byte[0];
+
+            string output = ByteConvertor.ConvertBytesToASCIIString(input);
+
+            Assert.AreEqual("", output);
+        }
+
+        [Test]
         public void ByteArrayWithoutNullByteToString_Successful()
         {
             byte[] input = new byte[] { 69, 120, 105, 102 };

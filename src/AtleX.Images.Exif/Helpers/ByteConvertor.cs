@@ -65,19 +65,25 @@ namespace AtleX.Images.Exif.Helpers
 
             string result = "";
 
-            // Find 0-terminator
-            int nullTerminatorPosition = 0;
-            for (nullTerminatorPosition = value.Length - 1; nullTerminatorPosition > 0; nullTerminatorPosition--)
+            if (value.Length != 0)
             {
-                if (value[nullTerminatorPosition] == 0x0)
-                    break;
+                // Find 0-terminator
+                int nullTerminatorPosition = 0;
+                for (nullTerminatorPosition = value.Length - 1; nullTerminatorPosition > 0; nullTerminatorPosition--)
+                {
+                    if (value[nullTerminatorPosition] == 0x0)
+                    {
+                        break;
+                    }
+                }
+
+                byte[] realData = new byte[value.Length - (value.Length - nullTerminatorPosition)];
+                for (int i = 0; i < realData.Length; i++)
+                    realData[i] = value[i];
+
+                result = Encoding.ASCII.GetString(realData);
             }
 
-            byte[] realData = new byte[value.Length - (value.Length - nullTerminatorPosition)];
-            for (int i = 0; i < realData.Length; i++)
-                realData[i] = value[i];
-
-            result = Encoding.ASCII.GetString(realData);
             return result;
         }
     }
