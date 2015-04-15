@@ -95,18 +95,47 @@ namespace AtleX.Images.Exif.Tests
             Assert.IsTrue(left != right);
         }
 
-		[Test]
-		public void EqualityWithNull_Successful()
-		{
-			ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
-			ExifValue right = null;
+        [Test]
+        public void EqualityWithSelf_Successful()
+        {
+            ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
 
-			Assert.IsFalse(left.Equals(right));
-			Assert.IsFalse(left == right);
-			Assert.IsTrue(left != right);
-		}
+            Assert.IsTrue(left.Equals(left));
+        }
 
-		[Test]
+        [Test]
+        public void EqualityWithReferenceToSelf_Successful()
+        {
+            ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+            ExifValue right = left;
+
+            Assert.IsTrue(left.Equals(left));
+            Assert.IsTrue(left == right);
+            Assert.IsFalse(left != right);
+        }
+
+        [Test]
+        public void EqualityWithNullRight_Successful()
+        {
+            ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+            ExifValue right = null;
+
+            Assert.IsFalse(left.Equals(right));
+            Assert.IsFalse(left == right);
+            Assert.IsTrue(left != right);
+        }
+
+        [Test]
+        public void EqualityWithNullLeft_Successful()
+        {
+            ExifValue left = null;
+            ExifValue right = new ExifValue(ExifFieldType.Artist, "Donald Duck");
+
+            Assert.IsFalse(left == right);
+            Assert.IsTrue(left != right);
+        }
+
+        [Test]
         public void HashCodeForSameFieldAndValue_Successful()
         {
             ExifValue left = new ExifValue(ExifFieldType.Artist, "Donald Duck");
