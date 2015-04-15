@@ -48,12 +48,24 @@ namespace AtleX.Images.Exif
 
         public static bool operator == (ExifValue left, ExifValue right)
         {
-            return left.Equals(right);
+            bool result = false;
+
+            if (Object.ReferenceEquals(left, right))
+            {
+                result = true;
+            }
+
+            if ((object)left != null && (object)right != null)
+            {
+                result = left.Equals(right);
+            }
+
+            return result;
         }
 
         public static bool operator != (ExifValue left, ExifValue right)
         {
-            return !left.Equals(right);
+            return !(left == right);
         }
 
         /// <summary>
@@ -116,7 +128,9 @@ namespace AtleX.Images.Exif
         {
             bool result = false;
 
-            if (this.Field == other.Field && this.Value.Equals(other.Value))
+            if (other != null 
+                && this.Field == other.Field 
+                && this.Value.Equals(other.Value))
             {
                 result = true;
             }
