@@ -227,13 +227,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 byte[] tag = this.ReadBytes(app1Data, 2 + (i * 12), 12);
 
                 int tagType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 0, 2), this._isLittleEndian);
-                int contentType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 2, 2), this._isLittleEndian);
+                int dataType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 2, 2), this._isLittleEndian);
                 int count = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4), this._isLittleEndian);
 
                 ExifFieldType currentTag = (ExifFieldType)tagType;
                 byte[] data;
 
-                switch (contentType)
+                switch (dataType)
                 {
                     case 1: // Byte
                     case 7: // Undefined (1 byte)

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ExifValueTests.cs" />
     <Compile Include="Helpers\ByteConvertorTests.cs" />
+    <Compile Include="Helpers\ExifDataTypeConvertorTests.cs" />
     <Compile Include="Readers\JpegExifReaderTests.cs" />
     <Compile Include="Readers\ImageExifReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
