@@ -8,7 +8,12 @@ namespace AtleX.Images.Exif.Helpers
 {
     public static class ExifDataTypeConvertor
     {
-
+        /// <summary>
+        /// Convert a byte array with one byte to a byte
+        /// </summary>
+        /// <param name="data">A byte array with one byte</param>
+        /// <returns>The data, converted to byte</returns>
+        /// <remarks>O yes, I do realize how silly this method is...</remarks>
         public static byte ToByte(byte[] data)
         {
             if (data == null)
@@ -23,6 +28,11 @@ namespace AtleX.Images.Exif.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Convert a byte-array to an ASCII string
+        /// </summary>
+        /// <param name="data">The byte array to convert</param>
+        /// <returns>The data, converted to string</returns>
         public static string ToASCII(byte[] data)
         {
             if (data == null)
@@ -35,6 +45,14 @@ namespace AtleX.Images.Exif.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Convert a byte-array to a short
+        /// </summary>
+        /// <param name="data">The byte array to convert</param>
+        /// <param name="isLittleEndian">
+        /// True when the data should be considered little-endian, false otherwise
+        /// </param>
+        /// <returns>The data, converted to int</returns>
         public static int ToShort(byte[] data, bool isLittleEndian)
         {
             if (data == null)
@@ -49,6 +67,14 @@ namespace AtleX.Images.Exif.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Convert a byte-array to a long
+        /// </summary>
+        /// <param name="data">The byte array to convert</param>
+        /// <param name="isLittleEndian">
+        /// True when the data should be considered little-endian, false otherwise
+        /// </param>
+        /// <returns>The data, converted to long</returns>
         public static long ToLong(byte[] data, bool isLittleEndian)
         {
             if (data == null)
@@ -63,6 +89,14 @@ namespace AtleX.Images.Exif.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Convert a byte-array to a long
+        /// </summary>
+        /// <param name="data">The byte array to convert</param>
+        /// <param name="isLittleEndian">
+        /// True when the data should be considered little-endian, false otherwise
+        /// </param>
+        /// <returns>The data, converted to long</returns>
         public static long ToRational(byte[] data, bool isLittleEndian)
         {
             if (data == null)
