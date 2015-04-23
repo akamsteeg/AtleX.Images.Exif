@@ -73,12 +73,13 @@ namespace AtleX.Images.Exif.Tests.Helpers
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void EmptyArrayToASCII_Throws()
+        public void EmptyArrayToASCIIResultsInEmptyString_Successful()
         {
             byte[] data = new byte[0] { };
 
             string result = ExifDataTypeConvertor.ToASCII(data);
+
+            Assert.AreEqual("", result);
         }
 
         #endregion
