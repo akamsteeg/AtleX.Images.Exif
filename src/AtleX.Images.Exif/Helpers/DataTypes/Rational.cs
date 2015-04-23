@@ -8,27 +8,27 @@ namespace AtleX.Images.Exif.Helpers.DataTypes
 {
     public struct Rational
     {
-        private readonly int _numerator;
-        public int Numerator
+        private readonly long _numerator;
+        public long Numerator
         {
             get { return this._numerator; }
         }
 
-        private readonly int _denominator;
-        public int Denominator
+        private readonly long _denominator;
+        public long Denominator
         {
             get { return this._denominator; }
         }
 
-        public Rational(int nominator, int denominator)
+        public Rational(long nominator, long denominator)
         {
             this._numerator = nominator;
             this._denominator = denominator;
         }
 
-        public static explicit operator int(Rational r)
+        public static explicit operator long(Rational r)
         {
-            int result;
+            long result;
 
             result = r.Numerator / r.Denominator;
 
