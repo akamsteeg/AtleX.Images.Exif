@@ -134,5 +134,11 @@ namespace AtleX.Images.Exif.Tests.Helpers
         }
 
         #endregion
+
+        #region ToRational
+
+
+
+        #endregion
     }
 }

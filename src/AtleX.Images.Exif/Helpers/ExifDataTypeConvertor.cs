@@ -1,5 +1,4 @@
-﻿using AtleX.Images.Exif.Helpers.DataTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +12,9 @@ namespace AtleX.Images.Exif.Helpers
         public static byte ToByte(byte[] data)
         {
             if (data == null)
-                throw new ArgumentNullException(""); // TODO
+                throw new ArgumentNullException("data");
             if (data.Length != 1)
-                throw new ArgumentOutOfRangeException(""); // TODO
+                throw new ArgumentOutOfRangeException(string.Format(Strings.ExceptionDataOutOfRange, 1));
 
             byte result;
 
@@ -27,9 +26,7 @@ namespace AtleX.Images.Exif.Helpers
         public static string ToASCII(byte[] data)
         {
             if (data == null)
-                throw new ArgumentNullException(""); // TODO
-            if (data.Length == 0)
-                throw new ArgumentOutOfRangeException(""); // TODO
+                throw new ArgumentNullException("data");
 
             string result;
 
@@ -41,9 +38,9 @@ namespace AtleX.Images.Exif.Helpers
         public static int ToShort(byte[] data, bool isLittleEndian)
         {
             if (data == null)
-                throw new ArgumentNullException(""); // TODO
+                throw new ArgumentNullException("data");
             if (data.Length != 2)
-                throw new ArgumentOutOfRangeException(""); // TODO
+                throw new ArgumentOutOfRangeException(string.Format(Strings.ExceptionDataOutOfRange, 2));
 
             int result;
 
@@ -55,9 +52,9 @@ namespace AtleX.Images.Exif.Helpers
         public static long ToLong(byte[] data, bool isLittleEndian)
         {
             if (data == null)
-                throw new ArgumentNullException(""); // TODO
+                throw new ArgumentNullException("data");
             if (data.Length != 4)
-                throw new ArgumentOutOfRangeException(""); // TODO
+                throw new ArgumentOutOfRangeException(string.Format(Strings.ExceptionDataOutOfRange, 4));
 
             long result;
 
@@ -66,14 +63,14 @@ namespace AtleX.Images.Exif.Helpers
             return result;
         }
 
-        public static Rational ToRational(byte[] data, bool isLittleEndian)
+        public static long ToRational(byte[] data, bool isLittleEndian)
         {
             if (data == null)
-                throw new ArgumentNullException(""); // TODO
+                throw new ArgumentNullException("data");
             if (data.Length != 8)
-                throw new ArgumentOutOfRangeException(""); // TODO
+                throw new ArgumentOutOfRangeException(string.Format(Strings.ExceptionDataOutOfRange, 8));
 
-            Rational result;
+            long result;
 
             // TODO Fix this to avoid the LINQ stuff
             byte[] numeratorPart = data.Take(4).ToArray();
@@ -82,7 +79,7 @@ namespace AtleX.Images.Exif.Helpers
             int numerator = ByteConvertor.ConvertBytesToInt(numeratorPart, isLittleEndian);
             int denominator = ByteConvertor.ConvertBytesToInt(denominatorPart, isLittleEndian);
 
-            result = new Rational(numerator, denominator);
+            result = numerator / denominator;
 
             return result;
         }

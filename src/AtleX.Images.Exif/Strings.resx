@@ -123,6 +123,9 @@
   <data name="ExceptionCantConvertBytesToInteger" xml:space="preserve">
     <value>An integer is either 2 or 4 bytes long</value>
   </data>
+  <data name="ExceptionDataOutOfRange" xml:space="preserve">
+    <value>Data must be '{0}' bytes long</value>
+  </data>
   <data name="ExceptionFileNotFound" xml:space="preserve">
     <value>Can't find file '{0}'</value>
   </data>

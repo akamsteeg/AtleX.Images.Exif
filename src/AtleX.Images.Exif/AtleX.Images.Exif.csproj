@@ -51,7 +51,6 @@
     <Compile Include="ExifDataType.cs" />
     <Compile Include="ExifFieldType.cs" />
     <Compile Include="ExifValue.cs" />
-    <Compile Include="Helpers\DataTypes\Rational.cs" />
     <Compile Include="Helpers\ExifDataTypeConvertor.cs" />
     <Compile Include="Helpers\FileTypeHelper.cs" />
     <Compile Include="Helpers\ByteConvertor.cs" />
