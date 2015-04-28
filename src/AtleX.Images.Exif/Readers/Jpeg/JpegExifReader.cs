@@ -240,7 +240,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         {
                             data = this.ReadBytes(tag, 8, 4);
 
-                            byte value = data[0];
+                            byte value = ExifDataTypeConvertor.ToByte(data);
                             values.Add(new ExifValue(currentTag, value));
                         }
                         break;
@@ -250,7 +250,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                             int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4), this._isLittleEndian);
                             // TODO: Find out and document why the -8 has to happen?
                             data = this.ReadBytes(app1Data, dataOffset - 8, count);
-                            string value = ByteConvertor.ConvertBytesToASCIIString(data);
+                            string value = ExifDataTypeConvertor.ToASCII(data);
 
                             values.Add(new ExifValue(currentTag, value));
                         }
@@ -260,7 +260,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         {
                             data = this.ReadBytes(tag, 8, 2);
 
-                            int value = ByteConvertor.ConvertBytesToInt(data, this._isLittleEndian);
+                            int value = ExifDataTypeConvertor.ToShort(data, this._isLittleEndian);
                             values.Add(new ExifValue(currentTag, value));
                         }
                         break;
@@ -270,7 +270,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                         {
                             data = this.ReadBytes(tag, 8, 4);
 
-                            int value = ByteConvertor.ConvertBytesToInt(data, this._isLittleEndian);
+                            long value = ExifDataTypeConvertor.ToLong(data, this._isLittleEndian);
                             values.Add(new ExifValue(currentTag, value));
                         }
                         break;
@@ -278,13 +278,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     case 5: // Rational (two Longs, first one is the nominator, second is the denominator)
                     case 10: // Srational (two slongs, first one is the nominator, second is the denominator)
                         {
-                            byte[] numeratorPart = this.ReadBytes(tag, 4, 4);
-                            byte[] denominatorPart = this.ReadBytes(tag, 8, 4);
+                            data = this.ReadBytes(tag, 4, 8);
 
-                            int numerator = ByteConvertor.ConvertBytesToInt(numeratorPart, this._isLittleEndian);
-                            int denominator = ByteConvertor.ConvertBytesToInt(denominatorPart, this._isLittleEndian);
-
-                            int value = numerator / denominator;
+                            long value = ExifDataTypeConvertor.ToRational(data, this._isLittleEndian);
                             values.Add(new ExifValue(currentTag, value));
                         }
                         break;
