@@ -61,36 +61,6 @@ namespace AtleX.Images.Exif
         }
 
         /// <summary>
-        /// Instantiates a reader and loads the image
-        /// </summary>
-        /// <param name="imageFileName">
-        /// The filename of the image to load
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static ExifReader Create(string imageFileName)
-        {
-            ExifReader r = new ImageExifReader(imageFileName);
-
-            return r;
-        }
-
-        /// <summary>
-        /// Instantiates a reader and loads the image
-        /// </summary>
-        /// <param name="imageData">
-        /// Stream with the image data
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static ExifReader Create(Stream imageData)
-        {
-            ExifReader r = new ImageExifReader(imageData);
-
-            return r;
-        }
-
-        /// <summary>
         /// Read and returns the EXIF info (if any) from the image
         /// </summary>
         /// <returns>
