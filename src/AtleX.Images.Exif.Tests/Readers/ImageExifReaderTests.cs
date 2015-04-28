@@ -61,29 +61,5 @@ namespace AtleX.Images.Exif.Tests.Readers
                 () => { new TestImageExifReader(this.InvalidFilePng); }
                 );
         }
-
-        [Test]
-        public void CreateJpegReaderViaStaticCreate_Successful()
-        {
-            ExifReader r = TestImageExifReader.Create(this.TestImageFileName);
-
-            Assert.IsInstanceOf<ImageExifReader>(r);
-        }
-
-        [Test]
-        public void CreateJpegReaderViaStaticCreateNonExistantFile_Throws()
-        {
-            Assert.Throws<FileNotFoundException>(
-                () => { TestImageExifReader.Create(this.NonExistantFile); }
-                );
-        }
-
-        [Test]
-        public void CreateJpegReaderViaStaticCreateInvalidFile_Throws()
-        {
-            Assert.Throws<InvalidDataException>(
-                () => { TestImageExifReader.Create(this.InvalidFilePng); }
-                );
-        }
     }
 }
