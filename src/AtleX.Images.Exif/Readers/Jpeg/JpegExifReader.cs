@@ -12,14 +12,27 @@ namespace AtleX.Images.Exif.Readers.Jpeg
     /// </summary>
     public class JpegExifReader : ExifReader
     {
+        /// <summary>
+        /// Indicates whether we are operating in Little Endian mode
+        /// </summary>
         private bool _isLittleEndian;
 
+        /// <summary>
+        /// Gets the <see cref="Stream"/> with the image data
+        /// </summary>
         protected Stream ImageDataStream
         {
             get;
-            set;
+            private set;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="JpegExifReader"/> from the
+        /// specified <see cref="Stream"/>
+        /// </summary>
+        /// <param name="imageDataStream">
+        /// The <see cref="Stream"/> to read the image data from
+        /// </param>
         public JpegExifReader(Stream imageDataStream)
         {
             if (imageDataStream == null)
@@ -36,6 +49,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 throw new InvalidDataException(Strings.ExceptionImageInvalidJpeg);
             }
         }
+
         /// <summary>
         /// Read and returns the EXIF info (if any) from the image
         /// </summary>
@@ -294,6 +308,11 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             return values;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting
+        /// unmanaged resources
+        /// </summary>
+        /// <param name="disposing">True when disposing, false otherwise</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
