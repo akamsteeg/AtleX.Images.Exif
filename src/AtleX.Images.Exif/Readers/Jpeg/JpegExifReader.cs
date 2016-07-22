@@ -27,6 +27,21 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         }
 
         /// <summary>
+        /// Cached 2-byte array
+        /// </summary>
+        private byte[] _byte2;
+
+        /// <summary>
+        /// Cached 4-byte array
+        /// </summary>
+        private byte[] _byte4;
+
+        /// <summary>
+        /// Cached 8-byte array
+        /// </summary>
+        private byte[] _byte8;
+
+        /// <summary>
         /// Initializes a new instance of <see cref="JpegExifReader"/> from the
         /// specified <see cref="Stream"/>
         /// </summary>
@@ -42,6 +57,10 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             {
                 this.ImageDataStream = imageDataStream;
                 this.CanRead = true;
+
+                this._byte2 = new byte[2];
+                this._byte4 = new byte[4];
+                this._byte8 = new byte[8];
             }
             else
             {
@@ -182,13 +201,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                             // Get IFD offset, it's 0x00 00 00 08 if the IFD is
                             // located directly after the TIFF header
-                            int ifdOffset = ByteConvertor.ConvertBytesToInt(ReadBytes(segmentData, 10, 4), this._isLittleEndian);
+                            int ifdOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(segmentData, 10, 4), this._isLittleEndian);
 
                             /*
                              * Why '6 + ifdOffset'? Because it's counting from the start of the TIFF header at
                              * positions 6 & 7 in the segment data.
                              */
-                            byte[] tiffData = ReadBytes(segmentData, 6 + ifdOffset, segmentData.Length - ifdOffset - 6);
+                            byte[] tiffData = this.ReadBytes(segmentData, 6 + ifdOffset, segmentData.Length - ifdOffset - 6);
 
                             result = tiffData;
                         }
@@ -214,7 +233,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
              * The two first bytes of the App1 segment are indicating
              * how many Exif/IPTC entries there are.
              */
-            int numberOfEntries = ByteConvertor.ConvertBytesToInt(ReadBytes(app1Data, 0, 2), this._isLittleEndian);
+            var numberOfEntriesInApp1 = this.ReadBytes(app1Data, 0, 2);
+            int numberOfEntries = ByteConvertor.ConvertBytesToInt(numberOfEntriesInApp1, this._isLittleEndian);
 
             /*
              * Typically the number of Exif values will be the same or more
@@ -238,11 +258,11 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                  * to the data
                  */
                 // TODO: Why '2+...'?
-                byte[] tag = ReadBytes(app1Data, 2 + (i * 12), 12);
+                byte[] tag = this.ReadBytes(app1Data, 2 + (i * 12), 12);
 
-                int tagType = ByteConvertor.ConvertBytesToInt(ReadBytes(tag, 0, 2), this._isLittleEndian);
-                int contentType = ByteConvertor.ConvertBytesToInt(ReadBytes(tag, 2, 2), this._isLittleEndian);
-                int count = ByteConvertor.ConvertBytesToInt(ReadBytes(tag, 4, 4), this._isLittleEndian);
+                int tagType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 0, 2), this._isLittleEndian);
+                int contentType = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 2, 2), this._isLittleEndian);
+                int count = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 4, 4), this._isLittleEndian);
 
                 ExifFieldType currentTag = (ExifFieldType)tagType;
                 byte[] data;
@@ -252,7 +272,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     case 1: // Byte
                     case 7: // Undefined (1 byte)
                         {
-                            data = ReadBytes(tag, 8, 4);
+                            data = this.ReadBytes(tag, 8, 4);
 
                             byte value = data[0];
                             values.Add(new ExifValue(currentTag, value));
@@ -261,9 +281,9 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                     case 2: // ASCII
                         {
-                            int dataOffset = ByteConvertor.ConvertBytesToInt(ReadBytes(tag, 8, 4), this._isLittleEndian);
+                            int dataOffset = ByteConvertor.ConvertBytesToInt(this.ReadBytes(tag, 8, 4), this._isLittleEndian);
                             // TODO: Find out and document why the -8 has to happen?
-                            data = ReadBytes(app1Data, dataOffset - 8, count);
+                            data = this.ReadBytes(app1Data, dataOffset - 8, count);
                             string value = ByteConvertor.ConvertBytesToASCIIString(data);
 
                             values.Add(new ExifValue(currentTag, value));
@@ -272,7 +292,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                     case 3: // Short (2 bytes, uint16)
                         {
-                            data = ReadBytes(tag, 8, 2);
+                            data = this.ReadBytes(tag, 8, 2);
 
                             int value = ByteConvertor.ConvertBytesToInt(data, this._isLittleEndian);
                             values.Add(new ExifValue(currentTag, value));
@@ -282,7 +302,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     case 4: // Long (4 bytes, uint32)
                     case 9: // Slong (4 bytes, int32)
                         {
-                            data = ReadBytes(tag, 8, 4);
+                            data = this.ReadBytes(tag, 8, 4);
 
                             int value = ByteConvertor.ConvertBytesToInt(data, this._isLittleEndian);
                             values.Add(new ExifValue(currentTag, value));
@@ -292,8 +312,8 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                     case 5: // Rational (two Longs, first one is the nominator, second is the denominator)
                     case 10: // Srational (two slongs, first one is the nominator, second is the denominator)
                         {
-                            byte[] numeratorPart = ReadBytes(tag, 4, 4);
-                            byte[] denominatorPart = ReadBytes(tag, 8, 4);
+                            byte[] numeratorPart = this.ReadBytes(tag, 4, 4);
+                            byte[] denominatorPart = this.ReadBytes(tag, 8, 4);
 
                             int numerator = ByteConvertor.ConvertBytesToInt(numeratorPart, this._isLittleEndian);
                             int denominator = ByteConvertor.ConvertBytesToInt(denominatorPart, this._isLittleEndian);
@@ -346,7 +366,7 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         /// This can probably be done a lot more efficiently instead of copying
         /// values in a loop.
         /// </remarks>
-        private static byte[] ReadBytes(byte[] source, int start, int length)
+        private byte[] ReadBytes(byte[] source, int start, int length)
         {
             if (start < 0)
                 throw new ArgumentOutOfRangeException("start", Strings.ExceptionValueCanNotBeLessThanZero);
@@ -355,13 +375,55 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             if (source.Length < start + length)
                 throw new ArgumentOutOfRangeException("length", Strings.ExceptionSourceInvalidLength);
 
-            byte[] result = new byte[length];
+            byte[] result = GetSizedByteArray(length);
 
             int j = 0;
             for (int i = start; i < start + length; i++)
             {
                 result[j] = source[i];
                 j++;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get a byte array with the specified length
+        /// </summary>
+        /// <param name="length">
+        /// The length of the byte array
+        /// </param>
+        /// <returns>
+        /// The byte array of the specified length
+        /// </returns>
+        private byte[] GetSizedByteArray(int length)
+        {
+            if (length < 0)
+                throw new ArgumentOutOfRangeException("length", Strings.ExceptionValueCanNotBeLessThanZero);
+
+            byte[] result;
+            switch (length)
+            {
+                case 2:
+                    {
+                        result = this._byte2;
+                        break;
+                    }
+                case 4:
+                    {
+                        result = this._byte4;
+                        break;
+                    }
+                case 8:
+                    {
+                        result = this._byte8;
+                        break;
+                    }
+                default:
+                    {
+                        result = new byte[length];
+                        break;
+                    }
             }
 
             return result;
