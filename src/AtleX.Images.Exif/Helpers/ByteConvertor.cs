@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 
 namespace AtleX.Images.Exif.Helpers
@@ -29,7 +28,7 @@ namespace AtleX.Images.Exif.Helpers
 
             if (!treatAsLittleEndian)
             {
-                value = value.Reverse().ToArray();
+                value = ConvertBigToLittleEndian(value);
             }
 
             int result;
@@ -85,6 +84,31 @@ namespace AtleX.Images.Exif.Helpers
                 }
 
                 result = Encoding.ASCII.GetString(realData);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Convert a big endian byte array to little endian
+        /// </summary>
+        /// <param name="value">
+        /// The byte array to convert
+        /// </param>
+        /// <returns>
+        /// The converted byte array
+        /// </returns>
+        private static byte[] ConvertBigToLittleEndian(byte[] value)
+        {
+            /*
+             * We don't want to do this with LINQ (value.Reverse().ToArray())
+             * because it's way too slow (~10x) and allocates a lot of memory
+             */
+            var result = new byte[value.Length];
+
+            for (var i = 0; i < value.Length; i++)
+            {
+                result[i] = value[value.Length - 1 - i];
             }
 
             return result;
