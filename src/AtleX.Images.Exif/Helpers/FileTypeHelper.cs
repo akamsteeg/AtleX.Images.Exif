@@ -84,9 +84,7 @@ namespace AtleX.Images.Exif.Helpers
                  * Flexible Image Transport System (FITS)
                  */
                 const int magicNumberLength = 30;
-
-                byte[] buffer = new byte[magicNumberLength];
-                buffer = bReader.ReadBytes(magicNumberLength);
+                var buffer = bReader.ReadBytes(magicNumberLength);
 
                 // Check for JPEG header (FF D8)
                 if (buffer[0] == 255 // FF
