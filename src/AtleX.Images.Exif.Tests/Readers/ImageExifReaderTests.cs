@@ -17,7 +17,7 @@ namespace AtleX.Images.Exif.Tests.Readers
         {
             get
             {
-                return @"..\..\..\..\Testfiles\Jpeg\Canon_7D\1_LittleEndian.jpg";
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Testfiles\Jpeg\Canon_7D\1_LittleEndian.jpg");
 
             }
         }
@@ -26,7 +26,7 @@ namespace AtleX.Images.Exif.Tests.Readers
         {
             get
             {
-                return @"..\..\..\..\Testfiles\Invalid\invalid.png";
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Testfiles\Invalid\invalid.png");
             }
         }
 
