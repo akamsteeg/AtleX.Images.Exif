@@ -27,16 +27,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         }
 
         /// <summary>
-        /// Cached 2-byte array
-        /// </summary>
-        private byte[] _byte2;
-
-        /// <summary>
-        /// Cached 4-byte array
-        /// </summary>
-        private byte[] _byte4;
-
-        /// <summary>
         /// Initializes a new instance of <see cref="JpegExifReader"/> from the
         /// specified <see cref="Stream"/>
         /// </summary>
@@ -52,9 +42,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             {
                 this.ImageDataStream = imageDataStream;
                 this.CanRead = true;
-
-                this._byte2 = new byte[2];
-                this._byte4 = new byte[4];
             }
             else
             {
@@ -369,50 +356,13 @@ namespace AtleX.Images.Exif.Readers.Jpeg
             if (source.Length < start + length)
                 throw new ArgumentOutOfRangeException("length", Strings.ExceptionSourceInvalidLength);
 
-            byte[] result = GetSizedByteArray(length);
+            byte[] result = new byte[length];
 
             int j = 0;
             for (int i = start; i < start + length; i++)
             {
                 result[j] = source[i];
                 j++;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Get a byte array with the specified length
-        /// </summary>
-        /// <param name="length">
-        /// The length of the byte array
-        /// </param>
-        /// <returns>
-        /// The byte array of the specified length
-        /// </returns>
-        private byte[] GetSizedByteArray(int length)
-        {
-            if (length < 0)
-                throw new ArgumentOutOfRangeException("length", Strings.ExceptionValueCanNotBeLessThanZero);
-
-            byte[] result;
-            switch (length)
-            {
-                case 2:
-                    {
-                        result = this._byte2;
-                        break;
-                    }
-                case 4:
-                    {
-                        result = this._byte4;
-                        break;
-                    }
-                default:
-                    {
-                        result = new byte[length];
-                        break;
-                    }
             }
 
             return result;

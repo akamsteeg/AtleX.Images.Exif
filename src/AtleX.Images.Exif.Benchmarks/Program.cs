@@ -15,13 +15,13 @@ namespace AtleX.Images.Exif.Benchmarks
             var config = GetConfig();
             var benchmarks = GetBenchmarks();
 
-            //for (var i = 0; i < benchmarks.Length; i++)
-            //{
-            //    var typeToRun = benchmarks[i];
-            //    BenchmarkRunner.Run(typeToRun, config);
-            //}
+            for (var i = 0; i < benchmarks.Length; i++)
+            {
+                var typeToRun = benchmarks[i];
+                BenchmarkRunner.Run(typeToRun, config);
+            }
 
-            BenchmarkRunner.Run<ByteConvertorBenchmarks>(config);
+            //BenchmarkRunner.Run<JpegExifReaderBenchmarks>(config);
         }
 
         private static IConfig GetConfig()
