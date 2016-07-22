@@ -37,11 +37,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
         private byte[] _byte4;
 
         /// <summary>
-        /// Cached 8-byte array
-        /// </summary>
-        private byte[] _byte8;
-
-        /// <summary>
         /// Initializes a new instance of <see cref="JpegExifReader"/> from the
         /// specified <see cref="Stream"/>
         /// </summary>
@@ -60,7 +55,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
 
                 this._byte2 = new byte[2];
                 this._byte4 = new byte[4];
-                this._byte8 = new byte[8];
             }
             else
             {
@@ -412,11 +406,6 @@ namespace AtleX.Images.Exif.Readers.Jpeg
                 case 4:
                     {
                         result = this._byte4;
-                        break;
-                    }
-                case 8:
-                    {
-                        result = this._byte8;
                         break;
                     }
                 default:
